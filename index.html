@@ -391,6 +391,15 @@
           <option value="">Select a category</option>
         </select>
       </div>
+      <div class="flex justify-between items-center">
+        <div>
+          <input type="checkbox" id="scxCompress" checked>
+          <label for="scxCompress" class="text-muted">Compress with SCX</label>
+        </div>
+        <div class="flex gap-md">
+          <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
+          <button type="submit" class="pb-btn" style="background: #00ff99; color: #000;">Post Topic</button>
+        </div>
       <div style="display:flex;gap:8px;justify-content:flex-end">
         <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
         <button type="submit" class="pb-btn" style="background: var(--accent-green); color: var(--bg-primary);">Post Topic</button>
@@ -399,6 +408,78 @@
   </div>
 </div>
 
+<div class="modal" id="scxModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <strong>🧠 SCX Compression Demo</strong>
+      <button class="close-btn" id="closeScxModal">✕</button>
+    </div>
+    <div class="pad-md">
+      <h3 class="text-glow">SCX Compression Example</h3>
+      <p class="text-muted pad-md">See how ASX data is compressed using SCX tokens</p>
+
+      <div class="scx-compressed">
+        <strong>Compressed SCX Data (2.1KB):</strong><br>
+        (🌪️)asx_forum_data(∴)(🧩)pattern:"scx_compression"(📦)input:2100_bytes(🚀)output:1073741824_bytes(⚡)ratio:511305:1
+      </div>
+
+      <button class="scx-toggle" id="toggleScxBtn">Toggle Decompression</button>
+
+      <div class="scx-decompressed hidden" id="decompressedData">
+        <h4 class="text-aqua">Decompressed Data (1GB equivalent):</h4>
+        <pre id="decompressedContent"></pre>
+      </div>
+
+      <div class="pad-md">
+        <h4 class="text-glow">SCX Token Reference:</h4>
+        <div class="flex wrap gap-md">
+          <div class="bg-darker pad-md rounded">
+            <code>(?)</code> = if<br>
+            <code>(∴)</code> = then<br>
+            <code>(⊕)</code> = increment
+          </div>
+          <div class="bg-darker pad-md rounded">
+            <code>(💬>)</code> = message<br>
+            <code>(>)</code> = send<br>
+            <code>(+)</code> = create
+          </div>
+          <div class="bg-darker pad-md rounded">
+            <code>(%)</code> = save<br>
+            <code>(∞)</code> = loop<br>
+            <code>(@)</code> = internet
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = [
+    'ASX Guides & Documentation',
+    'SCX Compression',
+    'Atomic Components',
+    'Mx2LM & AI Integration',
+    'Liquid Encryption',
+    'ASX Runtime',
+    'Projects & Examples'
+  ];
+
+  const CATEGORY_EMOJIS = {
+    'ASX Guides & Documentation': '📚',
+    'SCX Compression': '🧠',
+    'Atomic Components': '⚛️',
+    'Mx2LM & AI Integration': '🤖',
+    'Liquid Encryption': '🔐',
+    'ASX Runtime': '⚡',
+    'Projects & Examples': '🚀'
+  };
+
+  const SCX_COMPRESSED_GUIDES = {
+    asx_runtime: '(🌪️)asx_runtime(∴)(🧩)pattern:"json_first"(📦)input:1500_bytes(🚀)output:1073741824_bytes(⚡)ratio:715827:1',
+    atomic_components: '(🌪️)atomic_components(∴)(🧩)pattern:"declarative_ui"(📦)input:1200_bytes(🚀)output:536870912_bytes(⚡)ratio:447392:1',
+    scx_compression: '(🌪️)scx_compression(∴)(🧩)pattern:"token_compression"(📦)input:800_bytes(🚀)output:268435456_bytes(⚡)ratio:335544:1',
+    mx2lm_integration: '(🌪️)mx2lm_integration(∴)(🧩)pattern:"ai_runtime"(📦)input:2000_bytes(🚀)output:2147483648_bytes(⚡)ratio:1073741:1'
 <script>
   const CATEGORIES = [
     "General Discussion",
@@ -422,6 +503,107 @@
 
   const DEMO_POSTS = [
     {
+      id: 'post-1',
+      title: 'ASX Runtime Structure & Setup',
+      author: 'ASX Team',
+      published: '2025-11-05T10:30:00Z',
+      category: ['ASX Runtime'],
+      content: SCX_COMPRESSED_GUIDES.asx_runtime,
+      commentCount: 15,
+      scxCompressed: true
+    },
+    {
+      id: 'post-2',
+      title: 'Atomic Components Guide - Building UIs with ASX Blocks',
+      author: 'UI Architect',
+      published: '2025-11-04T14:20:00Z',
+      category: ['Atomic Components'],
+      content: SCX_COMPRESSED_GUIDES.atomic_components,
+      commentCount: 8,
+      scxCompressed: true
+    },
+    {
+      id: 'post-3',
+      title: 'SCX Compression Deep Dive - From 20GB to 20KB',
+      author: 'Compression Expert',
+      published: '2025-11-03T16:45:00Z',
+      category: ['SCX Compression'],
+      content: SCX_COMPRESSED_GUIDES.scx_compression,
+      commentCount: 23,
+      scxCompressed: true
+    },
+    {
+      id: 'post-4',
+      title: 'Mx2LM Integration - AI-Powered ASX Applications',
+      author: 'AI Researcher',
+      published: '2025-11-02T09:15:00Z',
+      category: ['Mx2LM & AI Integration'],
+      content: SCX_COMPRESSED_GUIDES.mx2lm_integration,
+      commentCount: 12,
+      scxCompressed: true
+    },
+    {
+      id: 'post-5',
+      title: 'Liquid Encryption for Secure ASX Applications',
+      author: 'Security Lead',
+      published: '2025-11-01T11:40:00Z',
+      category: ['Liquid Encryption'],
+      content: 'Learn how to implement liquid encryption in your ASX applications for maximum security.',
+      commentCount: 7,
+      scxCompressed: false
+    },
+    {
+      id: 'post-6',
+      title: 'Complete ASX Documentation & Reference',
+      author: 'Documentation Team',
+      published: '2025-10-31T13:10:00Z',
+      category: ['ASX Guides & Documentation'],
+      content: 'Access the complete ASX documentation including runtime, components, and SCX reference.',
+      commentCount: 31,
+      scxCompressed: false
+    }
+  ];
+
+  const ASXBrain = {
+    think(question) {
+      return new Promise((resolve) => {
+        const output = document.getElementById('brainOutput');
+        output.innerHTML = '<div class="thinking">🤔 Processing your question about ASX...</div>';
+
+        setTimeout(() => {
+          const q = question.toLowerCase();
+          let response = '';
+
+          if (q.includes('what') && q.includes('asx')) {
+            response = 'ASX is a JSON-first, framework-free application runtime. It uses declarative JSON to describe entire applications, with SCX compression for extreme size reduction.';
+          } else if (q.includes('how') && q.includes('scx')) {
+            response = 'SCX compression works by replacing common patterns with symbolic tokens. For example, 20GB of data can be compressed to 20KB using pattern recognition and token substitution.';
+          } else if (q.includes('atomic') && (q.includes('component') || q.includes('block'))) {
+            response = 'Atomic components are reusable UI building blocks defined in JSON. Use <asx-block> elements with Atomic CSS classes for consistent, declarative interfaces.';
+          } else if (q.includes('mx2lm') || q.includes('ai')) {
+            response = 'Mx2LM is the AI system that generates ASX applications. It understands the .asx shell format and creates complete, working JSON applications from natural language requests.';
+          } else if (q.includes('liquid') && q.includes('encryption')) {
+            response = 'Liquid encryption combines ECDH, AES-GCM, and CRDT for secure data transmission in ASX applications. It supports key rotation and secure session management.';
+          } else if (q.includes('runtime') || q.includes('engine')) {
+            response = 'The ASX Runtime interprets .asx JSON files and executes SCX commands. It handles state management, reactive effects, routing, and component rendering - all framework-free.';
+          } else if (q.includes('holotape') || q.includes('tape')) {
+            response = 'Holotapes are self-contained ASX application bundles. Think of them like cassette tapes - the .asx file is the tape, and the ASX Engine is the player.';
+          } else if (q.includes('json') && q.includes('first')) {
+            response = 'JSON-first means every ASX application is defined in pure JSON - no HTML templates, no JSX, no build steps. The entire app state, UI, and logic lives in one JSON file.';
+          } else if (q.includes('compression') && q.includes('ratio')) {
+            response = 'SCX achieves compression ratios up to 1,000,000:1 by using symbolic tokens for common patterns. 20GB → 20KB is possible through recursive pattern unfolding.';
+          } else if (q.includes('get started') || q.includes('beginner') || q.includes('tutorial')) {
+            response = 'Start with the minimal .asx template: define $state, $routes, and $components. Use Atomic CSS classes for styling. The ASX Engine handles the rest automatically.';
+          } else {
+            response = 'I can explain ASX concepts like: SCX compression, Atomic components, Mx2LM AI, Liquid encryption, Holotapes, or the JSON-first philosophy. What would you like to know?';
+          }
+
+          resolve({ type: 'response', content: `<div class="brain-response">${response}</div>` });
+        }, 800);
+      });
+    }
+  };
+
       id: "post-1",
       title: "Welcome to Pocket Book v.1",
       author: "Admin",
