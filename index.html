@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ASX Forum — SCX Compressed + AI Brain</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+<style>
+  .text-md { font-size: 1rem; }
+  .text-lg { font-size: 1.25rem; }
+  .text-xl { font-size: 1.5rem; }
+  .text-2xl { font-size: 2rem; }
+  .pad-md { padding: 12px; }
+  .pad-lg { padding: 20px; }
+  .flex { display: flex; }
+  .row { flex-direction: row; }
+  .col { flex-direction: column; }
+  .gap-md { gap: 12px; }
+  .gap-lg { gap: 20px; }
+  .wrap { flex-wrap: wrap; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .w-full { width: 100%; }
+  .w-auto { width: auto; }
+  .bg-panel { background: #11161c; border-radius: 8px; }
+  .bg-dark { background: #0a0a0a; }
+  .bg-darker { background: #1a1a1a; }
+  .border { border: 1px solid #404040; }
+  .border-glow { border: 2px solid #00ff99; }
+  .rounded { border-radius: 8px; }
+  .rounded-lg { border-radius: 12px; }
+  .text-glow { color: #00ff99; }
+  .text-aqua { color: #00ffff; }
+  .text-muted { color: #808080; }
+  .shadow-glow { box-shadow: 0 0 15px rgba(0, 255, 153, 0.25); }
+  .cursor-pointer { cursor: pointer; }
+  .hidden { display: none; }
+  .block { display: block; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; line-height: 1.5; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px;
+            border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 153, 0.35); }
+
+  .logo { font-size: 24px; font-weight: bold; color: #00ff99; display: flex; align-items: center; gap: 8px; }
+
+  .user-panel { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+
+  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040;
+                          padding: 8px 12px; cursor: pointer; transition: all 0.2s;
+                          font-family: inherit; font-size: 14px; border-radius: 6px; }
+
+  .btn:hover, .pb-btn:hover, select:hover { background: #404040; }
+
+  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px;
+                   border-radius: 8px; overflow: hidden; }
+
+  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px;
+                    font-weight: bold; display: flex; justify-content: space-between;
+                    align-items: center; cursor: pointer; font-size: 18px; transition: background 0.2s; }
+
+  .section-header:hover { background: #404040; }
+
+  .topic-table { width: 100%; border-collapse: collapse; }
+
+  .topic-table th, .topic-table td { border: 1px solid #404040; padding: 12px; text-align: left; vertical-align: top; }
+
+  .topic-table th { background: #2a2a2a; font-weight: bold; }
+
+  .topic-title { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
+
+  .topic-title:hover { text-decoration: underline; }
+
+  .topic-meta { color: #808080; font-size: 12px; margin-top: 4px; }
+
+  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px;
+                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3;
+                   -webkit-box-orient: vertical; overflow: hidden; }
+
+  .stats { color: #b0b0b0; text-align: center; }
+
+  .actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+
+  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px;
+                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center;
+                justify-content: center; }
+
+  .action-btn:hover { background: #2a2a2a; color: #e0e0e0; }
+
+  .collapsed .topic-table { display: none; }
+
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
+           padding: 20px; }
+
+  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px;
+                   max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px; }
+
+  .modal-header { display: flex; justify-content: space-between; align-items: center;
+                  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #404040; }
+
+  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px;
+               padding: 0; width: 30px; height: 30px; display: flex; align-items: center;
+               justify-content: center; border-radius: 4px; }
+
+  .close-btn:hover { background: #2a2a2a; }
+
+  .field { display: block; width: 100%; margin-bottom: 15px; }
+
+  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px;
+                                                 border: 1px solid #404040; background: #2a2a2a;
+                                                 color: #e0e0e0; font-family: inherit; }
+
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #00ff99; }
+
+  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px;
+                border: 1px solid #404040; background: #1a1a1a; color: #e0e0e0; font-size: 16px; }
+
+  .search-bar:focus { outline: none; border-color: #00ff99; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: #808080; }
+
+  .status-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
+
+  .status-success { background: rgba(74, 222, 128, 0.1); border: 1px solid #00ff99; color: #00ff99; }
+
+  .status-error { background: rgba(248, 113, 113, 0.1); border: 1px solid #f87171; color: #f87171; }
+
+  asx-block { display: block; }
+
+  .scx-compressed {
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    color: #00ff99;
+  }
+
+  .scx-decompressed {
+    background: #001a00;
+    border: 1px solid #00cc77;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .scx-toggle {
+    background: #002200;
+    border: 1px solid #00ff99;
+    color: #00ff99;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+
+  .brain-panel {
+    background: #1a1a1a;
+    border: 2px solid #00ff99;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 153, 0.25);
+  }
+
+  .brain-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .brain-input {
+    flex: 1;
+    padding: 10px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-family: inherit;
+  }
+
+  .brain-output {
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 80px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .thinking {
+    color: #00ffff;
+    font-style: italic;
+  }
+
+  .brain-response {
+    color: #00ff99;
+  }
+
+  @media (max-width: 768px) {
+    .header { flex-direction: column; align-items: flex-start; }
+    .user-panel { width: 100%; justify-content: space-between; }
+    .topic-table { display: block; overflow-x: auto; }
+    .actions { justify-content: flex-start; }
+    .topic-snippet { max-width: 200px; }
+    .brain-input-container { flex-direction: column; }
+  }
+
+  @media (max-width: 480px) {
+    .topic-table th:nth-child(2), .topic-table td:nth-child(2) { display: none; }
+    .actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <asx-block id="header-nav">
+    <header class="header flex row justify-between items-center">
+      <div class="logo">
+        <span>🌿</span>
+        <span>ASX Forum — SCX Compressed + AI Brain</span>
+      </div>
+      <div class="user-panel">
+        <select id="labelFilter"></select>
+        <button class="pb-btn" id="openCreateBtn">✚ Create Topic</button>
+        <button class="pb-btn" id="refreshBtn">⟳ Refresh</button>
+        <button class="pb-btn" id="scxDemoBtn">🧠 SCX Demo</button>
+      </div>
+    </header>
+  </asx-block>
+
+  <asx-block id="asx-brain">
+    <div class="brain-panel">
+      <h3 class="text-glow">🧠 ASX Brain - N-gram Intelligence System</h3>
+      <p class="text-muted">Ask me about ASX, SCX compression, Atomic components, or anything related to the framework</p>
+
+      <div class="brain-input-container">
+        <input type="text" class="brain-input" id="brainInput" placeholder="Ask about ASX, SCX, components, runtime..." />
+        <button class="pb-btn" id="askBrainBtn" style="background: #00ff99; color: #000;">Ask ASX Brain</button>
+      </div>
+
+      <div class="brain-output" id="brainOutput">
+        <div class="thinking">🤔 Ready to answer your ASX questions...</div>
+      </div>
+    </div>
+  </asx-block>
+
+  <asx-block id="status-message">
+    <div class="status-message" id="statusMessage"></div>
+  </asx-block>
+
+  <asx-block id="search-bar">
+    <input type="text" class="search-bar" placeholder="Search ASX topics, guides, or SCX content..." id="searchBar" />
+  </asx-block>
+
+  <div id="forumSections">
+    <div class="empty-state" id="loadingState">
+      Loading ASX Forum Content...
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="pbModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <strong>Create New ASX Topic</strong>
+      <button class="close-btn" id="closeModal">✕</button>
+    </div>
+    <form id="createTopicForm">
+      <div class="field">
+        <input name="title" id="topicTitle" placeholder="Title (required)" required/>
+      </div>
+      <div class="field">
+        <input name="author" id="topicAuthor" placeholder="Author name (optional)"/>
+      </div>
+      <div class="field">
+        <textarea name="body" id="topicBody" placeholder="Write your ASX/SCX content here..." rows="6" required></textarea>
+      </div>
+      <div class="field">
+        <select name="labels" id="topicLabel" required>
+          <option value="">Select a category</option>
+        </select>
+      </div>
+      <div class="flex justify-between items-center">
+        <div>
+          <input type="checkbox" id="scxCompress" checked>
+          <label for="scxCompress" class="text-muted">Compress with SCX</label>
+        </div>
+        <div class="flex gap-md">
+          <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
+          <button type="submit" class="pb-btn" style="background: #00ff99; color: #000;">Post Topic</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="scxModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <strong>🧠 SCX Compression Demo</strong>
+      <button class="close-btn" id="closeScxModal">✕</button>
+    </div>
+    <div class="pad-md">
+      <h3 class="text-glow">SCX Compression Example</h3>
+      <p class="text-muted pad-md">See how ASX data is compressed using SCX tokens</p>
+
+      <div class="scx-compressed">
+        <strong>Compressed SCX Data (2.1KB):</strong><br>
+        (🌪️)asx_forum_data(∴)(🧩)pattern:"scx_compression"(📦)input:2100_bytes(🚀)output:1073741824_bytes(⚡)ratio:511305:1
+      </div>
+
+      <button class="scx-toggle" id="toggleScxBtn">Toggle Decompression</button>
+
+      <div class="scx-decompressed hidden" id="decompressedData">
+        <h4 class="text-aqua">Decompressed Data (1GB equivalent):</h4>
+        <pre id="decompressedContent"></pre>
+      </div>
+
+      <div class="pad-md">
+        <h4 class="text-glow">SCX Token Reference:</h4>
+        <div class="flex wrap gap-md">
+          <div class="bg-darker pad-md rounded">
+            <code>(?)</code> = if<br>
+            <code>(∴)</code> = then<br>
+            <code>(⊕)</code> = increment
+          </div>
+          <div class="bg-darker pad-md rounded">
+            <code>(💬>)</code> = message<br>
+            <code>(>)</code> = send<br>
+            <code>(+)</code> = create
+          </div>
+          <div class="bg-darker pad-md rounded">
+            <code>(%)</code> = save<br>
+            <code>(∞)</code> = loop<br>
+            <code>(@)</code> = internet
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = [
+    'ASX Guides & Documentation',
+    'SCX Compression',
+    'Atomic Components',
+    'Mx2LM & AI Integration',
+    'Liquid Encryption',
+    'ASX Runtime',
+    'Projects & Examples'
+  ];
+
+  const CATEGORY_EMOJIS = {
+    'ASX Guides & Documentation': '📚',
+    'SCX Compression': '🧠',
+    'Atomic Components': '⚛️',
+    'Mx2LM & AI Integration': '🤖',
+    'Liquid Encryption': '🔐',
+    'ASX Runtime': '⚡',
+    'Projects & Examples': '🚀'
+  };
+
+  const SCX_COMPRESSED_GUIDES = {
+    asx_runtime: '(🌪️)asx_runtime(∴)(🧩)pattern:"json_first"(📦)input:1500_bytes(🚀)output:1073741824_bytes(⚡)ratio:715827:1',
+    atomic_components: '(🌪️)atomic_components(∴)(🧩)pattern:"declarative_ui"(📦)input:1200_bytes(🚀)output:536870912_bytes(⚡)ratio:447392:1',
+    scx_compression: '(🌪️)scx_compression(∴)(🧩)pattern:"token_compression"(📦)input:800_bytes(🚀)output:268435456_bytes(⚡)ratio:335544:1',
+    mx2lm_integration: '(🌪️)mx2lm_integration(∴)(🧩)pattern:"ai_runtime"(📦)input:2000_bytes(🚀)output:2147483648_bytes(⚡)ratio:1073741:1'
+  };
+
+  const DEMO_POSTS = [
+    {
+      id: 'post-1',
+      title: 'ASX Runtime Structure & Setup',
+      author: 'ASX Team',
+      published: '2025-11-05T10:30:00Z',
+      category: ['ASX Runtime'],
+      content: SCX_COMPRESSED_GUIDES.asx_runtime,
+      commentCount: 15,
+      scxCompressed: true
+    },
+    {
+      id: 'post-2',
+      title: 'Atomic Components Guide - Building UIs with ASX Blocks',
+      author: 'UI Architect',
+      published: '2025-11-04T14:20:00Z',
+      category: ['Atomic Components'],
+      content: SCX_COMPRESSED_GUIDES.atomic_components,
+      commentCount: 8,
+      scxCompressed: true
+    },
+    {
+      id: 'post-3',
+      title: 'SCX Compression Deep Dive - From 20GB to 20KB',
+      author: 'Compression Expert',
+      published: '2025-11-03T16:45:00Z',
+      category: ['SCX Compression'],
+      content: SCX_COMPRESSED_GUIDES.scx_compression,
+      commentCount: 23,
+      scxCompressed: true
+    },
+    {
+      id: 'post-4',
+      title: 'Mx2LM Integration - AI-Powered ASX Applications',
+      author: 'AI Researcher',
+      published: '2025-11-02T09:15:00Z',
+      category: ['Mx2LM & AI Integration'],
+      content: SCX_COMPRESSED_GUIDES.mx2lm_integration,
+      commentCount: 12,
+      scxCompressed: true
+    },
+    {
+      id: 'post-5',
+      title: 'Liquid Encryption for Secure ASX Applications',
+      author: 'Security Lead',
+      published: '2025-11-01T11:40:00Z',
+      category: ['Liquid Encryption'],
+      content: 'Learn how to implement liquid encryption in your ASX applications for maximum security.',
+      commentCount: 7,
+      scxCompressed: false
+    },
+    {
+      id: 'post-6',
+      title: 'Complete ASX Documentation & Reference',
+      author: 'Documentation Team',
+      published: '2025-10-31T13:10:00Z',
+      category: ['ASX Guides & Documentation'],
+      content: 'Access the complete ASX documentation including runtime, components, and SCX reference.',
+      commentCount: 31,
+      scxCompressed: false
+    }
+  ];
+
+  const ASXBrain = {
+    think(question) {
+      return new Promise((resolve) => {
+        const output = document.getElementById('brainOutput');
+        output.innerHTML = '<div class="thinking">🤔 Processing your question about ASX...</div>';
+
+        setTimeout(() => {
+          const q = question.toLowerCase();
+          let response = '';
+
+          if (q.includes('what') && q.includes('asx')) {
+            response = 'ASX is a JSON-first, framework-free application runtime. It uses declarative JSON to describe entire applications, with SCX compression for extreme size reduction.';
+          } else if (q.includes('how') && q.includes('scx')) {
+            response = 'SCX compression works by replacing common patterns with symbolic tokens. For example, 20GB of data can be compressed to 20KB using pattern recognition and token substitution.';
+          } else if (q.includes('atomic') && (q.includes('component') || q.includes('block'))) {
+            response = 'Atomic components are reusable UI building blocks defined in JSON. Use <asx-block> elements with Atomic CSS classes for consistent, declarative interfaces.';
+          } else if (q.includes('mx2lm') || q.includes('ai')) {
+            response = 'Mx2LM is the AI system that generates ASX applications. It understands the .asx shell format and creates complete, working JSON applications from natural language requests.';
+          } else if (q.includes('liquid') && q.includes('encryption')) {
+            response = 'Liquid encryption combines ECDH, AES-GCM, and CRDT for secure data transmission in ASX applications. It supports key rotation and secure session management.';
+          } else if (q.includes('runtime') || q.includes('engine')) {
+            response = 'The ASX Runtime interprets .asx JSON files and executes SCX commands. It handles state management, reactive effects, routing, and component rendering - all framework-free.';
+          } else if (q.includes('holotape') || q.includes('tape')) {
+            response = 'Holotapes are self-contained ASX application bundles. Think of them like cassette tapes - the .asx file is the tape, and the ASX Engine is the player.';
+          } else if (q.includes('json') && q.includes('first')) {
+            response = 'JSON-first means every ASX application is defined in pure JSON - no HTML templates, no JSX, no build steps. The entire app state, UI, and logic lives in one JSON file.';
+          } else if (q.includes('compression') && q.includes('ratio')) {
+            response = 'SCX achieves compression ratios up to 1,000,000:1 by using symbolic tokens for common patterns. 20GB → 20KB is possible through recursive pattern unfolding.';
+          } else if (q.includes('get started') || q.includes('beginner') || q.includes('tutorial')) {
+            response = 'Start with the minimal .asx template: define $state, $routes, and $components. Use Atomic CSS classes for styling. The ASX Engine handles the rest automatically.';
+          } else {
+            response = 'I can explain ASX concepts like: SCX compression, Atomic components, Mx2LM AI, Liquid encryption, Holotapes, or the JSON-first philosophy. What would you like to know?';
+          }
+
+          resolve({ type: 'response', content: `<div class="brain-response">${response}</div>` });
+        }, 800);
+      });
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    populateCategoryDropdowns();
+    loadPosts();
+    setupEventListeners();
+    feather.replace();
+  });
+
+  function populateCategoryDropdowns() {
+    const filter = document.getElementById('labelFilter');
+    const modalSelect = document.getElementById('topicLabel');
+
+    filter.innerHTML = '<option value="">All Categories</option>';
+    modalSelect.innerHTML = '<option value="">Select a category</option>';
+
+    CATEGORIES.forEach((cat) => {
+      const option1 = document.createElement('option');
+      option1.value = cat;
+      option1.textContent = cat;
+      filter.appendChild(option1);
+
+      const option2 = document.createElement('option');
+      option2.value = cat;
+      option2.textContent = cat;
+      modalSelect.appendChild(option2);
+    });
+  }
+
+  function setupEventListeners() {
+    document.getElementById('openCreateBtn').onclick = () => {
+      document.getElementById('pbModal').style.display = 'flex';
+      document.getElementById('topicTitle').focus();
+    };
+
+    document.getElementById('closeModal').onclick = closeModal;
+    document.getElementById('cancelBtn').onclick = closeModal;
+
+    document.getElementById('scxDemoBtn').onclick = () => {
+      document.getElementById('scxModal').style.display = 'flex';
+    };
+
+    document.getElementById('closeScxModal').onclick = () => {
+      document.getElementById('scxModal').style.display = 'none';
+    };
+
+    document.getElementById('toggleScxBtn').onclick = toggleScxDecompression;
+
+    document.getElementById('askBrainBtn').onclick = askBrain;
+    document.getElementById('brainInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        askBrain();
+      }
+    });
+
+    window.onclick = (e) => {
+      if (e.target === document.getElementById('pbModal')) {
+        closeModal();
+      }
+      if (e.target === document.getElementById('scxModal')) {
+        document.getElementById('scxModal').style.display = 'none';
+      }
+    };
+
+    document.getElementById('createTopicForm').onsubmit = handleFormSubmit;
+
+    document.getElementById('refreshBtn').onclick = () => {
+      showStatus('Refreshing forum...', 'success');
+      loadPosts();
+    };
+
+    document.getElementById('labelFilter').onchange = (e) => {
+      loadPosts(e.target.value);
+    };
+
+    document.getElementById('searchBar').addEventListener('input', handleSearch);
+  }
+
+  function askBrain() {
+    const input = document.getElementById('brainInput');
+    const question = input.value.trim();
+
+    if (!question) {
+      showStatus('Please enter a question for ASX Brain', 'error');
+      return;
+    }
+
+    ASXBrain.think(question).then((response) => {
+      document.getElementById('brainOutput').innerHTML = response.content;
+    });
+
+    input.value = '';
+  }
+
+  function closeModal() {
+    document.getElementById('pbModal').style.display = 'none';
+    document.getElementById('createTopicForm').reset();
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const title = formData.get('title');
+    const author = formData.get('author') || 'Anonymous';
+    const body = formData.get('body');
+    const category = formData.get('labels');
+    const compressWithSCX = document.getElementById('scxCompress').checked;
+
+    console.log('Form submitted:', { title, author, body, category, compressWithSCX });
+
+    showStatus(`Topic created successfully! ${compressWithSCX ? '(SCX Compressed)' : ''}`, 'success');
+
+    closeModal();
+    setTimeout(() => {
+      loadPosts();
+    }, 1000);
+
+    return false;
+  }
+
+  function loadPosts(label = null) {
+    const filteredPosts = label
+      ? DEMO_POSTS.filter((post) => post.category.includes(label))
+      : DEMO_POSTS;
+
+    renderPosts(filteredPosts);
+  }
+
+  function renderPosts(posts) {
+    const container = document.getElementById('forumSections');
+
+    if (posts.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>No topics found</h3>
+          <p>Try changing your filter or create a new topic.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = '';
+
+    const grouped = {};
+    CATEGORIES.forEach((c) => { grouped[c] = []; });
+    grouped.Uncategorized = [];
+
+    posts.forEach((post) => {
+      const cats = post.category || [];
+      const cat = cats[0] || 'Uncategorized';
+      grouped[cat].push(post);
+    });
+
+    CATEGORIES.concat('Uncategorized').forEach((cat) => {
+      if (!grouped[cat].length) return;
+
+      const section = document.createElement('asx-block');
+      section.id = `section-${cat.replace(/\s+/g, '-').toLowerCase()}`;
+      section.className = 'forum-section';
+      section.innerHTML = `
+        <div class="section-header" onclick="this.parentElement.classList.toggle('collapsed')">
+          <span>${CATEGORY_EMOJIS[cat] || ''} ${cat} (${grouped[cat].length})</span>
+          <span>▼</span>
+        </div>
+        <table class="topic-table">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Author</th>
+              <th>Replies</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      `;
+
+      const tbody = section.querySelector('tbody');
+
+      grouped[cat].forEach((post) => {
+        const title = post.title || 'Untitled';
+        const url = `#${post.id}`;
+
+        let contentDisplay = '';
+        if (post.scxCompressed) {
+          contentDisplay = `
+            <div class="scx-compressed">
+              <strong>SCX Compressed Content</strong><br>
+              ${post.content}
+            </div>
+            <button class="scx-toggle" onclick="decompressSCX('${post.id}')">Decompress</button>
+            <div id="decompressed-${post.id}" class="scx-decompressed hidden"></div>
+          `;
+        } else {
+          let snippetText = post.content || '';
+          if (snippetText.length > 150) {
+            snippetText = `${snippetText.slice(0, 150)}...`;
+          }
+          contentDisplay = `<div class="topic-snippet">${snippetText}</div>`;
+        }
+
+        const published = post.published || '';
+        const author = post.author || 'Unknown';
+        const commentCount = post.commentCount || '0';
+
+        const shareEmail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+        const shareTwitter = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+        const shareLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <a class="topic-title" href="${url}">${title}</a>
+            ${post.scxCompressed ? '<span class="badge" style="background:#00ff99;color:#000;padding:2px 6px;border-radius:4px;font-size:10px;">SCX</span>' : ''}
+            ${contentDisplay}
+          </td>
+          <td>
+            <div>${author}</div>
+            <div class="topic-meta">${formatDate(published)}</div>
+          </td>
+          <td class="stats">${commentCount}</td>
+          <td class="actions">
+            <a class="action-btn" href="${shareEmail}" title="Email">
+              <i data-feather="mail"></i>
+            </a>
+            <a class="action-btn" href="${shareTwitter}" target="_blank" title="Twitter/X">
+              <i data-feather="twitter"></i>
+            </a>
+            <a class="action-btn" href="${shareLinkedIn}" target="_blank" title="LinkedIn">
+              <i data-feather="linkedin"></i>
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      container.appendChild(section);
+    });
+
+    feather.replace();
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  function decompressSCX(postId) {
+    const decompressedEl = document.getElementById(`decompressed-${postId}`);
+    const post = DEMO_POSTS.find((p) => p.id === postId);
+
+    if (!post || !post.scxCompressed) return;
+
+    const decompressedContent = `
+      <h4>Decompressed ASX Content</h4>
+      <p>This content was compressed using SCX tokens and has been decompressed for viewing.</p>
+      <div class="bg-darker pad-md rounded">
+        <strong>Original SCX:</strong> ${post.content}<br><br>
+        <strong>Decompressed Meaning:</strong> This represents compressed ASX guide content that would normally be much larger in size.
+      </div>
+      <p class="text-muted pad-md">SCX compression achieves extreme ratios by replacing common patterns with tokens.</p>
+    `;
+
+    decompressedEl.innerHTML = decompressedContent;
+    decompressedEl.classList.toggle('hidden');
+  }
+
+  function toggleScxDecompression() {
+    const decompressedEl = document.getElementById('decompressedData');
+    const contentEl = document.getElementById('decompressedContent');
+
+    if (decompressedEl.classList.contains('hidden')) {
+      contentEl.textContent = `ASX Runtime Structure:
+{
+  "$schema": "asx-shell-v1",
+  "$state": { ... },
+  "$effects": [ ... ],
+  "$components": { ... }
+}
+
+Atomic Components Example:
+<asx-block id="my-component">
+  <div class="flex row gap-md">
+    <button scx="(?) condition (∴) action">Click</button>
+  </div>
+</asx-block>
+
+SCX Compression Process:
+Original: 20GB JSON data
+Tokenized: SCX pattern matching
+Compressed: 20KB SCX tokens
+Ratio: 1,000,000:1`;
+      decompressedEl.classList.remove('hidden');
+    } else {
+      decompressedEl.classList.add('hidden');
+    }
+  }
+
+  function handleSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+
+    if (query === '') {
+      document.querySelectorAll('.forum-section').forEach((section) => {
+        section.style.display = '';
+        section.querySelectorAll('tr').forEach((row) => {
+          row.style.display = '';
+        });
+      });
+      return;
+    }
+
+    document.querySelectorAll('.forum-section').forEach((section) => {
+      let hasVisibleRows = false;
+
+      section.querySelectorAll('tbody tr').forEach((row) => {
+        const title = row.querySelector('.topic-title')?.textContent.toLowerCase() || '';
+        const author = row.cells[1]?.textContent.toLowerCase() || '';
+        const content = row.textContent.toLowerCase() || '';
+
+        const isMatch = title.includes(query) || author.includes(query) || content.includes(query);
+        row.style.display = isMatch ? '' : 'none';
+
+        if (isMatch) hasVisibleRows = true;
+      });
+
+      section.style.display = hasVisibleRows ? '' : 'none';
+    });
+  }
+
+  function showStatus(message, type) {
+    const statusEl = document.getElementById('statusMessage');
+    statusEl.textContent = message;
+    statusEl.className = `status-message status-${type}`;
+    statusEl.style.display = 'block';
+
+    setTimeout(() => {
+      statusEl.style.display = 'none';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
