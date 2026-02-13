@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>🌿 Pocket Book v.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+<style>
+  :root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2a2a2a;
+    --border-color: #404040;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --accent-blue: #60a5fa;
+    --accent-purple: #a78bfa;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.5;
+    padding: 10px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-radius: 8px;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .user-panel {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+
+  .btn, .pb-btn, select {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+
+  .btn:hover, .pb-btn:hover, select:hover {
+    background: var(--border-color);
+  }
+
+  .forum-section {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+  }
+
+  .section-header:hover {
+    background: var(--border-color);
+  }
+
+  .topic-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .topic-table th, .topic-table td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .topic-table th {
+    background: var(--bg-tertiary);
+    font-weight: bold;
+  }
+
+  .topic-title {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .topic-title:hover {
+    text-decoration: underline;
+  }
+
+  .topic-meta {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .topic-snippet {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.4;
+    margin-top: 6px;
+    max-width: 350px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .stats {
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  .actions {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .action-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  .collapsed .topic-table {
+    display: none;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-content {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+
+  .close-btn:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .field {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .field input, .field textarea, .field select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-family: inherit;
+  }
+
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none;
+    border-color: var(--accent-green);
+  }
+
+  .search-bar {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 16px;
+  }
+
+  .search-bar:focus {
+    outline: none;
+    border-color: var(--accent-green);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+
+  .status-message {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: none;
+  }
+
+  .status-success {
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  .status-error {
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+  }
+
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .user-panel {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .topic-table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    .actions {
+      justify-content: flex-start;
+    }
+
+    .topic-snippet {
+      max-width: 200px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .topic-table th:nth-child(2),
+    .topic-table td:nth-child(2) {
+      display: none;
+    }
+
+    .actions {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="logo">
+      <span>🌿</span>
+      <span>Pocket Book v.1</span>
+    </div>
+    <div class="user-panel">
+      <select id="labelFilter"></select>
+      <button class="pb-btn" id="openCreateBtn">✚ Create</button>
+      <button class="pb-btn" id="refreshBtn">⟳ Refresh</button>
+    </div>
+  </header>
+
+  <div class="status-message" id="statusMessage"></div>
+
+  <input type="text" class="search-bar" placeholder="Search topics, authors, or content..." id="searchBar" />
+
+  <div id="forumSections">
+    <div class="empty-state" id="loadingState">
+      Loading forum topics...
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="pbModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <strong>Create New Topic</strong>
+      <button class="close-btn" id="closeModal">✕</button>
+    </div>
+    <form id="createTopicForm">
+      <div class="field">
+        <input name="title" id="topicTitle" placeholder="Title (required)" required/>
+      </div>
+      <div class="field">
+        <input name="author" id="topicAuthor" placeholder="Author name (optional)"/>
+      </div>
+      <div class="field">
+        <textarea name="body" id="topicBody" placeholder="Write your content here..." rows="6" required></textarea>
+      </div>
+      <div class="field">
+        <select name="labels" id="topicLabel" required>
+          <option value="">Select a category</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
+        <button type="submit" class="pb-btn" style="background: var(--accent-green); color: var(--bg-primary);">Post Topic</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = [
+    "General Discussion",
+    "News",
+    "ASX JSON",
+    "ASX ENCRYPTION",
+    "ASX SERVER",
+    "ASX WEBHOST",
+    "ASX GAMES"
+  ];
+
+  const CATEGORY_EMOJIS = {
+    "General Discussion": "⭐",
+    "News": "🔥",
+    "ASX JSON": "🏞️",
+    "ASX ENCRYPTION": "⚡",
+    "ASX SERVER": "🔀",
+    "ASX WEBHOST": "🏠",
+    "ASX GAMES": "🦄"
+  };
+
+  const DEMO_POSTS = [
+    {
+      id: "post-1",
+      title: "Welcome to Pocket Book v.1",
+      author: "Admin",
+      published: "2023-10-15T14:30:00Z",
+      category: ["General Discussion"],
+      content: "Welcome to our new forum! This is the first post in Pocket Book v.1. Feel free to explore and create your own topics.",
+      commentCount: 5
+    },
+    {
+      id: "post-2",
+      title: "ASX JSON Specification Update",
+      author: "Dev Team",
+      published: "2023-10-16T09:15:00Z",
+      category: ["ASX JSON"],
+      content: "We've released an update to the ASX JSON specification with new features for improved data handling and validation.",
+      commentCount: 12
+    },
+    {
+      id: "post-3",
+      title: "New Encryption Methods",
+      author: "Security Expert",
+      published: "2023-10-17T16:45:00Z",
+      category: ["ASX ENCRYPTION"],
+      content: "Exploring new encryption methods that can be integrated with ASX for enhanced security without sacrificing performance.",
+      commentCount: 8
+    },
+    {
+      id: "post-4",
+      title: "Server Performance Tips",
+      author: "SysAdmin",
+      published: "2023-10-18T11:20:00Z",
+      category: ["ASX SERVER"],
+      content: "Here are some tips to optimize your ASX server performance under heavy load conditions.",
+      commentCount: 3
+    },
+    {
+      id: "post-5",
+      title: "Upcoming Game Integration",
+      author: "Game Dev",
+      published: "2023-10-19T13:10:00Z",
+      category: ["ASX GAMES"],
+      content: "We're working on new game integration features that will allow developers to easily connect their games with ASX services.",
+      commentCount: 15
+    }
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    populateCategoryDropdowns();
+    loadPosts();
+    setupEventListeners();
+    feather.replace();
+  });
+
+  function populateCategoryDropdowns(){
+    const filter = document.getElementById('labelFilter');
+    const modalSelect = document.getElementById('topicLabel');
+
+    filter.innerHTML = `<option value="">All Categories</option>`;
+    modalSelect.innerHTML = `<option value="">Select a category</option>`;
+
+    CATEGORIES.forEach(cat => {
+      const option1 = document.createElement('option');
+      option1.value = cat;
+      option1.textContent = cat;
+      filter.appendChild(option1);
+
+      const option2 = document.createElement('option');
+      option2.value = cat;
+      option2.textContent = cat;
+      modalSelect.appendChild(option2);
+    });
+  }
+
+  function setupEventListeners() {
+    document.getElementById('openCreateBtn').onclick = () => {
+      document.getElementById('pbModal').style.display = 'flex';
+      document.getElementById('topicTitle').focus();
+    };
+
+    document.getElementById('closeModal').onclick = closeModal;
+    document.getElementById('cancelBtn').onclick = closeModal;
+
+    window.onclick = (e) => {
+      if (e.target === document.getElementById('pbModal')) {
+        closeModal();
+      }
+    };
+
+    document.getElementById('createTopicForm').onsubmit = handleFormSubmit;
+
+    document.getElementById('refreshBtn').onclick = () => {
+      showStatus('Refreshing forum...', 'success');
+      loadPosts();
+    };
+
+    document.getElementById('labelFilter').onchange = (e) => {
+      loadPosts(e.target.value);
+    };
+
+    document.getElementById('searchBar').addEventListener('input', handleSearch);
+  }
+
+  function closeModal() {
+    document.getElementById('pbModal').style.display = 'none';
+    document.getElementById('createTopicForm').reset();
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const title = formData.get('title');
+    const author = formData.get('author') || 'Anonymous';
+    const body = formData.get('body');
+    const category = formData.get('labels');
+
+    console.log('Form submitted:', { title, author, body, category });
+
+    showStatus('Topic created successfully!', 'success');
+
+    closeModal();
+    setTimeout(() => {
+      loadPosts();
+    }, 1000);
+
+    return false;
+  }
+
+  function loadPosts(label = null) {
+    const filteredPosts = label
+      ? DEMO_POSTS.filter(post => post.category.includes(label))
+      : DEMO_POSTS;
+
+    renderPosts(filteredPosts);
+  }
+
+  function renderPosts(posts) {
+    const container = document.getElementById('forumSections');
+
+    if (posts.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>No topics found</h3>
+          <p>Try changing your filter or create a new topic.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = '';
+
+    const grouped = {};
+    CATEGORIES.forEach(c => grouped[c] = []);
+    grouped.Uncategorized = [];
+
+    posts.forEach(post => {
+      const cats = post.category || [];
+      const cat = cats[0] || 'Uncategorized';
+      grouped[cat].push(post);
+    });
+
+    CATEGORIES.concat('Uncategorized').forEach(cat => {
+      if (!grouped[cat].length) return;
+
+      const section = document.createElement('div');
+      section.className = 'forum-section';
+      section.innerHTML = `
+        <div class="section-header" onclick="this.parentElement.classList.toggle('collapsed')">
+          <span>${CATEGORY_EMOJIS[cat] || ''} ${cat} (${grouped[cat].length})</span>
+          <span>▼</span>
+        </div>
+        <table class="topic-table">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Author</th>
+              <th>Replies</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      `;
+
+      const tbody = section.querySelector('tbody');
+
+      grouped[cat].forEach(post => {
+        const title = post.title || 'Untitled';
+        const url = `#${post.id}`;
+
+        let snippetText = post.content || '';
+        if (snippetText.length > 150) {
+          snippetText = snippetText.slice(0, 150) + '...';
+        }
+
+        const published = post.published || '';
+        const author = post.author || 'Unknown';
+        const commentCount = post.commentCount || '0';
+
+        const shareEmail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+        const shareTwitter = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+        const shareFacebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        const shareLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <a class="topic-title" href="${url}">${title}</a>
+            <div class="topic-snippet">${snippetText}</div>
+          </td>
+          <td>
+            <div>${author}</div>
+            <div class="topic-meta">${formatDate(published)}</div>
+          </td>
+          <td class="stats">${commentCount}</td>
+          <td class="actions">
+            <a class="action-btn" href="${shareEmail}" title="Email">
+              <i data-feather="mail"></i>
+            </a>
+            <a class="action-btn" href="${shareTwitter}" target="_blank" title="Twitter/X">
+              <i data-feather="twitter"></i>
+            </a>
+            <a class="action-btn" href="${shareFacebook}" target="_blank" title="Facebook">
+              <i data-feather="facebook"></i>
+            </a>
+            <a class="action-btn" href="${shareLinkedIn}" target="_blank" title="LinkedIn">
+              <i data-feather="linkedin"></i>
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      container.appendChild(section);
+    });
+
+    feather.replace();
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+  }
+
+  function handleSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+
+    if (query === '') {
+      document.querySelectorAll('.forum-section').forEach(section => {
+        section.style.display = '';
+        section.querySelectorAll('tr').forEach(row => {
+          row.style.display = '';
+        });
+      });
+      return;
+    }
+
+    document.querySelectorAll('.forum-section').forEach(section => {
+      let hasVisibleRows = false;
+
+      section.querySelectorAll('tbody tr').forEach(row => {
+        const title = row.querySelector('.topic-title')?.textContent.toLowerCase() || '';
+        const author = row.cells[1]?.textContent.toLowerCase() || '';
+        const snippet = row.querySelector('.topic-snippet')?.textContent.toLowerCase() || '';
+
+        const isMatch = title.includes(query) || author.includes(query) || snippet.includes(query);
+        row.style.display = isMatch ? '' : 'none';
+
+        if (isMatch) hasVisibleRows = true;
+      });
+
+      section.style.display = hasVisibleRows ? '' : 'none';
+    });
+  }
+
+  function showStatus(message, type) {
+    const statusEl = document.getElementById('statusMessage');
+    statusEl.textContent = message;
+    statusEl.className = `status-message status-${type}`;
+    statusEl.style.display = 'block';
+
+    setTimeout(() => {
+      statusEl.style.display = 'none';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
