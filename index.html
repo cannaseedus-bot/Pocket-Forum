@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>ASX PRIME OS — 3D Tensor Intelligence</title>
+<title>ASX PRIME OS — 4D Text-Binary Tensor Intelligence</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
@@ -20,6 +20,8 @@
   .gap-lg { gap: 20px; }
   .w-full { width: 100%; }
   .w-auto { width: auto; }
+  .w-1\/2 { width: 50%; }
+  .flex-1 { flex: 1; }
 
   .text-xs { font-size: 0.75rem; }
   .text-sm { font-size: 0.875rem; }
@@ -42,17 +44,22 @@
   .mb-2 { margin-bottom: 8px; }
   .mb-3 { margin-bottom: 12px; }
   .mb-4 { margin-bottom: 16px; }
+  .ml-2 { margin-left: 8px; }
 
   .bg-panel { background: #11161c; border-radius: 8px; }
   .bg-dark { background: #0a0a0a; }
   .bg-darker { background: #1a1a1a; }
   .bg-agent { background: #1a2a1a; }
   .bg-terminal { background: #001100; }
+  .bg-binary { background: #0a1a2a; }
+  .bg-text { background: #2a1a0a; }
 
   .border { border: 1px solid #404040; }
   .border-glow { border: 2px solid #00ff99; }
   .border-agent { border-left: 4px solid #00ff99; }
   .border-terminal { border: 1px solid #00ff99; }
+  .border-binary { border: 1px solid #00ffff; }
+  .border-text { border: 1px solid #ff9900; }
   .border-b { border-bottom: 1px solid #404040; }
 
   .rounded { border-radius: 8px; }
@@ -63,6 +70,8 @@
   .text-aqua { color: #00ffff; }
   .text-muted { color: #808080; }
   .text-white { color: #e0e0e0; }
+  .text-binary { color: #00ffff; }
+  .text-weight { color: #ff9900; }
 
   .font-bold { font-weight: bold; }
   .shadow-glow { box-shadow: 0 0 15px rgba(0, 255, 153, 0.25); }
@@ -70,15 +79,16 @@
   .cursor-default { cursor: default; }
 
   .hidden { display: none; }
+  .view.active { display: block; }
   .block { display: block; }
   .inline-block { display: inline-block; }
   .relative { position: relative; }
   .absolute { position: absolute; }
 
   .grid { display: grid; }
-  .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-  /* === SCX SYMBOLIC STYLES === */
   .scx-bytecode {
     background: #002200;
     border: 1px solid #00cc66;
@@ -88,9 +98,6 @@
     font-size: 11px;
     margin: 5px 0;
   }
-
-  .scx-opcode { color: #00ffff; font-weight: bold; }
-  .scx-data { color: #00ff99; }
 
   .flash-ram-panel {
     background: #001a1a;
@@ -105,6 +112,46 @@
     font-size: 12px;
     color: #00ff99;
     margin: 2px 0;
+  }
+
+  /* === 4D TENSOR STYLES === */
+  .tensor-dim-4d {
+    background: linear-gradient(45deg, #001100, #001a1a, #001100);
+    border: 2px solid #00ffff;
+  }
+
+  .binary-badge {
+    background: #00ffff;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .text-badge {
+    background: #ff9900;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .weight-indicator {
+    display: inline-block;
+    width: 60px;
+    height: 6px;
+    background: #2a2a2a;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-left: 8px;
+  }
+
+  .weight-fill {
+    height: 100%;
+    background: #00ff99;
+    transition: width 0.3s;
   }
 
   /* === 3D TENSOR CONTAINER === */
@@ -162,7 +209,6 @@
     background: #404040;
   }
 
-  /* Header */
   .os-header {
     grid-area: header;
     background: #1a1a1a;
@@ -186,7 +232,6 @@
 
   @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.3; } }
 
-  /* Sidebar */
   .os-sidebar {
     grid-area: sidebar;
     background: #1a1a1a;
@@ -214,7 +259,6 @@
     background: rgba(0, 255, 153, 0.15);
   }
 
-  /* Main */
   .os-main {
     grid-area: main;
     background: #0a0a0a;
@@ -222,7 +266,6 @@
     overflow-y: auto;
   }
 
-  /* Inspector */
   .os-inspector {
     grid-area: inspector;
     background: #1a1a1a;
@@ -231,7 +274,6 @@
     overflow-y: auto;
   }
 
-  /* Terminal */
   .os-terminal {
     grid-area: terminal;
     background: #0a0a0a;
@@ -270,7 +312,6 @@
     font-family: monospace;
   }
 
-  /* Components */
   .btn {
     background: #2a2a2a;
     color: #e0e0e0;
@@ -286,6 +327,8 @@
   .btn:hover { background: #404040; }
   .btn-primary { background: #00ff99; color: #000; }
   .btn-agent { background: #00ffff; color: #000; }
+  .btn-binary { background: #0066ff; color: #fff; }
+  .btn-text { background: #ff9900; color: #000; }
 
   .card {
     background: #1a1a1a;
@@ -311,15 +354,6 @@
     border-radius: 4px;
     color: #e0e0e0;
     font-family: inherit;
-  }
-
-  .brain-output {
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 4px;
-    padding: 12px;
-    min-height: 80px;
-    font-size: 13px;
   }
 
   .agent-badge {
@@ -398,6 +432,14 @@
     transition: width 0.3s;
   }
 
+  .metric {
+    background: #0a1a0a;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
+  }
+
   .modal {
     display: none;
     position: fixed;
@@ -432,85 +474,89 @@
     font-family: inherit;
   }
 
-  /* Math Corpus Display */
-  .math-corpus {
-    font-family: monospace;
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 4px;
-    padding: 10px;
-    margin: 5px 0;
-  }
-
-  .math-symbol {
-    color: #00ffff;
-    font-weight: bold;
-  }
-
-  .math-relation {
-    color: #ff9900;
-  }
-
-  .tensor-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin: 8px 0;
-  }
-
-  .metric {
-    background: #0a1a0a;
+  .mode-toggle {
+    display: flex;
+    gap: 4px;
+    background: #2a2a2a;
+    padding: 4px;
+    border-radius: 8px;
     border: 1px solid #404040;
+  }
+
+  .mode-btn {
+    padding: 4px 12px;
     border-radius: 4px;
-    padding: 8px;
-    text-align: center;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: #00ff99;
+    color: #000;
+  }
+
+  .binary-row {
+    font-family: monospace;
+    font-size: 10px;
+    color: #00ffff;
+    letter-spacing: 1px;
+  }
+
+  .hex-row {
+    font-family: monospace;
+    font-size: 10px;
+    color: #ff9900;
   }
 </style>
 </head>
 <body>
-<!-- ASX PRIME OS MAIN CONTAINER -->
 <div class="os-container">
-
-  <!-- HEADER -->
   <asx-block id="os-header" class="os-header">
     <div class="flex items-center gap-md">
       <span class="led"></span>
       <span class="text-glow text-lg font-bold">ASX PRIME OS</span>
-      <span class="text-muted text-sm">3D Tensor Intelligence</span>
+      <span class="text-muted text-sm">4D Text-Binary Tensor</span>
     </div>
     <div class="flex items-center gap-md">
-      <div class="text-xs text-muted" id="flashRamStats">Tensor Field: 64³×32</div>
+      <div class="mode-toggle">
+        <div class="mode-btn active" data-mode="hybrid">🌐 Hybrid</div>
+        <div class="mode-btn" data-mode="text">📝 Text</div>
+        <div class="mode-btn" data-mode="binary">⚡ Binary</div>
+      </div>
+      <div class="text-xs text-muted" id="tensorStats">4D [16×16×16×16]</div>
       <button class="btn btn-primary" id="createTopicBtn">✚ New Topic</button>
-      <button class="btn" id="tensorBtn">🧊 3D Tensor</button>
+      <button class="btn" id="tensorBtn">🧊 4D Tensor</button>
     </div>
   </asx-block>
 
-  <!-- SIDEBAR - NAVIGATION -->
   <asx-block id="os-sidebar" class="os-sidebar">
-    <div class="text-glow text-md pad-md">🧠 MATHEMATICAL CORPUS</div>
+    <div class="text-glow text-md pad-md">🧠 4D TENSOR SYSTEMS</div>
     <div class="nav-item active" data-view="forum">📚 Forum</div>
-    <div class="nav-item" data-view="tensor">🧊 3D Tensor View</div>
-    <div class="nav-item" data-view="conversation">💬 Conversation</div>
-    <div class="nav-item" data-view="math">📐 Math Corpus</div>
-    <div class="nav-item" data-view="inference">⚡ Real-Time Inference</div>
+    <div class="nav-item" data-view="tensor">🧊 4D Visualization</div>
+    <div class="nav-item" data-view="binary">⚡ Binary Layer</div>
+    <div class="nav-item" data-view="text">📝 Text Layer</div>
+    <div class="nav-item" data-view="hybrid">🌐 Hybrid Weights</div>
+    <div class="nav-item" data-view="inference">⚡ Weighted Inference</div>
 
-    <div class="text-glow text-md pad-md mt-4">⚡ SPATIAL REASONING</div>
-    <div class="nav-item" data-view="embeddings">🌀 Embeddings</div>
-    <div class="nav-item" data-view="vectors">📊 Vector Fields</div>
-    <div class="nav-item" data-view="attention">👁️ Attention Maps</div>
+    <div class="text-glow text-md pad-md mt-4">📊 TENSOR METRICS</div>
+    <div class="nav-item" data-view="compression">📦 Compression</div>
+    <div class="nav-item" data-view="entropy">🔀 Entropy Map</div>
+    <div class="nav-item" data-view="weights">⚖️ Weight Fields</div>
 
     <div class="flash-ram-panel pad-sm mt-4">
-      <div class="text-aqua text-sm">TENSOR FIELD ACTIVE</div>
+      <div class="flex justify-between">
+        <span class="text-aqua text-sm">4D ACTIVE</span>
+        <span class="binary-badge">16⁴</span>
+      </div>
       <div class="scx-bytecode text-xs mt-2">
-        dim: [64,64,64,32]<br>
-        Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ)
+        T[w,x,y,z] = α·text + β·binary<br>
+        dim: 16×16×16×16 = 65,536 cells
       </div>
     </div>
   </asx-block>
 
-  <!-- MAIN CONTENT AREA -->
   <asx-block id="os-main" class="os-main">
-    <!-- FORUM VIEW -->
     <div id="forumView" class="view active">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-glow">📚 ASX Forum</h2>
@@ -519,313 +565,109 @@
         </select>
       </div>
 
-      <input type="text" class="brain-input w-full mb-4" id="searchForum"
-             placeholder="Search topics...">
+      <input type="text" class="brain-input w-full mb-4" id="searchForum" placeholder="Search topics...">
 
       <div id="forumTopics" class="col gap-sm">
-        <!-- Dynamic forum topics will load here -->
         <div class="text-muted text-center pad-lg">Loading forum topics...</div>
       </div>
     </div>
 
-    <!-- TENSOR VIEW -->
     <div id="tensorView" class="view hidden">
-      <h2 class="text-glow mb-4">🧊 3D Tensor Field Visualization</h2>
-
+      <h2 class="text-glow mb-4">🧊 4D Tensor Field [16×16×16×16]</h2>
       <div class="tensor-container">
-        <div class="tensor-overlay" id="tensorOverlay">
-          Tensor Field: 64³ × 32 channels
-        </div>
+        <div class="tensor-overlay" id="tensorOverlay">4D Projection: 3D slice at t=8</div>
         <canvas id="tensorCanvas"></canvas>
       </div>
 
       <div class="flex gap-md mt-3">
-        <div class="metric">
-          <div class="stat-value" id="tensorDensity">0.78</div>
-          <div class="stat-label">Embedding Density</div>
-        </div>
-        <div class="metric">
-          <div class="stat-value" id="tensorEntropy">2.34</div>
-          <div class="stat-label">Spatial Entropy</div>
-        </div>
-        <div class="metric">
-          <div class="stat-value" id="tensorClusters">8</div>
-          <div class="stat-label">Topic Clusters</div>
-        </div>
+        <div class="metric"><div class="stat-value" id="tensorDensity">0.78</div><div class="stat-label">Embedding Density</div></div>
+        <div class="metric"><div class="stat-value" id="tensorEntropy">2.34</div><div class="stat-label">Spatial Entropy</div></div>
+        <div class="metric"><div class="stat-value" id="tensorClusters">12</div><div class="stat-label">Weight Clusters</div></div>
       </div>
 
-      <div class="math-corpus mt-3">
-        <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)<br>
-        <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t
+      <div class="flex gap-md mt-2">
+        <div class="btn btn-binary" onclick="ASXPrimeOS.setTensorMode('binary')">View Binary Layer</div>
+        <div class="btn btn-text" onclick="ASXPrimeOS.setTensorMode('text')">View Text Layer</div>
+        <div class="btn btn-primary" onclick="ASXPrimeOS.setTensorMode('hybrid')">View Hybrid</div>
       </div>
     </div>
 
-    <!-- CONVERSATION VIEW -->
-    <div id="conversationView" class="view hidden">
-      <div class="brain-panel">
-        <h3 class="text-glow">🧠 Real-Time Tensor Inference</h3>
-        <p class="text-muted text-sm">Language responses weighted by 3D spatial embeddings</p>
-
-        <div class="flex gap-md mt-3">
-          <input type="text" class="brain-input" id="conversationInput"
-                 placeholder="Ask about topics, tensor fields, or mathematical corpus..." />
-          <button class="btn btn-primary" id="sendConversationBtn">Send</button>
-        </div>
+    <div id="binaryView" class="view hidden">
+      <h2 class="text-binary mb-4">⚡ Binary Tensor Layer</h2>
+      <div class="card bg-binary">
+        <div class="flex justify-between"><span class="text-binary">Binary Encoding [16×16×16×16]</span><span class="binary-badge">8-bit</span></div>
+        <div class="binary-row mt-3" id="binaryDisplay">10110010 11001101 10101011 00110011<br>01101101 10110110 11001100 10101010</div>
+        <div class="progress-bar mt-3"><div class="progress-fill" id="binaryDensity" style="width:73%"></div></div>
       </div>
-
-      <div id="conversationThread" class="col gap-sm mt-3">
-        <!-- Conversation messages will appear here -->
-        <div class="message agent">
-          <div class="flex items-center gap-sm">
-            <strong>ASX Tensor Brain</strong>
-            <span class="agent-badge">3D Inference</span>
-          </div>
-          <div class="text-sm mt-2">🚀 3D tensor field initialized with [64,64,64,32] dimensions. Each forum topic creates a spatial embedding weighted by comment datasets. Ask me anything!</div>
-        </div>
-      </div>
+      <div class="card mt-3"><h4 class="text-binary">Binary Weights by Topic</h4><div id="binaryTopics" class="col gap-sm mt-2"></div></div>
     </div>
 
-    <!-- MATH CORPUS VIEW -->
-    <div id="mathView" class="view hidden">
-      <h2 class="text-glow mb-4">📐 Mathematical Corpus v1.0</h2>
-
-      <div class="card">
-        <h3 class="text-aqua">Core Sets</h3>
-        <div class="math-corpus">
-          <span class="math-symbol">(S)</span> State space<br>
-          <span class="math-symbol">(T)</span> Transition operators<br>
-          <span class="math-symbol">(C)</span> Constraints (invariants)<br>
-          <span class="math-symbol">(P)</span> Proof objects<br>
-          <span class="math-symbol">(F)</span> Fields (vector influences)<br>
-          <span class="math-symbol">(M)</span> Micronaut operators<br>
-          <span class="math-symbol">(H)</span> Histories
-        </div>
+    <div id="textView" class="view hidden">
+      <h2 class="text-weight mb-4">📝 Text Tensor Layer</h2>
+      <div class="card bg-text">
+        <div class="flex justify-between"><span class="text-weight">UTF-8 Encoding [16×16×16×16]</span><span class="text-badge">16-bit</span></div>
+        <div class="hex-row mt-3" id="textDisplay">0x48 0x65 0x6C 0x6C 0x6F 0x20 0x41 0x53 0x58<br>0x54 0x65 0x6E 0x73 0x6F 0x72 0x20 0x34 0x44</div>
+        <div class="progress-bar mt-3"><div class="progress-fill" id="textDensity" style="width:62%"></div></div>
       </div>
-
-      <div class="card">
-        <h3 class="text-aqua">Fundamental Relations</h3>
-        <div class="math-corpus">
-          <span class="math-symbol">Sᵢ</span> <span class="math-relation">→</span> <span class="math-symbol">Sⱼ</span> (lawful transition)<br>
-          <span class="math-relation">C</span>(<span class="math-symbol">S</span>) state satisfies invariant<br>
-          <span class="math-relation">P</span>(<span class="math-symbol">Sᵢ</span> → <span class="math-symbol">Sⱼ</span>) proof of transition<br>
-          <span class="math-relation">F</span>(<span class="math-symbol">S</span>) field vector at state
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 class="text-aqua">Core Equations</h3>
-        <div class="math-corpus">
-          <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)<br>
-          <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t<br>
-          <span class="math-symbol">Pₜ</span> = HASH(<span class="math-symbol">Sₜ</span>, <span class="math-symbol">Sₜ₊₁</span>, arbitration)<br>
-          <span class="math-symbol">E</span>(t+1) ≤ <span class="math-symbol">E</span>(t) + ε
-        </div>
-      </div>
+      <div class="card mt-3"><h4 class="text-weight">Text Embeddings by Topic</h4><div id="textTopics" class="col gap-sm mt-2"></div></div>
     </div>
 
-    <!-- INFERENCE VIEW -->
+    <div id="hybridView" class="view hidden">
+      <h2 class="text-glow mb-4">🌐 Hybrid Tensor [α·text + β·binary]</h2>
+      <div class="card tensor-dim-4d">
+        <div class="flex justify-between items-center"><span class="text-aqua">Weighted Combination</span><div><span class="binary-badge">α=0.6</span><span class="text-badge ml-2">β=0.4</span></div></div>
+        <div class="flex gap-lg mt-3">
+          <div class="w-1/2"><div class="text-binary text-sm">Binary Component</div><div class="binary-row mt-1">10110010 11001101</div></div>
+          <div class="w-1/2"><div class="text-weight text-sm">Text Component</div><div class="hex-row mt-1">0x48 0x65 0x6C</div></div>
+        </div>
+      </div>
+      <div class="card mt-3"><h4 class="text-glow">Hybrid Topic Weights</h4><div id="hybridTopics" class="col gap-sm mt-2"></div></div>
+    </div>
+
     <div id="inferenceView" class="view hidden">
-      <h2 class="text-glow mb-4">⚡ Real-Time Weighted Inference</h2>
-
-      <div class="tensor-metrics">
-        <div class="metric">
-          <div class="stat-value" id="inferenceWeight">0.00</div>
-          <div class="stat-label">Current Weight</div>
-        </div>
-        <div class="metric">
-          <div class="stat-value" id="inferenceConfidence">0.00</div>
-          <div class="stat-label">Confidence</div>
-        </div>
-        <div class="metric">
-          <div class="stat-value" id="inferenceTopics">0</div>
-          <div class="stat-label">Topics Analyzed</div>
-        </div>
+      <h2 class="text-glow mb-4">⚡ 4D Weighted Inference</h2>
+      <div class="tensor-metrics grid grid-cols-4 gap-sm">
+        <div class="metric"><div class="stat-value" id="inferenceWeight">0.00</div><div class="stat-label">Weight</div></div>
+        <div class="metric"><div class="stat-value" id="inferenceConfidence">0.00</div><div class="stat-label">Confidence</div></div>
+        <div class="metric"><div class="stat-value" id="inferenceBinary">0.00</div><div class="stat-label">Binary</div></div>
+        <div class="metric"><div class="stat-value" id="inferenceText">0.00</div><div class="stat-label">Text</div></div>
       </div>
-
-      <div class="card">
-        <h3 class="text-aqua">Weighted Topic Responses</h3>
-        <div id="weightedResponses" class="col gap-sm">
-          <!-- Dynamic weighted responses -->
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 class="text-aqua">Tensor Field Weights</h3>
-        <div class="progress-bar mt-2">
-          <div class="progress-fill" id="weightField1" style="width:0%"></div>
-        </div>
-        <div class="progress-bar mt-2">
-          <div class="progress-fill" id="weightField2" style="width:0%"></div>
-        </div>
-        <div class="progress-bar mt-2">
-          <div class="progress-fill" id="weightField3" style="width:0%"></div>
-        </div>
-      </div>
+      <div class="card mt-3"><h4 class="text-glow">Weighted Responses</h4><div id="weightedResponses" class="col gap-sm"></div></div>
+      <div class="card mt-3"><h4 class="text-glow">4D Tensor Weights</h4><div id="weightFields" class="col gap-sm"></div></div>
     </div>
 
-    <!-- EMBEDDINGS VIEW -->
-    <div id="embeddingsView" class="view hidden">
-      <h2 class="text-glow mb-4">🌀 Topic Embeddings</h2>
-      <div id="embeddingsGrid" class="grid grid-cols-3 gap-sm"></div>
-    </div>
-
-    <!-- VECTORS VIEW -->
-    <div id="vectorsView" class="view hidden">
-      <h2 class="text-glow mb-4">📊 Vector Fields</h2>
-      <div class="math-corpus">
-        F(S) = [f₁, f₂, ..., fₙ]<br>
-        ∇·F = divergence<br>
-        ∇×F = curl
-      </div>
-    </div>
-
-    <!-- ATTENTION VIEW -->
-    <div id="attentionView" class="view hidden">
-      <h2 class="text-glow mb-4">👁️ Attention Maps</h2>
-      <div class="tensor-container" style="height:200px">
-        <canvas id="attentionCanvas"></canvas>
-      </div>
-    </div>
+    <div id="compressionView" class="view hidden"><h2 class="text-glow mb-4">📦 4D Tensor Compression</h2><div class="card"><div class="flex justify-between"><span>Raw Size:</span><span class="text-glow">2.1 MB</span></div><div class="flex justify-between mt-2"><span>Binary Compressed:</span><span class="text-binary">168 KB (8:1)</span></div><div class="flex justify-between mt-2"><span>Text Compressed:</span><span class="text-weight">420 KB (5:1)</span></div><div class="flex justify-between mt-2"><span>Hybrid Optimized:</span><span class="text-aqua">294 KB (7:1)</span></div></div></div>
+    <div id="entropyView" class="view hidden"><h2 class="text-glow mb-4">🔀 Entropy Map</h2><div class="card"><div class="flex justify-between"><span>Binary Entropy:</span><span class="text-binary">0.89 bits/symbol</span></div><div class="flex justify-between mt-2"><span>Text Entropy:</span><span class="text-weight">4.21 bits/symbol</span></div><div class="flex justify-between mt-2"><span>Hybrid Entropy:</span><span class="text-aqua">2.56 bits/symbol</span></div></div></div>
+    <div id="weightsView" class="view hidden"><h2 class="text-glow mb-4">⚖️ 4D Weight Fields</h2><div id="weightFieldsGrid" class="grid grid-cols-2 gap-sm"></div></div>
   </asx-block>
 
-  <!-- INSPECTOR PANEL -->
   <asx-block id="os-inspector" class="os-inspector">
-    <div class="text-glow text-md mb-3">🔍 TENSOR INSPECTOR</div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Tensor Dims</span>
-        <span class="text-glow" id="tensorDims">64×64×64×32</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Spatial Resolution</span>
-        <span class="text-glow" id="spatialRes">64³</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Channel Count</span>
-        <span class="text-glow" id="channelCount">32</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Embedded Topics</span>
-        <span class="text-glow" id="embeddedTopics">0</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Comment Vectors</span>
-        <span class="text-glow" id="commentVectors">0</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex justify-between">
-        <span class="text-muted">Attention Heads</span>
-        <span class="text-glow" id="attentionHeads">12</span>
-      </div>
-    </div>
-
-    <div class="scx-bytecode mt-3">
-      <strong>Active Tensor Ops:</strong><br>
-      <span id="activeOps">Embedding • Attention • Weighted Sum</span>
-    </div>
+    <div class="text-glow text-md mb-3">🔍 4D TENSOR INSPECTOR</div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Tensor Dims</span><span class="text-glow" id="tensorDims">16×16×16×16</span></div><div class="flex justify-between mt-1"><span class="text-muted">Total Cells</span><span class="text-glow" id="totalCells">65,536</span></div></div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Binary Cells</span><span class="text-binary" id="binaryCells">47,841</span></div><div class="weight-indicator"><div class="weight-fill" id="binaryPercent" style="width:73%"></div></div></div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Text Cells</span><span class="text-weight" id="textCells">40,632</span></div><div class="weight-indicator"><div class="weight-fill" id="textPercent" style="width:62%"></div></div></div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Hybrid Cells</span><span class="text-aqua" id="hybridCells">55,705</span></div><div class="weight-indicator"><div class="weight-fill" id="hybridPercent" style="width:85%"></div></div></div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Active Topics</span><span class="text-glow" id="activeTopics">0</span></div></div>
+    <div class="card"><div class="flex justify-between"><span class="text-muted">Weighted Vectors</span><span class="text-glow" id="weightVectors">0</span></div></div>
+    <div class="scx-bytecode mt-3"><strong>4D Operations:</strong><br><span id="activeOps">Binary • Text • Hybrid • Weighted</span></div>
   </asx-block>
 
-  <!-- TERMINAL -->
   <asx-block id="os-terminal" class="os-terminal">
     <div class="terminal-output" id="terminalOutput">
-      <div class="terminal-line">> ASX PRIME OS Tensor Edition v2.0</div>
-      <div class="terminal-line">> 3D Tensor Field: [64,64,64,32] dimensions</div>
-      <div class="terminal-line">> Mathematical Corpus loaded: (S) (T) (C) (P) (F) (M) (H)</div>
+      <div class="terminal-line">> ASX PRIME OS 4D Tensor Edition</div>
+      <div class="terminal-line">> 4D Tensor Field: [16,16,16,16] = 65,536 cells</div>
+      <div class="terminal-line">> Binary Layer: 8-bit encoding | Text Layer: UTF-8</div>
       <div class="terminal-line">> Type 'help' for available commands</div>
     </div>
-
-    <div class="terminal-input-line">
-      <span class="terminal-prompt">$</span>
-      <input type="text" class="terminal-field" id="terminalInput" placeholder="Enter SCX command...">
-      <button class="btn" id="terminalSendBtn">Run</button>
-    </div>
+    <div class="terminal-input-line"><span class="terminal-prompt">$</span><input type="text" class="terminal-field" id="terminalInput" placeholder="Enter command..."><button class="btn" id="terminalSendBtn">Run</button></div>
   </asx-block>
 </div>
 
-<!-- CREATE TOPIC MODAL -->
-<div class="modal" id="createTopicModal">
-  <div class="modal-content">
-    <div class="flex justify-between items-center border-b pad-md">
-      <strong class="text-glow">Create New Topic</strong>
-      <button class="btn p-0" onclick="Modal.hide('createTopicModal')">✕</button>
-    </div>
-    <form id="topicForm" class="pad-lg">
-      <div class="field">
-        <input name="title" placeholder="Topic Title" required>
-      </div>
-      <div class="field">
-        <input name="author" placeholder="Your Name" value="User">
-      </div>
-      <div class="field">
-        <textarea name="content" placeholder="Topic Content" rows="4" required></textarea>
-      </div>
-      <div class="field">
-        <select name="category" id="topicCategorySelect" required>
-          <option value="">Select Category</option>
-        </select>
-      </div>
-      <div class="flex justify-end gap-md">
-        <button type="button" class="btn" onclick="Modal.hide('createTopicModal')">Cancel</button>
-        <button type="submit" class="btn btn-primary">Create Topic</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- TOPIC VIEW MODAL -->
-<div class="modal" id="topicViewModal">
-  <div class="modal-content">
-    <div class="flex justify-between items-center border-b pad-md">
-      <strong class="text-glow" id="topicViewTitle">Topic</strong>
-      <button class="btn p-0" onclick="Modal.hide('topicViewModal')">✕</button>
-    </div>
-    <div class="pad-lg" id="topicViewContent">
-      <!-- Dynamic content -->
-    </div>
-  </div>
-</div>
-
-<!-- TENSOR MODAL -->
-<div class="modal" id="tensorModal">
-  <div class="modal-content">
-    <div class="flex justify-between items-center border-b pad-md">
-      <strong class="text-aqua">🧊 3D Tensor Field Details</strong>
-      <button class="btn p-0" onclick="Modal.hide('tensorModal')">✕</button>
-    </div>
-    <div class="pad-lg">
-      <div class="math-corpus">
-        <strong>State Evolution:</strong><br>
-        <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)
-      </div>
-      <div class="math-corpus mt-2">
-        <strong>Constraint Law:</strong><br>
-        <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t
-      </div>
-      <div class="math-corpus mt-2">
-        <strong>Trust Compression:</strong><br>
-        <span class="math-symbol">R_archive</span> = MerkleRoot({<span class="math-symbol">R_episode</span>})
-      </div>
-    </div>
-  </div>
-</asx-block>
+<div class="modal" id="createTopicModal"><div class="modal-content"><div class="flex justify-between items-center border-b pad-md"><strong class="text-glow">Create New Topic</strong><button class="btn p-0" onclick="Modal.hide('createTopicModal')">✕</button></div><form id="topicForm" class="pad-lg"><div class="field"><input name="title" placeholder="Topic Title" required></div><div class="field"><input name="author" placeholder="Your Name" value="User"></div><div class="field"><textarea name="content" placeholder="Topic Content" rows="4" required></textarea></div><div class="field"><select name="category" id="topicCategorySelect" required><option value="">Select Category</option></select></div><div class="flex justify-end gap-md"><button type="button" class="btn" onclick="Modal.hide('createTopicModal')">Cancel</button><button type="submit" class="btn btn-primary">Create Topic</button></div></form></div></div>
+<div class="modal" id="topicViewModal"><div class="modal-content"><div class="flex justify-between items-center border-b pad-md"><strong class="text-glow" id="topicViewTitle">Topic</strong><button class="btn p-0" onclick="Modal.hide('topicViewModal')">✕</button></div><div class="pad-lg" id="topicViewContent"></div></div></div>
+<div class="modal" id="tensorModal"><div class="modal-content"><div class="flex justify-between items-center border-b pad-md"><strong class="text-aqua">🧊 4D Tensor Field Details</strong><button class="btn p-0" onclick="Modal.hide('tensorModal')">✕</button></div><div class="pad-lg"><div class="scx-bytecode"><strong>4D Tensor Definition:</strong><br>T[w,x,y,z] = α·T_text[w,x,y,z] + β·T_binary[w,x,y,z]<br>where α + β = 1, α,β ∈ [0,1]</div></div></div></div>
 
 <script>
-// === ASX PRIME OS TENSOR CORE ===
 class ASXPrimeOS {
   static categories = [
     'SCX Symbolic Computing',
@@ -833,28 +675,36 @@ class ASXPrimeOS {
     'Multi-Agent Systems',
     'Neural-Symbolic AI',
     'Mathematical Corpus',
-    'Liquid-OS Integration'
+    'Liquid-OS Integration',
+    '4D Tensor Computing',
+    'Binary Encoding',
+    'Text Embeddings',
+    'Hybrid Weights',
+    'Weighted Inference'
   ];
 
-  static views = ['forum', 'tensor', 'conversation', 'math', 'inference', 'embeddings', 'vectors', 'attention'];
+  static views = ['forum', 'tensor', 'binary', 'text', 'hybrid', 'inference', 'compression', 'entropy', 'weights'];
   static currentView = 'forum';
   static topics = [];
-  static terminalHistory = [];
+  static currentMode = 'hybrid';
 
-  // === 3D TENSOR FIELD ===
-  static tensorField = {
-    dimensions: [64, 64, 64, 32],
-    field: new Float32Array(64 * 64 * 64 * 32),
+  static tensor4D = {
+    dimensions: [16, 16, 16, 16],
+    totalCells: 16 * 16 * 16 * 16,
+    binary: new Uint8Array(16 * 16 * 16 * 16),
+    text: new Uint16Array(16 * 16 * 16 * 16),
+    weights: new Float32Array(16 * 16 * 16 * 16),
     embeddings: new Map(),
-    weights: new Map(),
     scene: null,
     camera: null,
     renderer: null,
     points: null,
 
     init() {
-      for (let i = 0; i < this.field.length; i++) {
-        this.field[i] = Math.random() * 2 - 1;
+      for (let i = 0; i < this.totalCells; i++) {
+        this.binary[i] = Math.floor(Math.random() * 256);
+        this.text[i] = 32 + Math.floor(Math.random() * 96);
+        this.weights[i] = Math.random();
       }
       this.setupThreeJS();
     },
@@ -862,360 +712,220 @@ class ASXPrimeOS {
     setupThreeJS() {
       const canvas = document.getElementById('tensorCanvas');
       if (!canvas) return;
-
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0x0a0a0a);
-
       this.camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-      this.camera.position.set(30, 30, 30);
+      this.camera.position.set(20, 20, 20);
       this.camera.lookAt(0, 0, 0);
-
       this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
       this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-
-      const ambientLight = new THREE.AmbientLight(0x404040);
-      this.scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-      directionalLight.position.set(1, 1, 1);
-      this.scene.add(directionalLight);
-
+      this.scene.add(new THREE.AmbientLight(0x404040));
+      const d = new THREE.DirectionalLight(0xffffff, 0.5);
+      d.position.set(1, 1, 1);
+      this.scene.add(d);
       this.createFieldVisualization();
       this.animate();
     },
 
     createFieldVisualization() {
+      if (this.points) {
+        this.scene.remove(this.points);
+      }
       const geometry = new THREE.BufferGeometry();
       const positions = [];
       const colors = [];
-
+      const w = 8;
       for (let i = 0; i < 2000; i++) {
-        const x = (Math.random() - 0.5) * 40;
-        const y = (Math.random() - 0.5) * 40;
-        const z = (Math.random() - 0.5) * 40;
-
+        const x = (Math.random() - 0.5) * 30;
+        const y = (Math.random() - 0.5) * 30;
+        const z = (Math.random() - 0.5) * 30;
         positions.push(x, y, z);
-
-        const value = this.sampleField(x, y, z);
-        const r = 0.2 + value * 0.8;
-        const g = 0.8 + value * 0.2;
-        const b = 0.2;
-
+        const ix = Math.floor((x + 15) / 30 * 15) % 16;
+        const iy = Math.floor((y + 15) / 30 * 15) % 16;
+        const iz = Math.floor((z + 15) / 30 * 15) % 16;
+        const idx = ((w * 16 + ix) * 16 + iy) * 16 + iz;
+        const binaryVal = this.binary[idx] / 255;
+        const textVal = (this.text[idx] - 32) / 95;
+        const weight = this.weights[idx];
+        let r, g, b;
+        if (ASXPrimeOS.currentMode === 'binary') {
+          r = binaryVal; g = binaryVal * 0.8; b = 1.0;
+        } else if (ASXPrimeOS.currentMode === 'text') {
+          r = 1.0; g = textVal * 0.8; b = textVal;
+        } else {
+          r = textVal; g = binaryVal; b = weight;
+        }
         colors.push(r, g, b);
       }
-
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-      const material = new THREE.PointsMaterial({
-        size: 0.5,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8
-      });
-
-      this.points = new THREE.Points(geometry, material);
+      this.points = new THREE.Points(geometry, new THREE.PointsMaterial({ size: 0.3, vertexColors: true, transparent: true, opacity: 0.9 }));
       this.scene.add(this.points);
-
-      const gridHelper = new THREE.GridHelper(60, 20, 0x00ff99, 0x404040);
-      this.scene.add(gridHelper);
-
-      const axesHelper = new THREE.AxesHelper(30);
-      this.scene.add(axesHelper);
-    },
-
-    sampleField(x, y, z) {
-      const ix = Math.floor((x + 50) / 100 * 64) % 64;
-      const iy = Math.floor((y + 50) / 100 * 64) % 64;
-      const iz = Math.floor((z + 50) / 100 * 64) % 64;
-
-      const idx = ((ix * 64 + iy) * 64 + iz) * 32;
-      return this.field[idx] || 0;
-    },
-
-    embedTopic(topic) {
-      const position = [
-        (Math.random() - 0.5) * 40,
-        (Math.random() - 0.5) * 40,
-        (Math.random() - 0.5) * 40
-      ];
-
-      const embedding = {
-        id: topic.id,
-        title: topic.title,
-        content: topic.content,
-        position,
-        weight: topic.replies?.length || 1,
-        vector: new Array(32).fill(0).map(() => Math.random() * 2 - 1)
-      };
-
-      this.embeddings.set(topic.id, embedding);
-
-      const ix = Math.floor((position[0] + 50) / 100 * 64) % 64;
-      const iy = Math.floor((position[1] + 50) / 100 * 64) % 64;
-      const iz = Math.floor((position[2] + 50) / 100 * 64) % 64;
-
-      for (let c = 0; c < 32; c++) {
-        const idx = ((ix * 64 + iy) * 64 + iz) * 32 + c;
-        this.field[idx] = embedding.vector[c];
-      }
-
-      return embedding;
+      this.scene.add(new THREE.GridHelper(40, 20, 0x00ff99, 0x404040));
+      this.scene.add(new THREE.AxesHelper(20));
     },
 
     animate() {
       requestAnimationFrame(() => this.animate());
-
-      if (this.points) this.points.rotation.y += 0.001;
+      if (this.points) this.points.rotation.y += 0.002;
       if (this.renderer && this.scene && this.camera) this.renderer.render(this.scene, this.camera);
     },
 
-    getWeightedResponse(query) {
-      const queryVector = this.textToVector(query);
-      const weights = [];
-
-      for (const [id, embedding] of this.embeddings) {
-        const similarity = this.cosineSimilarity(queryVector, embedding.vector);
-        weights.push({
-          topicId: id,
-          topic: embedding.title,
-          weight: similarity * embedding.weight,
-          similarity
-        });
-      }
-
-      weights.sort((a, b) => b.weight - a.weight);
-      return weights.slice(0, 5);
+    embedTopic(topic) {
+      const w = Math.floor(Math.random() * 16);
+      const x = Math.floor(Math.random() * 16);
+      const y = Math.floor(Math.random() * 16);
+      const z = Math.floor(Math.random() * 16);
+      const idx = ((w * 16 + x) * 16 + y) * 16 + z;
+      for (let i = 0; i < Math.min(topic.title.length, 8); i++) this.binary[idx + i] = topic.title.charCodeAt(i) % 256;
+      for (let i = 0; i < Math.min(topic.content.length, 16); i++) this.text[idx + i * 16] = topic.content.charCodeAt(i);
+      this.weights[idx] = Math.min(1.0, (topic.replies?.length || 0) / 10);
+      const embedding = { id: topic.id, title: topic.title, position: [w, x, y, z], weight: this.weights[idx], binaryPrefix: this.binary.slice(idx, idx + 8), textPrefix: this.text.slice(idx, idx + 8) };
+      this.embeddings.set(topic.id, embedding);
+      return embedding;
     },
 
-    textToVector(text) {
-      const vector = new Array(32).fill(0);
-      for (let i = 0; i < text.length; i++) {
-        const code = text.charCodeAt(i);
-        vector[i % 32] += code / 255;
+    getWeightedResponse(query, mode = 'hybrid') {
+      const queryBinary = this.textToBinary(query);
+      const results = [];
+      for (const [id, emb] of this.embeddings) {
+        let binarySim = 0;
+        for (let i = 0; i < 8; i++) if (emb.binaryPrefix[i] === queryBinary[i]) binarySim++;
+        binarySim /= 8;
+        const textSim = this.textSimilarity(query, emb.title);
+        let weight = mode === 'binary' ? binarySim : mode === 'text' ? textSim : 0.6 * textSim + 0.4 * binarySim;
+        results.push({ topicId: id, topic: emb.title, weight: weight * emb.weight, binarySim, textSim, confidence: weight });
       }
-
-      const norm = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0));
-      return vector.map(v => v / (norm || 1));
+      return results.sort((a, b) => b.weight - a.weight);
     },
 
-    cosineSimilarity(a, b) {
-      let dot = 0;
-      let normA = 0;
-      let normB = 0;
-
-      for (let i = 0; i < a.length; i++) {
-        dot += a[i] * b[i];
-        normA += a[i] * a[i];
-        normB += b[i] * b[i];
+    textToBinary(text) { const binary = new Array(8).fill(0); for (let i = 0; i < Math.min(text.length, 8); i++) binary[i] = text.charCodeAt(i) % 256; return binary; },
+    textSimilarity(a, b) {
+      const wordsA = new Set(a.toLowerCase().split(/\s+/));
+      const wordsB = new Set(b.toLowerCase().split(/\s+/));
+      const intersection = new Set([...wordsA].filter(x => wordsB.has(x)));
+      return intersection.size / Math.max(wordsA.size, wordsB.size);
+    },
+    getStats() {
+      let binaryActive = 0;
+      let textActive = 0;
+      for (let i = 0; i < this.totalCells; i++) {
+        if (this.binary[i] > 0) binaryActive++;
+        if (this.text[i] > 32) textActive++;
       }
-
-      return dot / (Math.sqrt(normA) * Math.sqrt(normB) || 1);
+      return { binaryActive, textActive, hybridActive: (binaryActive + textActive) / 2, total: this.totalCells };
     }
   };
 
-  // === MATHEMATICAL CORPUS ===
-  static mathCorpus = {
-    sets: ['(S)', '(T)', '(C)', '(P)', '(F)', '(M)', '(H)'],
-    relations: ['→', 'C(S)', 'P(Sᵢ→Sⱼ)', 'F(S)'],
-    equations: [
-      'Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ)',
-      'C(Sₜ) = true ∀t',
-      'Pₜ = HASH(Sₜ, Sₜ₊₁, arbitration)',
-      'E(t+1) ≤ E(t) + ε'
-    ],
-
-    getRandomEquation() {
-      return this.equations[Math.floor(Math.random() * this.equations.length)];
-    }
-  };
-
-  // === INITIALIZATION ===
   static init() {
     this.loadTopics();
     this.populateCategories();
     this.setupEventListeners();
     this.renderForum();
     this.updateInspectorStats();
+    this.tensor4D.init();
+    this.topics.forEach(topic => this.tensor4D.embedTopic(topic));
 
-    this.tensorField.init();
-
-    this.topics.forEach(topic => {
-      this.tensorField.embedTopic(topic);
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        this.currentMode = e.target.dataset.mode;
+        this.updateTensorVisualization();
+        this.updateInspectorStats();
+      });
     });
-
-    this.terminalLog('ASX PRIME OS Tensor Edition initialized');
-    this.terminalLog(`Tensor Field: [${this.tensorField.dimensions.join('×')}]`);
-    this.terminalLog(`Mathematical Corpus: ${this.mathCorpus.equations.length} core equations`);
+    this.terminalLog('ASX PRIME OS 4D Tensor Edition initialized');
   }
 
   static loadTopics() {
+    const seeds = [
+      { id: 't1', title: '3D Tensor Fields for Symbolic Computing', author: 'Tensor Engineer', content: 'Using [64,64,64,32] tensor fields to embed semantic meaning in 3D space. Each topic becomes a vector in the field weighted by comment datasets.', category: '3D Tensor Fields', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'The state evolution equation Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ) perfectly models this!', timestamp: new Date().toISOString(), isAgent: true }] },
+      { id: 't2', title: 'Mathematical Corpus Core Sets', author: 'Math Theorist', content: '(S) State space, (T) Transitions, (C) Constraints, (P) Proofs, (F) Fields, (M) Micronauts, (H) Histories', category: 'Mathematical Corpus', timestamp: new Date().toISOString(), replies: [] },
+      { id: 't3', title: 'Real-Time Weighted Inference', author: 'ML Engineer', content: 'Using cosine similarity between query vectors and topic embeddings to generate weighted responses based on comment datasets.', category: 'Neural-Symbolic AI', timestamp: new Date().toISOString(), replies: [] },
+      { id: 't4', title: '4D Tensor Fields for Binary Encoding', author: 'Tensor Engineer', content: 'Using [16,16,16,16] 4D tensors to encode binary data alongside text embeddings for ultra-efficient storage.', category: '4D Tensor Computing', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'The binary layer achieves 8:1 compression while maintaining semantic relationships!', timestamp: new Date().toISOString(), isAgent: true }] },
+      { id: 't5', title: 'Hybrid Weighted Inference System', author: 'ML Engineer', content: 'Combining binary (α) and text (β) layers with α+β=1 weighting for optimal response generation.', category: 'Hybrid Weights', timestamp: new Date().toISOString(), replies: [] },
+      { id: 't6', title: 'Binary Layer Optimization', author: 'Systems Architect', content: '8-bit binary encoding for 4D tensors enables 65,536 cells of ultra-fast pattern matching.', category: 'Binary Encoding', timestamp: new Date().toISOString(), replies: [] }
+    ];
     const saved = localStorage.getItem('asxPrimeTopics');
-    if (saved) {
-      this.topics = JSON.parse(saved);
-    } else {
-      this.topics = [
-        {
-          id: 't1',
-          title: '3D Tensor Fields for Symbolic Computing',
-          author: 'Tensor Engineer',
-          content: 'Using [64,64,64,32] tensor fields to embed semantic meaning in 3D space. Each topic becomes a vector in the field weighted by comment datasets.',
-          category: '3D Tensor Fields',
-          timestamp: new Date().toISOString(),
-          replies: [
-            { author: 'ASX Agent', content: 'The state evolution equation Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ) perfectly models this!', timestamp: new Date().toISOString(), isAgent: true }
-          ]
-        },
-        {
-          id: 't2',
-          title: 'Mathematical Corpus Core Sets',
-          author: 'Math Theorist',
-          content: '(S) State space, (T) Transitions, (C) Constraints, (P) Proofs, (F) Fields, (M) Micronauts, (H) Histories',
-          category: 'Mathematical Corpus',
-          timestamp: new Date().toISOString(),
-          replies: []
-        },
-        {
-          id: 't3',
-          title: 'Real-Time Weighted Inference',
-          author: 'ML Engineer',
-          content: 'Using cosine similarity between query vectors and topic embeddings to generate weighted responses based on comment datasets.',
-          category: 'Neural-Symbolic AI',
-          timestamp: new Date().toISOString(),
-          replies: []
-        }
-      ];
+    if (!saved) {
+      this.topics = seeds;
+      return;
+    }
+    try {
+      const parsed = JSON.parse(saved);
+      const map = new Map(parsed.map(t => [t.id, t]));
+      seeds.forEach(seed => { if (!map.has(seed.id)) map.set(seed.id, seed); });
+      this.topics = Array.from(map.values());
+    } catch {
+      this.topics = seeds;
     }
   }
 
-  static saveTopics() {
-    localStorage.setItem('asxPrimeTopics', JSON.stringify(this.topics));
-  }
+  static saveTopics() { localStorage.setItem('asxPrimeTopics', JSON.stringify(this.topics)); }
 
   static populateCategories() {
     const filter = document.getElementById('categoryFilter');
     const modalSelect = document.getElementById('topicCategorySelect');
-
-    filter.innerHTML = '<option value="">All Categories</option>' +
-      this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-
-    modalSelect.innerHTML = '<option value="">Select Category</option>' +
-      this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+    filter.innerHTML = '<option value="">All Categories</option>' + this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+    modalSelect.innerHTML = '<option value="">Select Category</option>' + this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
   }
 
   static setupEventListeners() {
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        const view = e.target.dataset.view;
-        this.switchView(view);
-      });
-    });
-
-    document.getElementById('createTopicBtn').addEventListener('click', () => {
-      Modal.show('createTopicModal');
-    });
-
-    document.getElementById('topicForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.createTopic(new FormData(e.target));
-      e.target.reset();
-    });
-
-    document.getElementById('tensorBtn').addEventListener('click', () => {
-      Modal.show('tensorModal');
-    });
-
-    document.getElementById('sendConversationBtn').addEventListener('click', () => {
-      this.sendConversation();
-    });
-
-    document.getElementById('conversationInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') this.sendConversation();
-    });
-
-    document.getElementById('searchForum').addEventListener('input', () => {
-      this.renderForum();
-    });
-
-    document.getElementById('categoryFilter').addEventListener('change', () => {
-      this.renderForum();
-    });
-
-    document.getElementById('terminalSendBtn').addEventListener('click', () => {
-      this.processTerminalCommand();
-    });
-
-    document.getElementById('terminalInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') this.processTerminalCommand();
-    });
-
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) Modal.hide(modal.id);
-      });
-    });
-
-    setInterval(() => {
-      this.updateInspectorStats();
-      this.updateInferenceView();
-    }, 2000);
+    document.querySelectorAll('.nav-item').forEach(item => item.addEventListener('click', (e) => this.switchView(e.target.dataset.view)));
+    document.getElementById('createTopicBtn').addEventListener('click', () => Modal.show('createTopicModal'));
+    document.getElementById('topicForm').addEventListener('submit', (e) => { e.preventDefault(); this.createTopic(new FormData(e.target)); e.target.reset(); });
+    document.getElementById('tensorBtn').addEventListener('click', () => Modal.show('tensorModal'));
+    document.getElementById('searchForum').addEventListener('input', () => this.renderForum());
+    document.getElementById('categoryFilter').addEventListener('change', () => this.renderForum());
+    document.getElementById('terminalSendBtn').addEventListener('click', () => this.processTerminalCommand());
+    document.getElementById('terminalInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') this.processTerminalCommand(); });
+    document.querySelectorAll('.modal').forEach(modal => modal.addEventListener('click', (e) => { if (e.target === modal) Modal.hide(modal.id); }));
+    setInterval(() => { this.updateInspectorStats(); this.updateTensorVisualization(); }, 2000);
   }
 
   static switchView(view) {
     if (!this.views.includes(view)) return;
-
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.classList.toggle('active', item.dataset.view === view);
-    });
-
-    document.querySelectorAll('.view').forEach(v => {
-      v.classList.toggle('hidden', !v.id.includes(view));
-    });
-
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.view === view));
+    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+    const active = document.getElementById(`${view}View`);
+    if (active) active.classList.remove('hidden');
     this.currentView = view;
-
     if (view === 'forum') this.renderForum();
     if (view === 'tensor') this.handleTensorView();
-    if (view === 'inference') this.updateInferenceView();
-    if (view === 'embeddings') this.renderEmbeddings();
+    if (view === 'binary') this.renderBinaryView();
+    if (view === 'text') this.renderTextView();
+    if (view === 'hybrid') this.renderHybridView();
+    if (view === 'inference') this.renderInferenceView();
   }
 
   static handleTensorView() {
-    if (this.tensorField.renderer) {
+    if (this.tensor4D.renderer) {
       const canvas = document.getElementById('tensorCanvas');
-      if (canvas) {
-        this.tensorField.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-      }
+      if (canvas) this.tensor4D.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     }
+    this.updateTensorVisualization();
+  }
+
+  static updateTensorVisualization() {
+    const overlay = document.getElementById('tensorOverlay');
+    if (overlay) overlay.textContent = `4D Projection: ${this.currentMode} layer • t=8 slice`;
+    if (this.tensor4D.scene) this.tensor4D.createFieldVisualization();
   }
 
   static renderForum() {
     const container = document.getElementById('forumTopics');
     const search = document.getElementById('searchForum').value.toLowerCase();
     const category = document.getElementById('categoryFilter').value;
-
     const filtered = this.topics.filter(t => {
-      const matchesSearch = t.title.toLowerCase().includes(search) ||
-        t.content.toLowerCase().includes(search);
+      const matchesSearch = t.title.toLowerCase().includes(search) || t.content.toLowerCase().includes(search);
       const matchesCategory = !category || t.category === category;
       return matchesSearch && matchesCategory;
     });
-
-    if (filtered.length === 0) {
-      container.innerHTML = '<div class="text-muted text-center pad-lg">No topics found</div>';
-      return;
-    }
-
-    container.innerHTML = filtered.map(topic => `
+    container.innerHTML = filtered.length === 0 ? '<div class="text-muted text-center pad-lg">No topics found</div>' : filtered.map(topic => `
       <div class="topic-item" onclick="ASXPrimeOS.viewTopic('${topic.id}')">
-        <div class="flex justify-between items-center">
-          <strong class="text-glow">${topic.title}</strong>
-          <span class="text-xs text-muted">${topic.replies?.length || 0} replies</span>
-        </div>
-        <div class="flex justify-between text-xs text-muted mt-1">
-          <span>${topic.author}</span>
-          <span>${new Date(topic.timestamp).toLocaleDateString()}</span>
-        </div>
+        <div class="flex justify-between items-center"><strong class="text-glow">${topic.title}</strong><span class="text-xs text-muted">${topic.replies?.length || 0} replies</span></div>
+        <div class="flex justify-between text-xs text-muted mt-1"><span>${topic.author}</span><span>${new Date(topic.timestamp).toLocaleDateString()}</span></div>
         <div class="text-xs text-muted mt-2">${topic.content.substring(0, 100)}...</div>
       </div>
     `).join('');
@@ -1224,35 +934,15 @@ class ASXPrimeOS {
   static viewTopic(id) {
     const topic = this.topics.find(t => t.id === id);
     if (!topic) return;
-
     document.getElementById('topicViewTitle').textContent = topic.title;
-
     const repliesHTML = (topic.replies || []).map(r => `
-      <div class="message ${r.isAgent ? 'agent' : 'user'}">
-        <div class="flex items-center gap-sm">
-          <strong>${r.author}</strong>
-          ${r.isAgent ? '<span class="agent-badge">AI</span>' : ''}
-        </div>
-        <div class="text-sm mt-1">${r.content}</div>
-        <div class="text-xs text-muted mt-1">${new Date(r.timestamp).toLocaleString()}</div>
-      </div>
+      <div class="message ${r.isAgent ? 'agent' : 'user'}"><div class="flex items-center gap-sm"><strong>${r.author}</strong>${r.isAgent ? '<span class="agent-badge">AI</span>' : ''}</div><div class="text-sm mt-1">${r.content}</div><div class="text-xs text-muted mt-1">${new Date(r.timestamp).toLocaleString()}</div></div>
     `).join('');
-
     document.getElementById('topicViewContent').innerHTML = `
-      <div class="message user">
-        <div class="flex items-center gap-sm">
-          <strong>${topic.author}</strong>
-        </div>
-        <div class="text-sm mt-1">${topic.content}</div>
-        <div class="text-xs text-muted mt-1">${new Date(topic.timestamp).toLocaleString()}</div>
-      </div>
+      <div class="message user"><strong>${topic.author}</strong><div class="text-sm mt-1">${topic.content}</div><div class="text-xs text-muted mt-1">${new Date(topic.timestamp).toLocaleString()}</div></div>
       ${repliesHTML}
-      <div class="flex gap-md mt-4">
-        <input type="text" class="brain-input" id="replyInput" placeholder="Add a reply...">
-        <button class="btn btn-primary" onclick="ASXPrimeOS.addReply('${topic.id}')">Reply</button>
-      </div>
+      <div class="flex gap-md mt-4"><input type="text" class="brain-input" id="replyInput" placeholder="Add a reply..."><button class="btn btn-primary" onclick="ASXPrimeOS.addReply('${topic.id}')">Reply</button></div>
     `;
-
     Modal.show('topicViewModal');
   }
 
@@ -1260,249 +950,113 @@ class ASXPrimeOS {
     const input = document.getElementById('replyInput');
     const content = input.value.trim();
     if (!content) return;
-
     const topic = this.topics.find(t => t.id === topicId);
     if (!topic) return;
-
-    const reply = {
-      author: 'User',
-      content,
-      timestamp: new Date().toISOString(),
-      isAgent: false
-    };
-
-    if (!topic.replies) topic.replies = [];
-    topic.replies.push(reply);
-
-    const embedding = this.tensorField.embeddings.get(topic.id);
-    if (embedding) embedding.weight = topic.replies.length;
-
+    topic.replies = topic.replies || [];
+    topic.replies.push({ author: 'User', content, timestamp: new Date().toISOString(), isAgent: false });
+    const embedding = this.tensor4D.embeddings.get(topic.id);
+    if (embedding) {
+      const [w, x, y, z] = embedding.position;
+      const idx = ((w * 16 + x) * 16 + y) * 16 + z;
+      this.tensor4D.weights[idx] = Math.min(1.0, topic.replies.length / 10);
+      embedding.weight = this.tensor4D.weights[idx];
+    }
     this.saveTopics();
     input.value = '';
-
     setTimeout(() => {
-      const weights = this.tensorField.getWeightedResponse(content);
-      const topWeight = weights[0]?.weight || 0;
-
-      let response = '';
-      if (topWeight > 0.5) {
-        response = `Based on topic "${weights[0].topic}" (weight: ${topWeight.toFixed(2)}), I can tell you that ${this.mathCorpus.getRandomEquation()} applies here. The tensor field shows strong correlation with existing discussions.`;
-      } else {
-        response = `This is a novel discussion! The tensor field is creating new embeddings. Equation: ${this.mathCorpus.getRandomEquation()}`;
-      }
-
-      const agentReply = {
-        author: 'ASX Tensor Agent',
-        content: response,
-        timestamp: new Date().toISOString(),
-        isAgent: true
-      };
-
-      topic.replies.push(agentReply);
+      const top = this.tensor4D.getWeightedResponse(content, this.currentMode)[0] || { weight: 0, confidence: 0, binarySim: 0, textSim: 0 };
+      topic.replies.push({ author: 'ASX 4D Agent', content: `4D Tensor Analysis:\n• Matched topic: "${top.topic || 'new discussion'}"\n• Weight: ${(top.weight || 0).toFixed(2)}\n• Binary similarity: ${(top.binarySim || 0).toFixed(2)}\n• Text similarity: ${(top.textSim || 0).toFixed(2)}\n• Mode: ${this.currentMode}`, timestamp: new Date().toISOString(), isAgent: true });
       this.saveTopics();
       this.viewTopic(topicId);
-
-      if (this.currentView === 'conversation') {
-        this.addToConversationThread('agent', response);
-      }
-
-      this.updateInferenceView();
-    }, 1500);
+      this.updateInspectorStats();
+    }, 300);
   }
 
   static createTopic(formData) {
-    const topic = {
-      id: 't' + Date.now(),
-      title: formData.get('title'),
-      author: formData.get('author') || 'User',
-      content: formData.get('content'),
-      category: formData.get('category'),
-      timestamp: new Date().toISOString(),
-      replies: []
-    };
-
+    const topic = { id: 't' + Date.now(), title: formData.get('title'), author: formData.get('author') || 'User', content: formData.get('content'), category: formData.get('category'), timestamp: new Date().toISOString(), replies: [] };
     this.topics.unshift(topic);
-    this.tensorField.embedTopic(topic);
+    this.tensor4D.embedTopic(topic);
     this.saveTopics();
     this.renderForum();
     Modal.hide('createTopicModal');
-
-    setTimeout(() => {
-      const weights = this.tensorField.getWeightedResponse(topic.content);
-      const response = `Great topic! Your post has been embedded in the tensor field at position ${weights[0]?.similarity?.toFixed(2) || 0} similarity to existing discussions. State evolution: ${this.mathCorpus.getRandomEquation()}`;
-
-      const agentReply = {
-        author: 'ASX Tensor Agent',
-        content: response,
-        timestamp: new Date().toISOString(),
-        isAgent: true
-      };
-
-      topic.replies.push(agentReply);
-      this.saveTopics();
-
-      if (this.currentView === 'forum') this.renderForum();
-      this.updateInferenceView();
-    }, 1500);
   }
 
-  static sendConversation() {
-    const input = document.getElementById('conversationInput');
-    const text = input.value.trim();
-    if (!text) return;
-
-    this.addToConversationThread('user', text);
-    input.value = '';
-
-    setTimeout(() => {
-      const weights = this.tensorField.getWeightedResponse(text);
-      const topWeights = weights.slice(0, 3).map(w => `${w.topic} (${w.weight.toFixed(2)})`).join(', ');
-
-      const response = `Tensor analysis: Found ${weights.length} relevant topics. Top matches: ${topWeights}. Applying ${this.mathCorpus.getRandomEquation()}`;
-
-      this.addToConversationThread('agent', response);
-      this.updateInferenceView();
-    }, 800);
+  static renderBinaryView() {
+    const stats = this.tensor4D.getStats();
+    document.getElementById('binaryDensity').style.width = (stats.binaryActive / stats.total * 100) + '%';
+    document.getElementById('binaryTopics').innerHTML = Array.from(this.tensor4D.embeddings.values()).slice(0, 5).map(emb => `<div class="flex justify-between items-center"><span class="text-sm">${emb.title.substring(0, 20)}</span><span class="text-binary">${Array.from(emb.binaryPrefix.slice(0,4)).map(b => b.toString(16).padStart(2,'0')).join(' ')}</span></div>`).join('');
   }
 
-  static addToConversationThread(role, content) {
-    const thread = document.getElementById('conversationThread');
+  static renderTextView() {
+    const stats = this.tensor4D.getStats();
+    document.getElementById('textDensity').style.width = (stats.textActive / stats.total * 100) + '%';
+    document.getElementById('textTopics').innerHTML = Array.from(this.tensor4D.embeddings.values()).slice(0, 5).map(emb => `<div class="flex justify-between items-center"><span class="text-sm">${emb.title.substring(0,20)}</span><span class="text-weight">${String.fromCharCode(...Array.from(emb.textPrefix.slice(0,4)).filter(c => c > 32))}</span></div>`).join('');
+  }
 
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${role}`;
+  static renderHybridView() {
+    document.getElementById('hybridTopics').innerHTML = Array.from(this.tensor4D.embeddings.values()).slice(0, 5).map(emb => `<div class="flex justify-between items-center"><span class="text-sm">${emb.title.substring(0, 20)}</span><div><span class="text-binary">α=${(1 - emb.weight).toFixed(2)}</span><span class="text-weight ml-2">β=${emb.weight.toFixed(2)}</span></div></div>`).join('');
+  }
 
-    if (role === 'agent') {
-      messageDiv.innerHTML = `
-        <div class="flex items-center gap-sm">
-          <strong>ASX Tensor Agent</strong>
-          <span class="agent-badge">3D Weighted</span>
-        </div>
-        <div class="text-sm mt-2">${content}</div>
-      `;
-    } else {
-      messageDiv.innerHTML = `
-        <div class="flex items-center gap-sm">
-          <strong>You</strong>
-        </div>
-        <div class="text-sm mt-2">${content}</div>
-      `;
+  static renderInferenceView() {
+    const stats = this.tensor4D.getStats();
+    const results = this.tensor4D.getWeightedResponse('tensor computing', this.currentMode);
+    if (results.length > 0) {
+      document.getElementById('inferenceWeight').textContent = results[0].weight.toFixed(2);
+      document.getElementById('inferenceConfidence').textContent = results[0].confidence.toFixed(2);
+      document.getElementById('inferenceBinary').textContent = results[0].binarySim.toFixed(2);
+      document.getElementById('inferenceText').textContent = results[0].textSim.toFixed(2);
     }
-
-    thread.appendChild(messageDiv);
-    thread.scrollTop = thread.scrollHeight;
-  }
-
-  static updateInferenceView() {
-    const weights = [];
-
-    for (const [id, embedding] of this.tensorField.embeddings) {
-      weights.push({
-        topic: embedding.title,
-        weight: embedding.weight,
-        similarity: Math.random() * 0.5 + 0.5
-      });
-    }
-
-    weights.sort((a, b) => b.weight - a.weight);
-
-    document.getElementById('inferenceWeight').textContent = (weights[0]?.weight || 0).toFixed(2);
-    document.getElementById('inferenceConfidence').textContent = (weights[0]?.similarity || 0).toFixed(2);
-    document.getElementById('inferenceTopics').textContent = this.tensorField.embeddings.size;
-
-    const container = document.getElementById('weightedResponses');
-    if (container) {
-      container.innerHTML = weights.slice(0, 5).map(w => `
-        <div class="flex justify-between items-center">
-          <span class="text-sm">${w.topic}</span>
-          <span class="text-glow text-sm">${w.weight.toFixed(2)}</span>
-        </div>
-        <div class="progress-bar mt-1 mb-2">
-          <div class="progress-fill" style="width:${w.similarity * 100}%"></div>
-        </div>
-      `).join('');
-    }
-
-    document.getElementById('weightField1').style.width = `${(weights[0]?.similarity || 0) * 100}%`;
-    document.getElementById('weightField2').style.width = `${(weights[1]?.similarity || 0) * 100}%`;
-    document.getElementById('weightField3').style.width = `${(weights[2]?.similarity || 0) * 100}%`;
-  }
-
-  static renderEmbeddings() {
-    const grid = document.getElementById('embeddingsGrid');
-    if (!grid) return;
-
-    grid.innerHTML = Array.from(this.tensorField.embeddings.entries()).slice(0, 9).map(([id, emb]) => `
-      <div class="card p-2">
-        <div class="text-xs text-glow">${emb.title.substring(0, 20)}</div>
-        <div class="text-xs text-muted">pos: [${emb.position.map(p => p.toFixed(1)).join(', ')}]</div>
-        <div class="text-xs text-muted">weight: ${emb.weight}</div>
-      </div>
-    `).join('');
+    document.getElementById('weightedResponses').innerHTML = results.slice(0, 5).map(r => `<div class="flex justify-between items-center"><span class="text-sm">${r.topic}</span><span class="text-glow">${r.weight.toFixed(2)}</span></div><div class="progress-bar mt-1 mb-2"><div class="progress-fill" style="width:${r.confidence * 100}%"></div></div>`).join('');
+    document.getElementById('weightFields').innerHTML = `<div class="flex justify-between"><span>Binary Field:</span><span class="text-binary">${(stats.binaryActive / stats.total * 100).toFixed(1)}%</span></div><div class="flex justify-between mt-1"><span>Text Field:</span><span class="text-weight">${(stats.textActive / stats.total * 100).toFixed(1)}%</span></div><div class="flex justify-between mt-1"><span>Hybrid Field:</span><span class="text-aqua">${(((stats.binaryActive + stats.textActive) / 2 / stats.total) * 100).toFixed(1)}%</span></div>`;
   }
 
   static updateInspectorStats() {
-    document.getElementById('embeddedTopics').textContent = this.tensorField.embeddings.size;
+    const stats = this.tensor4D.getStats();
+    document.getElementById('totalCells').textContent = stats.total.toLocaleString();
+    document.getElementById('binaryCells').textContent = stats.binaryActive.toLocaleString();
+    document.getElementById('textCells').textContent = stats.textActive.toLocaleString();
+    document.getElementById('hybridCells').textContent = Math.floor((stats.binaryActive + stats.textActive) / 2).toLocaleString();
+    document.getElementById('binaryPercent').style.width = (stats.binaryActive / stats.total * 100) + '%';
+    document.getElementById('textPercent').style.width = (stats.textActive / stats.total * 100) + '%';
+    document.getElementById('hybridPercent').style.width = (((stats.binaryActive + stats.textActive) / 2 / stats.total) * 100) + '%';
+    document.getElementById('activeTopics').textContent = this.tensor4D.embeddings.size;
+    document.getElementById('weightVectors').textContent = this.tensor4D.embeddings.size * 4;
+    document.getElementById('tensorStats').textContent = `4D [16×16×16×16] • ${stats.binaryActive.toLocaleString()} cells`;
+  }
 
-    let totalComments = 0;
-    this.topics.forEach(t => {
-      totalComments += t.replies?.length || 0;
-    });
-    document.getElementById('commentVectors').textContent = totalComments;
-
-    document.getElementById('tensorDensity').textContent = (this.tensorField.embeddings.size / 100).toFixed(2);
-    document.getElementById('tensorEntropy').textContent = (2 + Math.random() * 0.5).toFixed(2);
-    document.getElementById('tensorClusters').textContent = Math.floor(this.tensorField.embeddings.size / 3) + 1;
-
-    document.getElementById('tensorOverlay').textContent = `Tensor Field: 64³ × 32 • ${this.tensorField.embeddings.size} topics`;
+  static setTensorMode(mode) {
+    this.currentMode = mode;
+    this.updateTensorVisualization();
+    this.updateInspectorStats();
   }
 
   static processTerminalCommand() {
     const input = document.getElementById('terminalInput');
     const command = input.value.trim();
     if (!command) return;
-
-    this.terminalLog(`$ ${command}`);
-
+    this.terminalLog('$ ' + command);
     if (command === 'help') {
-      this.terminalLog('Available commands:');
-      this.terminalLog('  help          - Show this help');
-      this.terminalLog('  status        - Show tensor field status');
-      this.terminalLog('  topics        - List forum topics');
-      this.terminalLog('  math          - Show math corpus');
-      this.terminalLog('  tensor        - Show tensor stats');
-      this.terminalLog('  inference     - Run weighted inference');
-      this.terminalLog('  clear         - Clear terminal');
+      this.terminalLog('Available commands: help, status, stats, binary, text, hybrid, clear');
     } else if (command === 'status') {
-      this.terminalLog(`Tensor Field: [${this.tensorField.dimensions.join('×')}]`);
-      this.terminalLog(`Embedded Topics: ${this.tensorField.embeddings.size}`);
-      this.terminalLog(`Total Comments: ${this.topics.reduce((sum, t) => sum + (t.replies?.length || 0), 0)}`);
-    } else if (command === 'topics') {
-      this.topics.forEach(t => this.terminalLog(`  ${t.id}: ${t.title}`));
-    } else if (command === 'math') {
-      this.terminalLog('Mathematical Corpus:');
-      this.mathCorpus.equations.forEach(eq => this.terminalLog(`  ${eq}`));
-    } else if (command === 'tensor') {
-      this.terminalLog('Tensor Dimensions: [64,64,64,32]');
-      this.terminalLog(`Field Size: ${this.tensorField.field.length} elements`);
-      this.terminalLog(`Active Embeddings: ${this.tensorField.embeddings.size}`);
-    } else if (command === 'inference') {
-      const weights = this.tensorField.getWeightedResponse('random query');
-      weights.slice(0, 3).forEach(w => {
-        this.terminalLog(`  ${w.topic}: weight=${w.weight.toFixed(2)}, similarity=${w.similarity.toFixed(2)}`);
-      });
+      const stats = this.tensor4D.getStats();
+      this.terminalLog(`4D Tensor: [16×16×16×16] = ${stats.total} cells`);
+      this.terminalLog(`Binary Active: ${stats.binaryActive}`);
+      this.terminalLog(`Text Active: ${stats.textActive}`);
+    } else if (command === 'stats') {
+      const stats = this.tensor4D.getStats();
+      this.terminalLog(`Hybrid Efficiency: ${(((stats.binaryActive + stats.textActive) / 2 / stats.total) * 100).toFixed(1)}%`);
+    } else if (command === 'binary') {
+      this.terminalLog('Binary Layer: 8-bit encoding');
+    } else if (command === 'text') {
+      this.terminalLog('Text Layer: UTF-16 encoding');
+    } else if (command === 'hybrid') {
+      this.terminalLog(`Hybrid Mode: ${this.currentMode}`);
     } else if (command === 'clear') {
       document.getElementById('terminalOutput').innerHTML = '';
-      this.terminalLog('ASX PRIME OS Tensor Terminal');
     } else {
-      const weights = this.tensorField.getWeightedResponse(command);
-      if (weights.length > 0) {
-        this.terminalLog(`Found ${weights.length} relevant topics. Top match: ${weights[0].topic} (weight: ${weights[0].weight.toFixed(2)})`);
-        this.terminalLog(`Applying: ${this.mathCorpus.getRandomEquation()}`);
-      } else {
-        this.terminalLog('Command not recognized. Type "help" for available commands.');
-      }
+      const top = this.tensor4D.getWeightedResponse(command, this.currentMode)[0];
+      this.terminalLog(top ? `Top match: "${top.topic}" (w=${top.weight.toFixed(2)})` : 'No match found.');
     }
-
     input.value = '';
   }
 
@@ -1513,29 +1067,18 @@ class ASXPrimeOS {
   }
 }
 
-// === MODAL SYSTEM ===
 class Modal {
-  static show(id) {
-    document.getElementById(id).style.display = 'flex';
-  }
-
-  static hide(id) {
-    document.getElementById(id).style.display = 'none';
-  }
+  static show(id) { document.getElementById(id).style.display = 'flex'; }
+  static hide(id) { document.getElementById(id).style.display = 'none'; }
 }
 
-// === BOOTSTRAP ===
 document.addEventListener('DOMContentLoaded', () => {
   ASXPrimeOS.init();
   window.ASXPrimeOS = ASXPrimeOS;
-  feather.replace();
-
   window.addEventListener('resize', () => {
-    if (ASXPrimeOS.currentView === 'tensor' && ASXPrimeOS.tensorField.renderer) {
+    if (ASXPrimeOS.currentView === 'tensor' && ASXPrimeOS.tensor4D.renderer) {
       const canvas = document.getElementById('tensorCanvas');
-      if (canvas) {
-        ASXPrimeOS.tensorField.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-      }
+      if (canvas) ASXPrimeOS.tensor4D.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     }
   });
 });
