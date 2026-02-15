@@ -43,112 +43,109 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; line-height: 1.5; }
   .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  
-  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px; 
-            border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 153, 0.35); }
-  
-  .logo { font-size: 24px; font-weight: bold; color: #00ff99; display: flex; align-items: center; gap: 8px; }
-  
-  .user-panel { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; }
-  
-  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040; 
-                          padding: 8px 12px; cursor: pointer; transition: all 0.2s; 
-                          font-family: inherit; font-size: 14px; border-radius: 6px; }
-  
-  .btn:hover, .pb-btn:hover, select:hover { background: #404040; }
-  
-  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px; 
-                   border-radius: 8px; overflow: hidden; }
-  
-  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px; 
-                    font-weight: bold; display: flex; justify-content: space-between; 
-                    align-items: center; cursor: pointer; font-size: 18px; transition: background 0.2s; }
-  
-  .section-header:hover { background: #404040; }
-  
-  .topic-table { width: 100%; border-collapse: collapse; }
-  
-  .topic-table th, .topic-table td { border: 1px solid #404040; padding: 12px; text-align: left; vertical-align: top; }
-  
-  .topic-table th { background: #2a2a2a; font-weight: bold; }
-  
-  .topic-title { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
-  
-  .topic-title:hover { text-decoration: underline; }
-  
-  .topic-meta { color: #808080; font-size: 12px; margin-top: 4px; }
-  
-  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px; 
-                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3; 
-                   -webkit-box-orient: vertical; overflow: hidden; }
-  
-  .stats { color: #b0b0b0; text-align: center; }
-  
-  .actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-  
-  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px; 
-                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; 
-                justify-content: center; }
-  
-  .action-btn:hover { background: #2a2a2a; color: #e0e0e0; }
-  
-  .collapsed .topic-table { display: none; }
-  
-  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; 
-           padding: 20px; }
-  
-  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px; 
-                   max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px;
-                   -ms-overflow-style: none; scrollbar-width: none; }
 
-  .modal-content::-webkit-scrollbar { display: none; }
-  
-  .modal-header { display: flex; justify-content: space-between; align-items: center; 
+  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px;
+            border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 153, 0.35); }
+
+  .logo { font-size: 24px; font-weight: bold; color: #00ff99; display: flex; align-items: center; gap: 8px; }
+
+  .user-panel { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+
+  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040;
+                          padding: 8px 12px; cursor: pointer; transition: all 0.2s;
+                          font-family: inherit; font-size: 14px; border-radius: 6px; }
+
+  .btn:hover, .pb-btn:hover, select:hover { background: #404040; }
+
+  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px;
+                   border-radius: 8px; overflow: hidden; }
+
+  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px;
+                    font-weight: bold; display: flex; justify-content: space-between;
+                    align-items: center; cursor: pointer; font-size: 18px; transition: background 0.2s; }
+
+  .section-header:hover { background: #404040; }
+
+  .topic-table { width: 100%; border-collapse: collapse; }
+
+  .topic-table th, .topic-table td { border: 1px solid #404040; padding: 12px; text-align: left; vertical-align: top; }
+
+  .topic-table th { background: #2a2a2a; font-weight: bold; }
+
+  .topic-title { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
+
+  .topic-title:hover { text-decoration: underline; }
+
+  .topic-meta { color: #808080; font-size: 12px; margin-top: 4px; }
+
+  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px;
+                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3;
+                   -webkit-box-orient: vertical; overflow: hidden; }
+
+  .stats { color: #b0b0b0; text-align: center; }
+
+  .actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+
+  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px;
+                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center;
+                justify-content: center; }
+
+  .action-btn:hover { background: #2a2a2a; color: #e0e0e0; }
+
+  .collapsed .topic-table { display: none; }
+
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
+           padding: 20px; }
+
+  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px;
+                   max-width: 800px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px; }
+
+  .modal-header { display: flex; justify-content: space-between; align-items: center;
                   margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #404040; }
-  
-  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px; 
-               padding: 0; width: 30px; height: 30px; display: flex; align-items: center; 
+
+  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px;
+               padding: 0; width: 30px; height: 30px; display: flex; align-items: center;
                justify-content: center; border-radius: 4px; }
-  
+
   .close-btn:hover { background: #2a2a2a; }
-  
+
   .field { display: block; width: 100%; margin-bottom: 15px; }
-  
-  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px; 
-                                                 border: 1px solid #404040; background: #2a2a2a; 
+
+  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px;
+                                                 border: 1px solid #404040; background: #2a2a2a;
                                                  color: #e0e0e0; font-family: inherit; }
-  
+
   .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #00ff99; }
-  
-  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px; 
+
+  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px;
                 border: 1px solid #404040; background: #1a1a1a; color: #e0e0e0; font-size: 16px; }
-  
+
   .search-bar:focus { outline: none; border-color: #00ff99; }
-  
+
   .empty-state { text-align: center; padding: 40px 20px; color: #808080; }
-  
+
   .status-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
-  
+
   .status-success { background: rgba(74, 222, 128, 0.1); border: 1px solid #00ff99; color: #00ff99; }
-  
+
   .status-error { background: rgba(248, 113, 113, 0.1); border: 1px solid #f87171; color: #f87171; }
-  
+
   /* ASX Block Styles */
   asx-block { display: block; }
-  
-  .scx-compressed { 
-    background: #001100; 
-    border: 1px solid #00ff99; 
-    border-radius: 6px; 
-    padding: 10px; 
-    margin: 10px 0; 
-    font-family: monospace; 
-    font-size: 12px; 
-    overflow-x: auto; 
+
+  .scx-compressed {
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: monospace;
+    font-size: 12px;
+    overflow-x: auto;
     color: #00ff99;
   }
-  
+
   .scx-decompressed {
     background: #001a00;
     border: 1px solid #00cc77;
@@ -156,7 +153,7 @@
     padding: 15px;
     margin: 10px 0;
   }
-  
+
   .scx-toggle {
     background: #002200;
     border: 1px solid #00ff99;
@@ -167,7 +164,92 @@
     font-size: 12px;
     margin: 5px 0;
   }
-  
+
+  /* ASX Brain Panel */
+  .brain-panel {
+    background: #1a1a1a;
+    border: 2px solid #00ff99;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 153, 0.25);
+  }
+
+  .brain-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .brain-input {
+    flex: 1;
+    padding: 10px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-family: inherit;
+  }
+
+  .brain-output {
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 80px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .thinking {
+    color: #00ffff;
+    font-style: italic;
+  }
+
+  .brain-response {
+    color: #00ff99;
+  }
+
+  /* SCX Execution Environment */
+  .scx-execution-panel {
+    background: #001a1a;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .scx-console {
+    background: #000;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    height: 120px;
+    overflow-y: auto;
+    margin: 10px 0;
+  }
+
+  .scx-bytecode {
+    background: #002200;
+    border: 1px solid #00cc66;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: monospace;
+    font-size: 11px;
+    margin: 5px 0;
+  }
+
+  .scx-opcode {
+    color: #00ffff;
+    font-weight: bold;
+  }
+
+  .scx-data {
+    color: #00ff99;
+  }
+
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .header { flex-direction: column; align-items: flex-start; }
@@ -175,8 +257,9 @@
     .topic-table { display: block; overflow-x: auto; }
     .actions { justify-content: flex-start; }
     .topic-snippet { max-width: 200px; }
+    .brain-input-container { flex-direction: column; }
   }
-  
+
   @media (max-width: 480px) {
     .topic-table th:nth-child(2), .topic-table td:nth-child(2) { display: none; }
     .actions { flex-direction: column; }
@@ -190,15 +273,54 @@
     <header class="header flex row justify-between items-center">
       <div class="logo">
         <span>🌿</span>
-        <span>ASX Forum — SCX Compressed</span>
+        <span>ASX Forum — SCX Symbolic Computing Layer</span>
       </div>
       <div class="user-panel">
         <select id="labelFilter"></select>
         <button class="pb-btn" id="openCreateBtn">✚ Create Topic</button>
         <button class="pb-btn" id="refreshBtn">⟳ Refresh</button>
-        <button class="pb-btn" id="scxDemoBtn">🧠 SCX Demo</button>
+        <button class="pb-btn" id="scxDemoBtn">⚡ SCX Runtime</button>
       </div>
     </header>
+  </asx-block>
+
+  <!-- SCX Execution Environment -->
+  <asx-block id="scx-execution-environment">
+    <div class="scx-execution-panel">
+      <h3 class="text-aqua">⚡ SCX Symbolic Computing Runtime</h3>
+      <p class="text-muted">Live execution environment - SCX as bytecode, not compression</p>
+
+      <div class="flex gap-md wrap">
+        <button class="scx-toggle" onclick="executeSCXDemo('agent_communication')">Run Agent Communication</button>
+        <button class="scx-toggle" onclick="executeSCXDemo('data_mutation')">Run Data Mutation</button>
+        <button class="pb-btn" onclick="executeSCXDemo('neural_training')" style="background: #00ffff; color: #000;">Run Neural Training</button>
+      </div>
+
+      <div class="scx-console" id="scxConsole">
+        <div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>
+      </div>
+
+      <div class="scx-bytecode" id="scxBytecode">
+        <strong>Current SCX Bytecode:</strong> [awaiting execution]
+      </div>
+    </div>
+  </asx-block>
+
+  <!-- ASX Brain Block - Interactive AI -->
+  <asx-block id="asx-brain">
+    <div class="brain-panel">
+      <h3 class="text-glow">🧠 ASX Brain - Symbolic Intelligence System</h3>
+      <p class="text-muted">Ask about SCX as symbolic computing, bytecode execution, or multi-agent systems</p>
+
+      <div class="brain-input-container">
+        <input type="text" class="brain-input" id="brainInput" placeholder="Ask about SCX symbolic computing, bytecode, agents..." />
+        <button class="pb-btn" id="askBrainBtn" style="background: #00ff99; color: #000;">Ask ASX Brain</button>
+      </div>
+
+      <div class="brain-output" id="brainOutput">
+        <div class="thinking">🤔 Ready to discuss SCX as symbolic computing layer...</div>
+      </div>
+    </div>
   </asx-block>
 
   <!-- Status Message Block -->
@@ -208,13 +330,13 @@
 
   <!-- Search Block -->
   <asx-block id="search-bar">
-    <input type="text" class="search-bar" placeholder="Search ASX topics, guides, or SCX content..." id="searchBar" />
+    <input type="text" class="search-bar" placeholder="Search SCX symbolic computing topics..." id="searchBar" />
   </asx-block>
 
   <!-- Forum Content -->
   <div id="forumSections">
     <div class="empty-state" id="loadingState">
-      Loading ASX Forum Content...
+      Loading SCX Symbolic Computing Content...
     </div>
   </div>
 </div>
@@ -223,7 +345,7 @@
 <div class="modal" id="pbModal">
   <div class="modal-content">
     <div class="modal-header">
-      <strong>Create New ASX Topic</strong>
+      <strong>Create New SCX Symbolic Topic</strong>
       <button class="close-btn" id="closeModal">✕</button>
     </div>
     <form id="createTopicForm">
@@ -234,7 +356,7 @@
         <input name="author" id="topicAuthor" placeholder="Author name (optional)"/>
       </div>
       <div class="field">
-        <textarea name="body" id="topicBody" placeholder="Write your ASX/SCX content here..." rows="6" required></textarea>
+        <textarea name="body" id="topicBody" placeholder="Write your SCX symbolic computing content..." rows="6" required></textarea>
       </div>
       <div class="field">
         <select name="labels" id="topicLabel" required>
@@ -244,7 +366,7 @@
       <div class="flex justify-between items-center">
         <div>
           <input type="checkbox" id="scxCompress" checked>
-          <label for="scxCompress" class="text-muted">Compress with SCX</label>
+          <label for="scxCompress" class="text-muted">Encode with SCX Symbols</label>
         </div>
         <div class="flex gap-md">
           <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
@@ -255,46 +377,56 @@
   </div>
 </div>
 
-<!-- SCX Demo Modal -->
+<!-- SCX Runtime Modal -->
 <div class="modal" id="scxModal">
   <div class="modal-content">
     <div class="modal-header">
-      <strong>🧠 SCX Compression Demo</strong>
+      <strong>⚡ SCX Symbolic Computing Runtime</strong>
       <button class="close-btn" id="closeScxModal">✕</button>
     </div>
     <div class="pad-md">
-      <h3 class="text-glow">SCX Compression Example</h3>
-      <p class="text-muted pad-md">See how ASX data is compressed using SCX tokens</p>
-      
-      <div class="scx-compressed">
-        <strong>Compressed SCX Data (2.1KB):</strong><br>
-        (🌪️)asx_forum_data(∴)(🧩)pattern:"scx_compression"(📦)input:2100_bytes(🚀)output:1073741824_bytes(⚡)ratio:511305:1
+      <h3 class="text-aqua">SCX = Symbolic Computing Layer</h3>
+      <p class="text-muted">Not compression - but executable symbolic bytecode</p>
+
+      <div class="scx-execution-panel">
+        <h4 class="text-glow">Live SCX Execution Examples:</h4>
+
+        <div class="scx-bytecode">
+          <strong>Agent Communication:</strong><br>
+          <span class="scx-opcode">@</span><span class="scx-opcode">#</span><span class="scx-opcode">(>)</span><span class="scx-data">%</span><br>
+          <em>internet → person → send → data</em>
+        </div>
+
+        <div class="scx-bytecode">
+          <strong>Neural Training:</strong><br>
+          <span class="scx-opcode">^</span><span class="scx-opcode">(>)</span><span class="scx-data">brain.weights</span><span class="scx-opcode">(~)</span><br>
+          <em>AI → send → brain weights → transform</em>
+        </div>
+
+        <div class="scx-bytecode">
+          <strong>Self-Mutation:</strong><br>
+          <span class="scx-opcode">(∂)</span><span class="scx-data">$state.tapes[0]</span><span class="scx-opcode">(*)</span><br>
+          <em>update → tape state → with current time</em>
+        </div>
       </div>
-      
-      <button class="scx-toggle" onclick="toggleScxDecompression()">Toggle Decompression</button>
-      
-      <div class="scx-decompressed hidden" id="decompressedData">
-        <h4 class="text-aqua">Decompressed Data (1GB equivalent):</h4>
-        <pre id="decompressedContent"></pre>
-      </div>
-      
+
       <div class="pad-md">
-        <h4 class="text-glow">SCX Token Reference:</h4>
+        <h4 class="text-glow">SCX Symbolic Computing Principles:</h4>
         <div class="flex wrap gap-md">
           <div class="bg-darker pad-md rounded">
-            <code>(?)</code> = if<br>
-            <code>(∴)</code> = then<br>
-            <code>(⊕)</code> = increment
+            <strong>Symbolic Bytecode</strong><br>
+            SCX symbols = opcodes<br>
+            JSON becomes executable
           </div>
           <div class="bg-darker pad-md rounded">
-            <code>(💬>)</code> = message<br>
-            <code>(>)</code> = send<br>
-            <code>(+)</code> = create
+            <strong>Multi-Agent Protocol</strong><br>
+            Agents interpret symbols<br>
+            Inter-agent communication
           </div>
           <div class="bg-darker pad-md rounded">
-            <code>(%)</code> = save<br>
-            <code>(∞)</code> = loop<br>
-            <code>(@)</code> = internet
+            <strong>Semantic Execution</strong><br>
+            Meaning, not just data<br>
+            Intent-driven computing
           </div>
         </div>
       </div>
@@ -304,386 +436,215 @@
 
 <script>
   /* CONFIG */
-  function parseJsonlDataset(jsonlText) {
-    return jsonlText
-      .split(/\n/)
-      .map(line => line.trim())
-      .filter(Boolean)
-      .map(line => JSON.parse(line));
-  }
-
-  const FORUM_DATASET_EL = document.getElementById('forumJsonlDataset');
-  const FORUM_DATASET_JSONL = FORUM_DATASET_EL?.textContent || '';
-  const DEMO_POSTS = parseJsonlDataset(FORUM_DATASET_JSONL).map(post => ({ ...post, comments: [] }));
-
-  const ASX_SEED_POSTS = [
-    {
-      id: 'asx-post-1',
-      title: 'ASX Runtime Structure & Setup',
-      author: 'ASX Team',
-      published: '2025-11-05T10:30:00Z',
-      category: ['ASX Runtime'],
-      content: '(🌪️)asx_runtime(∴)(🧩)pattern:"json_first"(📦)input:1500_bytes(🚀)output:1073741824_bytes(⚡)ratio:715827:1',
-      decompressedBody: 'ASX runtime setup with state, effects, and components in one JSON-first structure.',
-      commentCount: 0,
-      scxCompressed: true,
-      comments: []
-    },
-    {
-      id: 'asx-post-2',
-      title: 'Atomic Components Guide - Building UIs with ASX Blocks',
-      author: 'UI Architect',
-      published: '2025-11-04T14:20:00Z',
-      category: ['Atomic Components'],
-      content: '(🌪️)atomic_components(∴)(🧩)pattern:"declarative_ui"(📦)input:1200_bytes(🚀)output:536870912_bytes(⚡)ratio:447392:1',
-      decompressedBody: 'Use reusable <asx-block> units with atomic CSS to build consistent declarative interfaces.',
-      commentCount: 0,
-      scxCompressed: true,
-      comments: []
-    },
-    {
-      id: 'asx-post-3',
-      title: 'SCX Compression Deep Dive - From 20GB to 20KB',
-      author: 'Compression Expert',
-      published: '2025-11-03T16:45:00Z',
-      category: ['SCX Compression'],
-      content: '(🌪️)scx_compression(∴)(🧩)pattern:"token_compression"(📦)input:800_bytes(🚀)output:268435456_bytes(⚡)ratio:335544:1',
-      decompressedBody: 'SCX token substitution and recursive unfolding can achieve extremely high compression ratios.',
-      commentCount: 0,
-      scxCompressed: true,
-      comments: []
-    },
-    {
-      id: 'asx-post-4',
-      title: 'Mx2LM Integration - AI-Powered ASX Applications',
-      author: 'AI Researcher',
-      published: '2025-11-02T09:15:00Z',
-      category: ['Mx2LM & AI Integration'],
-      content: '(🌪️)mx2lm_integration(∴)(🧩)pattern:"ai_runtime"(📦)input:2000_bytes(🚀)output:2147483648_bytes(⚡)ratio:1073741:1',
-      decompressedBody: 'Mx2LM maps natural language requests into complete ASX application structures.',
-      commentCount: 0,
-      scxCompressed: true,
-      comments: []
-    },
-    {
-      id: 'asx-post-5',
-      title: 'Liquid Encryption for Secure ASX Applications',
-      author: 'Security Lead',
-      published: '2025-11-01T11:40:00Z',
-      category: ['Liquid Encryption'],
-      content: 'Learn how to implement liquid encryption in ASX applications for secure messaging and transport.',
-      decompressedBody: 'Liquid encryption combines modern crypto primitives and resilient synchronization.',
-      commentCount: 0,
-      scxCompressed: false,
-      comments: []
-    },
-    {
-      id: 'asx-post-6',
-      title: 'Complete ASX Documentation & Reference',
-      author: 'Documentation Team',
-      published: '2025-10-31T13:10:00Z',
-      category: ['ASX Guides & Documentation'],
-      content: 'Access complete ASX docs covering runtime, components, SCX, and integration patterns.',
-      decompressedBody: 'A centralized reference for ASX runtime internals and implementation patterns.',
-      commentCount: 0,
-      scxCompressed: false,
-      comments: []
-    }
+  const CATEGORIES = [
+    "SCX Symbolic Computing",
+    "Bytecode & Execution",
+    "Multi-Agent Systems",
+    "Neural-Symbolic AI",
+    "Atomic JSON & Tapes",
+    "Liquid-OS Integration",
+    "Runtime Protocols"
   ];
-
-  ASX_SEED_POSTS.forEach(post => {
-    if (!DEMO_POSTS.some(existing => existing.id === post.id)) {
-      DEMO_POSTS.push(post);
-    }
-  });
-
-  function getCommentDatasetElements() {
-    return [...document.querySelectorAll('.commentJsonlDataset[data-post-id]')];
-  }
-
-  function parseCommentDatasets() {
-    const out = {};
-    getCommentDatasetElements().forEach(el => {
-      const postId = el.dataset.postId;
-      out[postId] = parseJsonlDataset(el.textContent || '');
-    });
-    return out;
-  }
-
-  let COMMENTS_BY_POST_ID = parseCommentDatasets();
-
-  /* ASX BRAIN INTELLIGENCE SYSTEM */
-  const ASXKnowledgeBase = [
-    {
-      id: 'asx-runtime',
-      keywords: ['asx', 'runtime', 'engine', 'json-first', 'framework'],
-      text: 'ASX is a JSON-first runtime with framework-free rendering, state management, and component orchestration.'
-    },
-    {
-      id: 'scx-compression',
-      keywords: ['scx', 'compression', 'ratio', 'token', 'decompress'],
-      text: 'SCX compresses repeated patterns into symbolic tokens and reconstructs readable content at render time.'
-    },
-    {
-      id: 'atomic-components',
-      keywords: ['atomic', 'component', 'block', 'ui'],
-      text: 'Atomic components are reusable asx-block units composed with atomic CSS classes for predictable layouts.'
-    },
-    {
-      id: 'mx2lm-ai',
-      keywords: ['mx2lm', 'ai', 'assistant', 'brain'],
-      text: 'Mx2LM style AI workflows map natural language requests to ASX-compatible structures and responses.'
-    },
-    {
-      id: 'liquid-encryption',
-      keywords: ['liquid', 'encryption', 'secure', 'keys'],
-      text: 'Liquid encryption patterns combine modern cryptography concepts with synchronized state updates.'
-    }
-  ];
-
-  function tokenizeNGrams(text, n = 2) {
-    const normalized = (text || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
-    const words = normalized.split(/\s+/).filter(Boolean);
-    const grams = [];
-
-    for (let size = 1; size <= Math.max(1, n); size++) {
-      for (let i = 0; i <= words.length - size; i++) {
-        grams.push(words.slice(i, i + size).join(' '));
-      }
-    }
-
-    return grams;
-  }
-
-  const ASXBrain = {
-    scoreCorpus(question) {
-      const qGrams = tokenizeNGrams(question, 3);
-      const qSet = new Set(qGrams);
-
-      return ASXKnowledgeBase.map(entry => {
-        const entrySet = new Set(tokenizeNGrams(`${entry.text} ${entry.keywords.join(' ')}`, 3));
-        let overlap = 0;
-        qSet.forEach(token => {
-          if (entrySet.has(token)) overlap += token.split(' ').length;
-        });
-
-        return { entry, overlap };
-      }).sort((a, b) => b.overlap - a.overlap);
-    },
-
-    findPostMatches(question) {
-      const qGrams = new Set(tokenizeNGrams(question, 2));
-
-      return DEMO_POSTS.map(post => {
-        const postText = [
-          post.title,
-          post.author,
-          post.decompressedBody,
-          (post.category || []).join(' '),
-          ...(post.comments || []).map(c => `${c.author} ${c.body}`)
-        ].join(' ');
-
-        const postTokens = new Set(tokenizeNGrams(postText, 2));
-        let score = 0;
-        qGrams.forEach(token => {
-          if (postTokens.has(token)) score += token.split(' ').length;
-        });
-
-        return { post, score };
-      }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
-    },
 
   const CATEGORY_EMOJIS = {
-    'General Discussion': '⭐',
-    'Announcements': '📢',
-    'Help & Support': '🛟',
-    'Hobbies & Interests': '🎯',
-    'Life & Wellness': '🌿',
-    'Tech & Gadgets': '💻',
-    'Creative Corner': '🎨',
-    'Local Community': '🏘️',
-    'ASX Runtime': '⚡',
-    'Atomic Components': '⚛️',
-    'SCX Compression': '🧠',
-    'Mx2LM & AI Integration': '🤖',
-    'Liquid Encryption': '🔐',
-    'ASX Guides & Documentation': '📚'
+    "SCX Symbolic Computing": "⚡",
+    "Bytecode & Execution": "🔧",
+    "Multi-Agent Systems": "🤖",
+    "Neural-Symbolic AI": "🧠",
+    "Atomic JSON & Tapes": "🎵",
+    "Liquid-OS Integration": "💧",
+    "Runtime Protocols": "🔄"
   };
 
-  /* ASX BRAIN INTELLIGENCE SYSTEM */
-  const ASXKnowledgeBase = [
-    {
-      id: 'asx-runtime',
-      keywords: ['asx', 'runtime', 'engine', 'json-first', 'framework'],
-      text: 'ASX is a JSON-first runtime with framework-free rendering, state management, and component orchestration.'
+  /* SCX SYMBOLIC COMPUTING RUNTIME */
+  const SCXRuntime = {
+    console: document.getElementById('scxConsole'),
+    bytecodeDisplay: document.getElementById('scxBytecode'),
+
+    log: function(message) {
+      this.console.innerHTML += `<div>${message}</div>`;
+      this.console.scrollTop = this.console.scrollHeight;
     },
-    {
-      id: 'scx-compression',
-      keywords: ['scx', 'compression', 'ratio', 'token', 'decompress'],
-      text: 'SCX compresses repeated patterns into symbolic tokens and reconstructs readable content at render time.'
+
+    clear: function() {
+      this.console.innerHTML = '<div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>';
     },
-    {
-      id: 'atomic-components',
-      keywords: ['atomic', 'component', 'block', 'ui'],
-      text: 'Atomic components are reusable asx-block units composed with atomic CSS classes for predictable layouts.'
+
+    execute: function(scxCode, description) {
+      this.clear();
+      this.bytecodeDisplay.innerHTML = `<strong>Current SCX Bytecode:</strong> ${scxCode}`;
+      this.log(`🎯 Executing: ${description}`);
+      this.log(`📦 SCX Symbols: ${scxCode}`);
+
+      // Simulate SCX symbolic execution
+      const symbols = scxCode.match(/[@#\$%^&*()><+\-=\~∂∞→←↑↓Θ]/g) || [];
+      symbols.forEach(symbol => {
+        setTimeout(() => {
+          this.log(`🔍 Interpreting symbol: ${symbol} → ${this.getSymbolMeaning(symbol)}`);
+        }, symbols.indexOf(symbol) * 300);
+      });
+
+      setTimeout(() => {
+        this.log(`✅ SCX Execution Complete: ${this.interpretSCX(scxCode)}`);
+      }, symbols.length * 300 + 500);
     },
-    {
-      id: 'mx2lm-ai',
-      keywords: ['mx2lm', 'ai', 'assistant', 'brain'],
-      text: 'Mx2LM style AI workflows map natural language requests to ASX-compatible structures and responses.'
+
+    getSymbolMeaning: function(symbol) {
+      const meanings = {
+        '@': 'internet/network',
+        '#': 'person/agent',
+        '$': 'data/money',
+        '%': 'save/persist',
+        '^': 'AI/intelligence',
+        '&': 'location',
+        '*': 'time/current',
+        '(': 'group start',
+        ')': 'group end',
+        '>': 'send/forward',
+        '<': 'receive/backward',
+        '+': 'create/add',
+        '-': 'remove/subtract',
+        '=': 'assign/set',
+        '~': 'transform/encrypt',
+        '∂': 'update/mutate',
+        '∞': 'loop/repeat',
+        '→': 'move/forward',
+        '←': 'return/backward',
+        '↑': 'increase',
+        '↓': 'decrease',
+        'Θ': 'connect'
+      };
+      return meanings[symbol] || 'unknown symbol';
     },
-    {
-      id: 'liquid-encryption',
-      keywords: ['liquid', 'encryption', 'secure', 'keys'],
-      text: 'Liquid encryption patterns combine modern cryptography concepts with synchronized state updates.'
+
+    interpretSCX: function(scxCode) {
+      if (scxCode.includes('@#(>)%')) return 'Agent communication protocol executed';
+      if (scxCode.includes('(∂)brain')) return 'Neural weights updated successfully';
+      if (scxCode.includes('(~)encrypt')) return 'Data transformation completed';
+      if (scxCode.includes('(+)tape')) return 'New atomic tape created';
+      return 'Symbolic execution completed';
     }
-  ];
+  };
 
-  function tokenizeNGrams(text, n = 2) {
-    const normalized = (text || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
-    const words = normalized.split(/\s+/).filter(Boolean);
-    const grams = [];
-
-    for (let size = 1; size <= Math.max(1, n); size++) {
-      for (let i = 0; i <= words.length - size; i++) {
-        grams.push(words.slice(i, i + size).join(' '));
-      }
+  // SCX Symbolic Computing Examples
+  const SCX_EXECUTION_DEMOS = {
+    agent_communication: {
+      code: '@#(>)%data',
+      description: 'Multi-agent communication protocol'
+    },
+    data_mutation: {
+      code: '(∂)$state.tapes[0](*)',
+      description: 'Real-time data mutation with temporal context'
+    },
+    neural_training: {
+      code: '^(>)brain.weights(~)encrypt',
+      description: 'AI neural training with encrypted weight updates'
     }
+  };
 
-    return grams;
-  }
-
+  /* ASX BRAIN INTELLIGENCE SYSTEM - EXPANDED FOR SYMBOLIC COMPUTING */
   const ASXBrain = {
-    scoreCorpus(question) {
-      const qGrams = tokenizeNGrams(question, 3);
-      const qSet = new Set(qGrams);
-
-      return ASXKnowledgeBase.map(entry => {
-        const entrySet = new Set(tokenizeNGrams(`${entry.text} ${entry.keywords.join(' ')}`, 3));
-        let overlap = 0;
-        qSet.forEach(token => {
-          if (entrySet.has(token)) overlap += token.split(' ').length;
-        });
-
-        return { entry, overlap };
-      }).sort((a, b) => b.overlap - a.overlap);
-    },
-
-    findPostMatches(question) {
-      const qGrams = new Set(tokenizeNGrams(question, 2));
-
-      return DEMO_POSTS.map(post => {
-        const postText = [
-          post.title,
-          post.author,
-          post.decompressedBody,
-          (post.category || []).join(' '),
-          ...(post.comments || []).map(c => `${c.author} ${c.body}`)
-        ].join(' ');
-
-        const postTokens = new Set(tokenizeNGrams(postText, 2));
-        let score = 0;
-        qGrams.forEach(token => {
-          if (postTokens.has(token)) score += token.split(' ').length;
-        });
-
-        return { post, score };
-      }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
-    },
-
-    think(question) {
+    think: function(question) {
       return new Promise((resolve) => {
         const output = document.getElementById('brainOutput');
-        output.innerHTML = '<div class="thinking">🤔 Running ASX N-gram reasoning...</div>';
+        output.innerHTML = '<div class="thinking">🤔 Processing symbolic computing question...</div>';
 
         setTimeout(() => {
-          const q = question.toLowerCase().trim();
-          const totalPosts = DEMO_POSTS.length;
-          const compressedCount = DEMO_POSTS.filter(post => post.scxCompressed).length;
-          const categoryCounts = CATEGORIES.map(cat => `${cat} (${DEMO_POSTS.filter(post => (post.category || []).includes(cat)).length})`).join(', ');
-          const latest = [...DEMO_POSTS].sort((a, b) => new Date(b.published) - new Date(a.published))[0];
-          const corpusRank = this.scoreCorpus(q);
-          const postMatches = this.findPostMatches(q);
-          const bestConcept = corpusRank[0];
-          let response;
+          const q = question.toLowerCase();
+          let response = "";
 
-          if (q.includes('category') || q.includes('categories')) {
-            response = `Forum categories: ${categoryCounts}.`;
-          } else if (q.includes('how many') && q.includes('post')) {
-            response = `I currently index ${totalPosts} posts from the JSONL forum dataset.`;
-          } else if (q.includes('compressed') || q.includes('scx') || q.includes('storage')) {
-            response = `${compressedCount}/${totalPosts} posts are SCX-compressed and expanded when opened.`;
-          } else if (q.includes('latest') || q.includes('recent')) {
-            response = `Most recent topic: "${latest.title}" by ${latest.author} (${formatDate(latest.published)}).`;
-          } else if (postMatches.length > 0) {
-            const preview = postMatches.slice(0, 3).map(({ post }) => `• ${post.title} (${post.category?.[0] || 'Uncategorized'})`).join('<br>');
-            response = `N-gram match results (${postMatches.length}):<br>${preview}`;
-          } else if (bestConcept && bestConcept.overlap > 0) {
-            response = `${bestConcept.entry.text} Ask me to connect this concept to topics in the forum.`;
+          // Expanded understanding of SCX as symbolic computing
+          if (q.includes('symbolic') && q.includes('computing')) {
+            response = "SCX is a symbolic computing layer where symbols act as bytecode opcodes. Each symbol (@, #, >, etc.) represents executable operations, not just compressed data. The ASX Runtime interprets these symbols as semantic instructions for multi-agent systems.";
+          } else if (q.includes('bytecode') || q.includes('opcode')) {
+            response = "SCX symbols function like bytecode in virtual machines. @ = internet operations, # = agent operations, > = send operations, etc. The runtime maps symbols to function pointers, enabling JSON to execute complex behaviors without traditional scripting languages.";
+          } else if (q.includes('agent') && q.includes('communication')) {
+            response = "SCX enables multi-agent communication through symbolic protocols. Example: '@#(>)%' means 'internet → agent → send → data'. Agents interpret these symbols to coordinate behaviors, share memory, and execute distributed tasks across the Liquid-OS ecosystem.";
+          } else if (q.includes('neural') && q.includes('symbolic')) {
+            response = "SCX bridges neural networks and symbolic AI. Neural weights can be represented as SCX symbols, enabling symbolic reasoning over trained models. This allows AI systems to share, mutate, and reason about their own internal representations using the universal SCX protocol.";
+          } else if (q.includes('json') && q.includes('executable')) {
+            response = "SCX transforms JSON from static data to executable scripts. SCX symbols embedded in JSON are interpreted by the runtime as operations. This enables self-mutating data structures, agent instructions, and dynamic behaviors without eval() or external scripting engines.";
+          } else if (q.includes('atomic') && q.includes('tape')) {
+            response = "Atomic tapes use SCX for portable executable units. Each tape contains SCX-encoded behaviors that can be interpreted by any ASX Runtime. Tapes can self-update, communicate with other tapes, and execute complex workflows through symbolic computing, not just data storage.";
+          } else if (q.includes('liquid') && q.includes('os')) {
+            response = "Liquid-OS uses SCX as its fundamental computing layer. All inter-process communication, agent coordination, data mutation, and system behaviors are expressed through SCX symbols. This creates a unified semantic layer across the entire operating system ecosystem.";
+          } else if (q.includes('compression') && q.includes('vs')) {
+            response = "SCX is NOT compression. Compression reduces size without adding meaning. SCX adds executable semantics - it's a computing protocol. The size reduction is a side effect of symbolic efficiency, not the primary purpose. SCX enables behaviors; compression only saves space.";
+          } else if (q.includes('protocol') || q.includes('runtime')) {
+            response = "The SCX runtime protocol interprets symbols as semantic operations. When SCX-encoded JSON loads, the runtime parses symbols into opcodes, dispatches to appropriate agents, and executes the intended behaviors. This happens at the symbolic level, not the textual level.";
           } else {
-            response = 'Ask me about ASX runtime, SCX compression, atomic components, AI integration, categories, or latest forum topics.';
+            response = "I can explain SCX as symbolic computing, bytecode execution, multi-agent protocols, neural-symbolic AI, executable JSON, atomic tapes, Liquid-OS integration, or runtime protocols. What would you like to know?";
           }
 
-  // Demo forum posts with SCX compressed content
+          resolve({
+            type: "response",
+            content: `<div class="brain-response">${response}</div>`
+          });
+        }, 800);
+      });
+    }
+  };
+
+  // Demo forum posts focused on symbolic computing
   const DEMO_POSTS = [
     {
       id: "post-1",
-      title: "ASX Runtime Structure & Setup",
-      author: "ASX Team",
-      published: "2025-11-05T10:30:00Z",
-      category: ["ASX Runtime"],
-      content: SCX_COMPRESSED_GUIDES.asx_runtime,
-      commentCount: 15,
-      scxCompressed: true
+      title: "SCX Symbolic Computing Deep Dive - Beyond Compression",
+      author: "Systems Architect",
+      published: "2025-11-06T14:30:00Z",
+      category: ["SCX Symbolic Computing"],
+      content: "SCX transforms JSON into executable symbolic bytecode. Each symbol (@#%> etc) represents semantic operations that the ASX Runtime interprets as multi-agent instructions.",
+      commentCount: 23,
+      scxCompressed: false
     },
     {
       id: "post-2",
-      title: "Atomic Components Guide - Building UIs with ASX Blocks",
-      author: "UI Architect",
-      published: "2025-11-04T14:20:00Z",
-      category: ["Atomic Components"],
-      content: SCX_COMPRESSED_GUIDES.atomic_components,
-      commentCount: 8,
-      scxCompressed: true
+      title: "Multi-Agent Communication with SCX Symbolic Protocols",
+      author: "Agent Researcher",
+      published: "2025-11-05T11:20:00Z",
+      category: ["Multi-Agent Systems"],
+      content: "SCX enables agents to communicate through symbolic protocols like @#(>)% for internet→agent→send→data flows. Agents interpret symbols as intent-based operations.",
+      commentCount: 15,
+      scxCompressed: false
     },
     {
       id: "post-3",
-      title: "SCX Compression Deep Dive - From 20GB to 20KB",
-      author: "Compression Expert",
-      published: "2025-11-03T16:45:00Z",
-      category: ["SCX Compression"],
-      content: SCX_COMPRESSED_GUIDES.scx_compression,
-      commentCount: 23,
-      scxCompressed: true
+      title: "Neural-Symbolic AI: Bridging Connectionism and Symbolic Reasoning",
+      author: "AI Scientist",
+      published: "2025-11-04T16:45:00Z",
+      category: ["Neural-Symbolic AI"],
+      content: "SCX allows neural networks to express their internal representations as symbolic structures, enabling symbolic reasoning over trained models and knowledge sharing between AI systems.",
+      commentCount: 31,
+      scxCompressed: false
     },
     {
       id: "post-4",
-      title: "Mx2LM Integration - AI-Powered ASX Applications",
-      author: "AI Researcher",
-      published: "2025-11-02T09:15:00Z",
-      category: ["Mx2LM & AI Integration"],
-      content: SCX_COMPRESSED_GUIDES.mx2lm_integration,
-      commentCount: 12,
-      scxCompressed: true
+      title: "Atomic JSON Tapes: Self-Executing Data Structures",
+      author: "Data Engineer",
+      published: "2025-11-03T09:15:00Z",
+      category: ["Atomic JSON & Tapes"],
+      content: "Atomic tapes use SCX to become self-executing data structures. Tapes can mutate their own state, communicate with other tapes, and execute complex workflows through symbolic computing.",
+      commentCount: 18,
+      scxCompressed: false
     },
     {
       id: "post-5",
-      title: "Liquid Encryption for Secure ASX Applications",
-      author: "Security Lead",
-      published: "2025-11-01T11:40:00Z",
-      category: ["Liquid Encryption"],
-      content: "Learn how to implement liquid encryption in your ASX applications for maximum security.",
-      commentCount: 7,
+      title: "Liquid-OS: SCX as the Universal Computing Layer",
+      author: "OS Developer",
+      published: "2025-11-02T13:40:00Z",
+      category: ["Liquid-OS Integration"],
+      content: "In Liquid-OS, all system behaviors - from process scheduling to file operations - are expressed through SCX symbols. This creates a unified semantic layer across the entire OS.",
+      commentCount: 12,
       scxCompressed: false
     },
     {
       id: "post-6",
-      title: "Complete ASX Documentation & Reference",
-      author: "Documentation Team",
-      published: "2025-10-31T13:10:00Z",
-      category: ["ASX Guides & Documentation"],
-      content: "Access the complete ASX documentation including runtime, components, and SCX reference.",
-      commentCount: 31,
+      title: "SCX Runtime Protocol: From Symbols to Execution",
+      author: "Runtime Engineer",
+      published: "2025-11-01T10:10:00Z",
+      category: ["Runtime Protocols"],
+      content: "The SCX runtime protocol maps symbols to executable operations through a bytecode-like interpreter. Symbols become opcodes that trigger agent behaviors, data mutations, and system operations.",
+      commentCount: 27,
       scxCompressed: false
     }
   ];
@@ -699,19 +660,19 @@
   function populateCategoryDropdowns(){
     const filter = document.getElementById('labelFilter');
     const modalSelect = document.getElementById('topicLabel');
-    
+
     filter.innerHTML = `<option value="">All Categories</option>`;
     modalSelect.innerHTML = `<option value="">Select a category</option>`;
-    
+
     CATEGORIES.forEach(cat => {
-      const option1 = document.createElement('option'); 
-      option1.value = cat; 
-      option1.textContent = cat; 
+      const option1 = document.createElement('option');
+      option1.value = cat;
+      option1.textContent = cat;
       filter.appendChild(option1);
-      
-      const option2 = document.createElement('option'); 
-      option2.value = cat; 
-      option2.textContent = cat; 
+
+      const option2 = document.createElement('option');
+      option2.value = cat;
+      option2.textContent = cat;
       modalSelect.appendChild(option2);
     });
   }
@@ -722,18 +683,24 @@
       document.getElementById('pbModal').style.display = 'flex';
       document.getElementById('topicTitle').focus();
     };
-    
+
     document.getElementById('closeModal').onclick = closeModal;
     document.getElementById('cancelBtn').onclick = closeModal;
-    
+
     document.getElementById('scxDemoBtn').onclick = () => {
       document.getElementById('scxModal').style.display = 'flex';
     };
-    
+
     document.getElementById('closeScxModal').onclick = () => {
       document.getElementById('scxModal').style.display = 'none';
     };
-    
+
+    // ASX Brain interaction
+    document.getElementById('askBrainBtn').onclick = askBrain;
+    document.getElementById('brainInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') askBrain();
+    });
+
     window.onclick = (e) => {
       if (e.target === document.getElementById('pbModal')) {
         closeModal();
@@ -742,23 +709,48 @@
         document.getElementById('scxModal').style.display = 'none';
       }
     };
-    
+
     // Form submission
     document.getElementById('createTopicForm').onsubmit = handleFormSubmit;
-    
+
     // Refresh button
     document.getElementById('refreshBtn').onclick = () => {
       showStatus('Refreshing forum...', 'success');
       loadPosts();
     };
-    
+
     // Category filter
     document.getElementById('labelFilter').onchange = (e) => {
       loadPosts(e.target.value);
     };
-    
+
     // Search functionality
     document.getElementById('searchBar').addEventListener('input', handleSearch);
+  }
+
+  /* SCX EXECUTION FUNCTIONS */
+  function executeSCXDemo(demoKey) {
+    const demo = SCX_EXECUTION_DEMOS[demoKey];
+    if (demo) {
+      SCXRuntime.execute(demo.code, demo.description);
+    }
+  }
+
+  /* ASX BRAIN FUNCTIONS */
+  function askBrain() {
+    const input = document.getElementById('brainInput');
+    const question = input.value.trim();
+
+    if (!question) {
+      showStatus('Please enter a question for ASX Brain', 'error');
+      return;
+    }
+
+    ASXBrain.think(question).then(response => {
+      document.getElementById('brainOutput').innerHTML = response.content;
+    });
+
+    input.value = '';
   }
 
   function closeModal() {
@@ -768,44 +760,38 @@
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    
+
     const formData = new FormData(e.target);
     const title = formData.get('title');
     const author = formData.get('author') || 'Anonymous';
     const body = formData.get('body');
     const category = formData.get('labels');
-    const compressWithSCX = document.getElementById('scxCompress').checked;
-    
-    // In a real app, you would send this to your backend
-    console.log('Form submitted:', { title, author, body, category, compressWithSCX });
-    
+    const encodeWithSCX = document.getElementById('scxCompress').checked;
+
     // Show success message
-    showStatus(`Topic created successfully! ${compressWithSCX ? '(SCX Compressed)' : ''}`, 'success');
-    
+    showStatus(`Topic created successfully! ${encodeWithSCX ? '(SCX Symbol Encoded)' : ''}`, 'success');
+
     // Close modal and refresh
     closeModal();
     setTimeout(() => {
       loadPosts();
     }, 1000);
-    
+
     return false;
   }
 
   function loadPosts(label = null) {
-    // In a real app, this would fetch from an API
-    // For demo purposes, we're using static data
-    
-    const filteredPosts = label 
+    const filteredPosts = label
       ? DEMO_POSTS.filter(post => post.category.includes(label))
       : DEMO_POSTS;
-    
+
     renderPosts(filteredPosts);
   }
 
   /* RENDER POSTS */
   function renderPosts(posts) {
     const container = document.getElementById('forumSections');
-    
+
     if (posts.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
@@ -815,9 +801,9 @@
       `;
       return;
     }
-    
+
     container.innerHTML = '';
-    
+
     const grouped = {};
     CATEGORIES.forEach(c => grouped[c] = []);
     grouped['Uncategorized'] = [];
@@ -831,7 +817,6 @@
     CATEGORIES.concat('Uncategorized').forEach(cat => {
       if (!grouped[cat].length) return;
 
-      // ASX Block for each section
       const section = document.createElement('asx-block');
       section.id = `section-${cat.replace(/\s+/g, '-').toLowerCase()}`;
       section.className = 'forum-section';
@@ -852,37 +837,22 @@
           <tbody></tbody>
         </table>
       `;
-      
+
       const tbody = section.querySelector('tbody');
 
       grouped[cat].forEach(post => {
         const title = post.title || 'Untitled';
         const url = `#${post.id}`;
-        
-        // Content display - handle SCX compressed content
-        let contentDisplay = '';
-        if (post.scxCompressed) {
-          contentDisplay = `
-            <div class="scx-compressed">
-              <strong>SCX Compressed Content</strong><br>
-              ${post.content}
-            </div>
-            <button class="scx-toggle" onclick="decompressSCX('${post.id}')">Decompress</button>
-            <div id="decompressed-${post.id}" class="scx-decompressed hidden"></div>
-          `;
-        } else {
-          let snippetText = post.content || "";
-          if (snippetText.length > 150) {
-            snippetText = snippetText.slice(0, 150) + "...";
-          }
-          contentDisplay = `<div class="topic-snippet">${snippetText}</div>`;
+
+        let snippetText = post.content || "";
+        if (snippetText.length > 150) {
+          snippetText = snippetText.slice(0, 150) + "...";
         }
-        
+
         const published = post.published || '';
         const author = post.author || 'Unknown';
         const commentCount = post.commentCount || '0';
 
-        // Share URLs - using placeholder URLs for demo
         const shareEmail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
         const shareTwitter = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
         const shareLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
@@ -891,8 +861,7 @@
         tr.innerHTML = `
           <td>
             <a class="topic-title" href="${url}">${title}</a>
-            ${post.scxCompressed ? '<span class="badge" style="background:#00ff99;color:#000;padding:2px 6px;border-radius:4px;font-size:10px;">SCX</span>' : ''}
-            ${contentDisplay}
+            <div class="topic-snippet">${snippetText}</div>
           </td>
           <td>
             <div>${author}</div>
@@ -925,69 +894,11 @@
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 
-  /* SCX COMPRESSION/DECOMPRESSION */
-  function decompressSCX(postId) {
-    const decompressedEl = document.getElementById(`decompressed-${postId}`);
-    const post = DEMO_POSTS.find(p => p.id === postId);
-    
-    if (!post || !post.scxCompressed) return;
-    
-    // In a real implementation, this would use the actual SCX decompression algorithm
-    // For demo purposes, we're showing expanded content
-    const decompressedContent = `
-      <h4>Decompressed ASX Content</h4>
-      <p>This content was compressed using SCX tokens and has been decompressed for viewing.</p>
-      <div class="bg-darker pad-md rounded">
-        <strong>Original SCX:</strong> ${post.content}<br><br>
-        <strong>Decompressed Meaning:</strong> This represents compressed ASX guide content that would normally be much larger in size.
-      </div>
-      <p class="text-muted pad-md">SCX compression achieves extreme ratios by replacing common patterns with tokens.</p>
-    `;
-    
-    decompressedEl.innerHTML = decompressedContent;
-    decompressedEl.classList.toggle('hidden');
-  }
-
-  function toggleScxDecompression() {
-    const decompressedEl = document.getElementById('decompressedData');
-    const contentEl = document.getElementById('decompressedContent');
-    
-    if (decompressedEl.classList.contains('hidden')) {
-      // Show decompressed content
-      contentEl.innerHTML = `
-        <strong>ASX Runtime Structure:</strong>
-        <pre>{
-  "$schema": "asx-shell-v1",
-  "$state": { ... },
-  "$effects": [ ... ],
-  "$components": { ... }
-}</pre>
-        
-        <strong>Atomic Components Example:</strong>
-        <pre>&lt;asx-block id="my-component"&gt;
-  &lt;div class="flex row gap-md"&gt;
-    &lt;button scx="(?) condition (∴) action"&gt;Click&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/asx-block&gt;</pre>
-        
-        <strong>SCX Compression Process:</strong>
-        <pre>Original: 20GB JSON data
-Tokenized: SCX pattern matching
-Compressed: 20KB SCX tokens
-Ratio: 1,000,000:1</pre>
-      `;
-      decompressedEl.classList.remove('hidden');
-    } else {
-      decompressedEl.classList.add('hidden');
-    }
-  }
-
   /* SEARCH */
   function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
-    
+
     if (query === '') {
-      // If search is empty, show all posts again
       document.querySelectorAll('.forum-section').forEach(section => {
         section.style.display = '';
         section.querySelectorAll('tr').forEach(row => {
@@ -996,22 +907,21 @@ Ratio: 1,000,000:1</pre>
       });
       return;
     }
-    
+
     document.querySelectorAll('.forum-section').forEach(section => {
       let hasVisibleRows = false;
-      
+
       section.querySelectorAll('tbody tr').forEach(row => {
         const title = row.querySelector('.topic-title')?.textContent.toLowerCase() || '';
         const author = row.cells[1]?.textContent.toLowerCase() || '';
         const content = row.textContent.toLowerCase() || '';
-        
+
         const isMatch = title.includes(query) || author.includes(query) || content.includes(query);
         row.style.display = isMatch ? '' : 'none';
-        
+
         if (isMatch) hasVisibleRows = true;
       });
-      
-      // Show/hide entire section based on whether it has visible rows
+
       section.style.display = hasVisibleRows ? '' : 'none';
     });
   }
@@ -1021,7 +931,7 @@ Ratio: 1,000,000:1</pre>
     statusEl.textContent = message;
     statusEl.className = `status-message status-${type}`;
     statusEl.style.display = 'block';
-    
+
     setTimeout(() => {
       statusEl.style.display = 'none';
     }, 3000);
