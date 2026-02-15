@@ -513,48 +513,117 @@ ${line}` : line;
   };
 
   /* ASX BRAIN INTELLIGENCE SYSTEM */
+  const ASXKnowledgeBase = [
+    {
+      id: 'asx-runtime',
+      keywords: ['asx', 'runtime', 'engine', 'json-first', 'framework'],
+      text: 'ASX is a JSON-first runtime with framework-free rendering, state management, and component orchestration.'
+    },
+    {
+      id: 'scx-compression',
+      keywords: ['scx', 'compression', 'ratio', 'token', 'decompress'],
+      text: 'SCX compresses repeated patterns into symbolic tokens and reconstructs readable content at render time.'
+    },
+    {
+      id: 'atomic-components',
+      keywords: ['atomic', 'component', 'block', 'ui'],
+      text: 'Atomic components are reusable asx-block units composed with atomic CSS classes for predictable layouts.'
+    },
+    {
+      id: 'mx2lm-ai',
+      keywords: ['mx2lm', 'ai', 'assistant', 'brain'],
+      text: 'Mx2LM style AI workflows map natural language requests to ASX-compatible structures and responses.'
+    },
+    {
+      id: 'liquid-encryption',
+      keywords: ['liquid', 'encryption', 'secure', 'keys'],
+      text: 'Liquid encryption patterns combine modern cryptography concepts with synchronized state updates.'
+    }
+  ];
+
+  function tokenizeNGrams(text, n = 2) {
+    const normalized = (text || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
+    const words = normalized.split(/\s+/).filter(Boolean);
+    const grams = [];
+
+    for (let size = 1; size <= Math.max(1, n); size++) {
+      for (let i = 0; i <= words.length - size; i++) {
+        grams.push(words.slice(i, i + size).join(' '));
+      }
+    }
+
+    return grams;
+  }
+
   const ASXBrain = {
+    scoreCorpus(question) {
+      const qGrams = tokenizeNGrams(question, 3);
+      const qSet = new Set(qGrams);
+
+      return ASXKnowledgeBase.map(entry => {
+        const entrySet = new Set(tokenizeNGrams(`${entry.text} ${entry.keywords.join(' ')}`, 3));
+        let overlap = 0;
+        qSet.forEach(token => {
+          if (entrySet.has(token)) overlap += token.split(' ').length;
+        });
+
+        return { entry, overlap };
+      }).sort((a, b) => b.overlap - a.overlap);
+    },
+
+    findPostMatches(question) {
+      const qGrams = new Set(tokenizeNGrams(question, 2));
+
+      return DEMO_POSTS.map(post => {
+        const postText = [
+          post.title,
+          post.author,
+          post.decompressedBody,
+          (post.category || []).join(' '),
+          ...(post.comments || []).map(c => `${c.author} ${c.body}`)
+        ].join(' ');
+
+        const postTokens = new Set(tokenizeNGrams(postText, 2));
+        let score = 0;
+        qGrams.forEach(token => {
+          if (postTokens.has(token)) score += token.split(' ').length;
+        });
+
+        return { post, score };
+      }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+    },
+
     think(question) {
       return new Promise((resolve) => {
         const output = document.getElementById('brainOutput');
-        output.innerHTML = '<div class="thinking">🤔 Searching Pocket Book dataset...</div>';
+        output.innerHTML = '<div class="thinking">🤔 Running ASX N-gram reasoning...</div>';
 
         setTimeout(() => {
           const q = question.toLowerCase().trim();
           const totalPosts = DEMO_POSTS.length;
           const compressedCount = DEMO_POSTS.filter(post => post.scxCompressed).length;
-          const categoryCounts = CATEGORIES.map(cat => {
-            const count = DEMO_POSTS.filter(post => (post.category || []).includes(cat)).length;
-            return `${cat} (${count})`;
-          }).join(', ');
-
-          const matches = DEMO_POSTS.filter(post => {
-            const text = [
-              post.title,
-              post.author,
-              post.decompressedBody,
-              (post.category || []).join(' '),
-              ...(post.comments || []).map(c => `${c.author} ${c.body}`)
-            ].join(' ').toLowerCase();
-            return q && text.includes(q);
-          });
-
+          const categoryCounts = CATEGORIES.map(cat => `${cat} (${DEMO_POSTS.filter(post => (post.category || []).includes(cat)).length})`).join(', ');
           const latest = [...DEMO_POSTS].sort((a, b) => new Date(b.published) - new Date(a.published))[0];
+          const corpusRank = this.scoreCorpus(q);
+          const postMatches = this.findPostMatches(q);
+          const bestConcept = corpusRank[0];
           let response;
 
           if (q.includes('category') || q.includes('categories')) {
-            response = `Current categories: ${categoryCounts}.`;
+            response = `Forum categories: ${categoryCounts}.`;
           } else if (q.includes('how many') && q.includes('post')) {
-            response = `There are ${totalPosts} posts in the embedded JSONL dataset.`;
+            response = `I currently index ${totalPosts} posts from the JSONL forum dataset.`;
           } else if (q.includes('compressed') || q.includes('scx') || q.includes('storage')) {
-            response = `${compressedCount}/${totalPosts} posts are stored in SCX compressed form in the JSONL dataset and expanded for reading in the modal.`;
+            response = `${compressedCount}/${totalPosts} posts are SCX-compressed and expanded when opened.`;
           } else if (q.includes('latest') || q.includes('recent')) {
-            response = `Latest post: "${latest.title}" by ${latest.author} (${formatDate(latest.published)}).`;
-          } else if (matches.length > 0) {
-            const preview = matches.slice(0, 3).map(post => `• ${post.title} (${post.category?.[0] || 'Uncategorized'})`).join('<br>');
-            response = `I found ${matches.length} matching post(s):<br>${preview}`;
+            response = `Most recent topic: "${latest.title}" by ${latest.author} (${formatDate(latest.published)}).`;
+          } else if (postMatches.length > 0) {
+            const preview = postMatches.slice(0, 3).map(({ post }) => `• ${post.title} (${post.category?.[0] || 'Uncategorized'})`).join('<br>');
+            response = `N-gram match results (${postMatches.length}):<br>${preview}`;
+          } else if (bestConcept && bestConcept.overlap > 0) {
+            response = `${bestConcept.entry.text} Ask me to connect this concept to topics in the forum.`;
           } else {
-            response = `Ask me about posts, categories, latest topics, or compressed storage. I currently index ${totalPosts} JSONL records from this page.`;
+            response = 'Ask me about ASX runtime, SCX compression, atomic components, AI integration, categories, or latest forum topics.';
           }
 
           resolve({
