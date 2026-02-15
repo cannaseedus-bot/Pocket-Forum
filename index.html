@@ -304,24 +304,210 @@
 
 <script>
   /* CONFIG */
-  const CATEGORIES = [  
-    "ASX Guides & Documentation",
-    "SCX Compression",
-    "Atomic Components",
-    "Mx2LM & AI Integration",
-    "Liquid Encryption",
-    "ASX Runtime",
-    "Projects & Examples"
+  function parseJsonlDataset(jsonlText) {
+    return jsonlText
+      .split(/\n/)
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => JSON.parse(line));
+  }
+
+  const FORUM_DATASET_EL = document.getElementById('forumJsonlDataset');
+  const FORUM_DATASET_JSONL = FORUM_DATASET_EL?.textContent || '';
+  const DEMO_POSTS = parseJsonlDataset(FORUM_DATASET_JSONL).map(post => ({ ...post, comments: [] }));
+
+  const ASX_SEED_POSTS = [
+    {
+      id: 'asx-post-1',
+      title: 'ASX Runtime Structure & Setup',
+      author: 'ASX Team',
+      published: '2025-11-05T10:30:00Z',
+      category: ['ASX Runtime'],
+      content: '(🌪️)asx_runtime(∴)(🧩)pattern:"json_first"(📦)input:1500_bytes(🚀)output:1073741824_bytes(⚡)ratio:715827:1',
+      decompressedBody: 'ASX runtime setup with state, effects, and components in one JSON-first structure.',
+      commentCount: 0,
+      scxCompressed: true,
+      comments: []
+    },
+    {
+      id: 'asx-post-2',
+      title: 'Atomic Components Guide - Building UIs with ASX Blocks',
+      author: 'UI Architect',
+      published: '2025-11-04T14:20:00Z',
+      category: ['Atomic Components'],
+      content: '(🌪️)atomic_components(∴)(🧩)pattern:"declarative_ui"(📦)input:1200_bytes(🚀)output:536870912_bytes(⚡)ratio:447392:1',
+      decompressedBody: 'Use reusable <asx-block> units with atomic CSS to build consistent declarative interfaces.',
+      commentCount: 0,
+      scxCompressed: true,
+      comments: []
+    },
+    {
+      id: 'asx-post-3',
+      title: 'SCX Compression Deep Dive - From 20GB to 20KB',
+      author: 'Compression Expert',
+      published: '2025-11-03T16:45:00Z',
+      category: ['SCX Compression'],
+      content: '(🌪️)scx_compression(∴)(🧩)pattern:"token_compression"(📦)input:800_bytes(🚀)output:268435456_bytes(⚡)ratio:335544:1',
+      decompressedBody: 'SCX token substitution and recursive unfolding can achieve extremely high compression ratios.',
+      commentCount: 0,
+      scxCompressed: true,
+      comments: []
+    },
+    {
+      id: 'asx-post-4',
+      title: 'Mx2LM Integration - AI-Powered ASX Applications',
+      author: 'AI Researcher',
+      published: '2025-11-02T09:15:00Z',
+      category: ['Mx2LM & AI Integration'],
+      content: '(🌪️)mx2lm_integration(∴)(🧩)pattern:"ai_runtime"(📦)input:2000_bytes(🚀)output:2147483648_bytes(⚡)ratio:1073741:1',
+      decompressedBody: 'Mx2LM maps natural language requests into complete ASX application structures.',
+      commentCount: 0,
+      scxCompressed: true,
+      comments: []
+    },
+    {
+      id: 'asx-post-5',
+      title: 'Liquid Encryption for Secure ASX Applications',
+      author: 'Security Lead',
+      published: '2025-11-01T11:40:00Z',
+      category: ['Liquid Encryption'],
+      content: 'Learn how to implement liquid encryption in ASX applications for secure messaging and transport.',
+      decompressedBody: 'Liquid encryption combines modern crypto primitives and resilient synchronization.',
+      commentCount: 0,
+      scxCompressed: false,
+      comments: []
+    },
+    {
+      id: 'asx-post-6',
+      title: 'Complete ASX Documentation & Reference',
+      author: 'Documentation Team',
+      published: '2025-10-31T13:10:00Z',
+      category: ['ASX Guides & Documentation'],
+      content: 'Access complete ASX docs covering runtime, components, SCX, and integration patterns.',
+      decompressedBody: 'A centralized reference for ASX runtime internals and implementation patterns.',
+      commentCount: 0,
+      scxCompressed: false,
+      comments: []
+    }
   ];
-  
+
+  ASX_SEED_POSTS.forEach(post => {
+    if (!DEMO_POSTS.some(existing => existing.id === post.id)) {
+      DEMO_POSTS.push(post);
+    }
+  });
+
+  function getCommentDatasetElements() {
+    return [...document.querySelectorAll('.commentJsonlDataset[data-post-id]')];
+  }
+
+  function parseCommentDatasets() {
+    const out = {};
+    getCommentDatasetElements().forEach(el => {
+      const postId = el.dataset.postId;
+      out[postId] = parseJsonlDataset(el.textContent || '');
+    });
+    return out;
+  }
+
+  let COMMENTS_BY_POST_ID = parseCommentDatasets();
+
+  /* ASX BRAIN INTELLIGENCE SYSTEM */
+  const ASXKnowledgeBase = [
+    {
+      id: 'asx-runtime',
+      keywords: ['asx', 'runtime', 'engine', 'json-first', 'framework'],
+      text: 'ASX is a JSON-first runtime with framework-free rendering, state management, and component orchestration.'
+    },
+    {
+      id: 'scx-compression',
+      keywords: ['scx', 'compression', 'ratio', 'token', 'decompress'],
+      text: 'SCX compresses repeated patterns into symbolic tokens and reconstructs readable content at render time.'
+    },
+    {
+      id: 'atomic-components',
+      keywords: ['atomic', 'component', 'block', 'ui'],
+      text: 'Atomic components are reusable asx-block units composed with atomic CSS classes for predictable layouts.'
+    },
+    {
+      id: 'mx2lm-ai',
+      keywords: ['mx2lm', 'ai', 'assistant', 'brain'],
+      text: 'Mx2LM style AI workflows map natural language requests to ASX-compatible structures and responses.'
+    },
+    {
+      id: 'liquid-encryption',
+      keywords: ['liquid', 'encryption', 'secure', 'keys'],
+      text: 'Liquid encryption patterns combine modern cryptography concepts with synchronized state updates.'
+    }
+  ];
+
+  function tokenizeNGrams(text, n = 2) {
+    const normalized = (text || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
+    const words = normalized.split(/\s+/).filter(Boolean);
+    const grams = [];
+
+    for (let size = 1; size <= Math.max(1, n); size++) {
+      for (let i = 0; i <= words.length - size; i++) {
+        grams.push(words.slice(i, i + size).join(' '));
+      }
+    }
+
+    return grams;
+  }
+
+  const ASXBrain = {
+    scoreCorpus(question) {
+      const qGrams = tokenizeNGrams(question, 3);
+      const qSet = new Set(qGrams);
+
+      return ASXKnowledgeBase.map(entry => {
+        const entrySet = new Set(tokenizeNGrams(`${entry.text} ${entry.keywords.join(' ')}`, 3));
+        let overlap = 0;
+        qSet.forEach(token => {
+          if (entrySet.has(token)) overlap += token.split(' ').length;
+        });
+
+        return { entry, overlap };
+      }).sort((a, b) => b.overlap - a.overlap);
+    },
+
+    findPostMatches(question) {
+      const qGrams = new Set(tokenizeNGrams(question, 2));
+
+      return DEMO_POSTS.map(post => {
+        const postText = [
+          post.title,
+          post.author,
+          post.decompressedBody,
+          (post.category || []).join(' '),
+          ...(post.comments || []).map(c => `${c.author} ${c.body}`)
+        ].join(' ');
+
+        const postTokens = new Set(tokenizeNGrams(postText, 2));
+        let score = 0;
+        qGrams.forEach(token => {
+          if (postTokens.has(token)) score += token.split(' ').length;
+        });
+
+        return { post, score };
+      }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+    },
+
   const CATEGORY_EMOJIS = {
-    "ASX Guides & Documentation": "📚",
-    "SCX Compression": "🧠",
-    "Atomic Components": "⚛️",
-    "Mx2LM & AI Integration": "🤖",
-    "Liquid Encryption": "🔐",
-    "ASX Runtime": "⚡",
-    "Projects & Examples": "🚀"
+    'General Discussion': '⭐',
+    'Announcements': '📢',
+    'Help & Support': '🛟',
+    'Hobbies & Interests': '🎯',
+    'Life & Wellness': '🌿',
+    'Tech & Gadgets': '💻',
+    'Creative Corner': '🎨',
+    'Local Community': '🏘️',
+    'ASX Runtime': '⚡',
+    'Atomic Components': '⚛️',
+    'SCX Compression': '🧠',
+    'Mx2LM & AI Integration': '🤖',
+    'Liquid Encryption': '🔐',
+    'ASX Guides & Documentation': '📚'
   };
 
   /* ASX BRAIN INTELLIGENCE SYSTEM */
