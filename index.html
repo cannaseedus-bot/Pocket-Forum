@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>🌿 Pocket Book v1</title>
+<title>ASX Forum — SCX Compressed + Atomic Components</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
@@ -43,109 +43,112 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; line-height: 1.5; }
   .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px;
+  
+  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px; 
             border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 153, 0.35); }
-
+  
   .logo { font-size: 24px; font-weight: bold; color: #00ff99; display: flex; align-items: center; gap: 8px; }
-
+  
   .user-panel { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; }
-
-  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040;
-                          padding: 8px 12px; cursor: pointer; transition: all 0.2s;
+  
+  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040; 
+                          padding: 8px 12px; cursor: pointer; transition: all 0.2s; 
                           font-family: inherit; font-size: 14px; border-radius: 6px; }
-
+  
   .btn:hover, .pb-btn:hover, select:hover { background: #404040; }
-
-  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px;
+  
+  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px; 
                    border-radius: 8px; overflow: hidden; }
-
-  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px;
-                    font-weight: bold; display: flex; justify-content: space-between;
+  
+  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px; 
+                    font-weight: bold; display: flex; justify-content: space-between; 
                     align-items: center; cursor: pointer; font-size: 18px; transition: background 0.2s; }
-
+  
   .section-header:hover { background: #404040; }
-
+  
   .topic-table { width: 100%; border-collapse: collapse; }
-
+  
   .topic-table th, .topic-table td { border: 1px solid #404040; padding: 12px; text-align: left; vertical-align: top; }
-
+  
   .topic-table th { background: #2a2a2a; font-weight: bold; }
-
+  
   .topic-title { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
-
+  
   .topic-title:hover { text-decoration: underline; }
-
+  
   .topic-meta { color: #808080; font-size: 12px; margin-top: 4px; }
-
-  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px;
-                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3;
+  
+  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px; 
+                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3; 
                    -webkit-box-orient: vertical; overflow: hidden; }
-
+  
   .stats { color: #b0b0b0; text-align: center; }
-
+  
   .actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-
-  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px;
-                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center;
+  
+  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px; 
+                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; 
                 justify-content: center; }
-
+  
   .action-btn:hover { background: #2a2a2a; color: #e0e0e0; }
-
+  
   .collapsed .topic-table { display: none; }
-
-  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
+  
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; 
            padding: 20px; }
+  
+  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px; 
+                   max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px;
+                   -ms-overflow-style: none; scrollbar-width: none; }
 
-  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px;
-                   max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px; }
-
-  .modal-header { display: flex; justify-content: space-between; align-items: center;
+  .modal-content::-webkit-scrollbar { display: none; }
+  
+  .modal-header { display: flex; justify-content: space-between; align-items: center; 
                   margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #404040; }
-
-  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px;
-               padding: 0; width: 30px; height: 30px; display: flex; align-items: center;
+  
+  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px; 
+               padding: 0; width: 30px; height: 30px; display: flex; align-items: center; 
                justify-content: center; border-radius: 4px; }
-
+  
   .close-btn:hover { background: #2a2a2a; }
-
+  
   .field { display: block; width: 100%; margin-bottom: 15px; }
-
-  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px;
-                                                 border: 1px solid #404040; background: #2a2a2a;
+  
+  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px; 
+                                                 border: 1px solid #404040; background: #2a2a2a; 
                                                  color: #e0e0e0; font-family: inherit; }
-
+  
   .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #00ff99; }
-
-  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px;
+  
+  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px; 
                 border: 1px solid #404040; background: #1a1a1a; color: #e0e0e0; font-size: 16px; }
-
+  
   .search-bar:focus { outline: none; border-color: #00ff99; }
-
+  
   .empty-state { text-align: center; padding: 40px 20px; color: #808080; }
-
+  
   .status-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
-
+  
   .status-success { background: rgba(74, 222, 128, 0.1); border: 1px solid #00ff99; color: #00ff99; }
-
+  
   .status-error { background: rgba(248, 113, 113, 0.1); border: 1px solid #f87171; color: #f87171; }
-
+  
   /* ASX Block Styles */
   asx-block { display: block; }
-
-  .scx-compressed {
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 10px;
-    margin: 10px 0;
-    font-family: monospace;
-    font-size: 12px;
-    overflow-x: auto;
+  
+  .scx-compressed { 
+    background: #001100; 
+    border: 1px solid #00ff99; 
+    border-radius: 6px; 
+    padding: 10px; 
+    margin: 10px 0; 
+    font-family: monospace; 
+    font-size: 12px; 
+    overflow-x: auto; 
     color: #00ff99;
   }
-
+  
   .scx-decompressed {
     background: #001a00;
     border: 1px solid #00cc77;
@@ -153,7 +156,7 @@
     padding: 15px;
     margin: 10px 0;
   }
-
+  
   .scx-toggle {
     background: #002200;
     border: 1px solid #00ff99;
@@ -164,59 +167,7 @@
     font-size: 12px;
     margin: 5px 0;
   }
-
-  /* ASX Brain Panel */
-  .brain-panel {
-    background: #1a1a1a;
-    border: 2px solid #00ff99;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 255, 153, 0.25);
-  }
-
-  .brain-input-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .brain-input {
-    flex: 1;
-    padding: 10px;
-    background: #2a2a2a;
-    border: 1px solid #404040;
-    border-radius: 6px;
-    color: #e0e0e0;
-    font-family: inherit;
-  }
-
-  .brain-output {
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 12px;
-    min-height: 80px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .thinking {
-    color: #00ffff;
-    font-style: italic;
-  }
-
-  .brain-response {
-    color: #00ff99;
-  }
-
-  .post-page-title { margin-bottom: 6px; }
-  .post-page-meta { color: #808080; margin-bottom: 12px; font-size: 13px; }
-  .comments-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-  .comment-item { background: #11161c; border: 1px solid #404040; border-radius: 6px; padding: 10px; }
-  .comment-item header { display: flex; justify-content: space-between; margin-bottom: 6px; color: #b0b0b0; font-size: 12px; }
-  .comment-form { margin-top: 12px; display: grid; gap: 8px; }
-
+  
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .header { flex-direction: column; align-items: flex-start; }
@@ -224,9 +175,8 @@
     .topic-table { display: block; overflow-x: auto; }
     .actions { justify-content: flex-start; }
     .topic-snippet { max-width: 200px; }
-    .brain-input-container { flex-direction: column; }
   }
-
+  
   @media (max-width: 480px) {
     .topic-table th:nth-child(2), .topic-table td:nth-child(2) { display: none; }
     .actions { flex-direction: column; }
@@ -240,7 +190,7 @@
     <header class="header flex row justify-between items-center">
       <div class="logo">
         <span>🌿</span>
-        <span>Pocket Book v1</span>
+        <span>ASX Forum — SCX Compressed</span>
       </div>
       <div class="user-panel">
         <select id="labelFilter"></select>
@@ -251,23 +201,6 @@
     </header>
   </asx-block>
 
-  <!-- ASX Brain Block - Interactive AI -->
-  <asx-block id="asx-brain">
-    <div class="brain-panel">
-      <h3 class="text-glow">🧠 ASX Brain - N-gram Intelligence System</h3>
-      <p class="text-muted">Ask me about ASX, SCX compression, Atomic components, or anything related to the framework</p>
-
-      <div class="brain-input-container">
-        <input type="text" class="brain-input" id="brainInput" placeholder="Ask about ASX, SCX, components, runtime..." />
-        <button class="pb-btn" id="askBrainBtn" style="background: #00ff99; color: #000;">Ask ASX Brain</button>
-      </div>
-
-      <div class="brain-output" id="brainOutput">
-        <div class="thinking">🤔 Ready to answer your ASX questions...</div>
-      </div>
-    </div>
-  </asx-block>
-
   <!-- Status Message Block -->
   <asx-block id="status-message">
     <div class="status-message" id="statusMessage"></div>
@@ -275,13 +208,13 @@
 
   <!-- Search Block -->
   <asx-block id="search-bar">
-    <input type="text" class="search-bar" placeholder="Search topics, people, or content..." id="searchBar" />
+    <input type="text" class="search-bar" placeholder="Search ASX topics, guides, or SCX content..." id="searchBar" />
   </asx-block>
 
   <!-- Forum Content -->
   <div id="forumSections">
     <div class="empty-state" id="loadingState">
-      Loading Pocket Book v1 content...
+      Loading ASX Forum Content...
     </div>
   </div>
 </div>
@@ -290,7 +223,7 @@
 <div class="modal" id="pbModal">
   <div class="modal-content">
     <div class="modal-header">
-      <strong>Create New Topic</strong>
+      <strong>Create New ASX Topic</strong>
       <button class="close-btn" id="closeModal">✕</button>
     </div>
     <form id="createTopicForm">
@@ -301,7 +234,7 @@
         <input name="author" id="topicAuthor" placeholder="Author name (optional)"/>
       </div>
       <div class="field">
-        <textarea name="body" id="topicBody" placeholder="Write your content here..." rows="6" required></textarea>
+        <textarea name="body" id="topicBody" placeholder="Write your ASX/SCX content here..." rows="6" required></textarea>
       </div>
       <div class="field">
         <select name="labels" id="topicLabel" required>
@@ -322,17 +255,6 @@
   </div>
 </div>
 
-<!-- Post View Modal -->
-<div class="modal" id="postModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <strong>Topic</strong>
-      <button class="close-btn" id="closePostModal">✕</button>
-    </div>
-    <div id="postModalContent"></div>
-  </div>
-</div>
-
 <!-- SCX Demo Modal -->
 <div class="modal" id="scxModal">
   <div class="modal-content">
@@ -343,19 +265,19 @@
     <div class="pad-md">
       <h3 class="text-glow">SCX Compression Example</h3>
       <p class="text-muted pad-md">See how ASX data is compressed using SCX tokens</p>
-
+      
       <div class="scx-compressed">
         <strong>Compressed SCX Data (2.1KB):</strong><br>
         (🌪️)asx_forum_data(∴)(🧩)pattern:"scx_compression"(📦)input:2100_bytes(🚀)output:1073741824_bytes(⚡)ratio:511305:1
       </div>
-
+      
       <button class="scx-toggle" onclick="toggleScxDecompression()">Toggle Decompression</button>
-
+      
       <div class="scx-decompressed hidden" id="decompressedData">
         <h4 class="text-aqua">Decompressed Data (1GB equivalent):</h4>
         <pre id="decompressedContent"></pre>
       </div>
-
+      
       <div class="pad-md">
         <h4 class="text-glow">SCX Token Reference:</h4>
         <div class="flex wrap gap-md">
@@ -365,8 +287,8 @@
             <code>(⊕)</code> = increment
           </div>
           <div class="bg-darker pad-md rounded">
-            <code>(💬&gt;)</code> = message<br>
-            <code>(&gt;)</code> = send<br>
+            <code>(💬>)</code> = message<br>
+            <code>(>)</code> = send<br>
             <code>(+)</code> = create
           </div>
           <div class="bg-darker pad-md rounded">
@@ -380,191 +302,99 @@
   </div>
 </div>
 
-
-<script id="forumJsonlDataset" type="application/jsonl">
-{"id": "post-1", "title": "Welcome Thread: Introduce Yourself", "author": "Pocket Team", "published": "2025-11-05T10:30:00Z", "category": ["General Discussion"], "content": "(🌪️)welcome_thread(∴)(🧩)pattern:\"intro+community_guidelines\"(📦)input:1280_bytes(🚀)output:410_bytes(⚡)ratio:3.12:1", "decompressedBody": "Hi everyone! Welcome to Pocket Book v1. Share your name, interests, and what you hope to talk about here. Please keep things respectful and friendly so this forum stays welcoming for everyone.", "commentCount": 2, "scxCompressed": true}
-{"id": "post-2", "title": "This Week in Pocket Book: Events & Changes", "author": "Moderator Sam", "published": "2025-11-04T14:20:00Z", "category": ["Announcements"], "content": "(🌪️)weekly_updates(∴)(🧩)pattern:\"events+feature_notes\"(📦)input:1640_bytes(🚀)output:512_bytes(⚡)ratio:3.20:1", "decompressedBody": "Quick weekly update: we added better search relevance, category filtering improvements, and a cleaner reading modal for topics. Friday night we'll host a community Q&A thread.", "commentCount": 1, "scxCompressed": true}
-{"id": "post-3", "title": "Need Advice: Starting a Small Balcony Garden", "author": "GreenBeginner", "published": "2025-11-03T16:45:00Z", "category": ["Help & Support"], "content": "(🌪️)first_garden(∴)(🧩)pattern:\"beginner_help+checklist\"(📦)input:1430_bytes(🚀)output:470_bytes(⚡)ratio:3.04:1", "decompressedBody": "I only have morning sunlight and a small balcony. Which easy plants should I start with, and what soil mix works best for herbs in containers?", "commentCount": 2, "scxCompressed": true}
-{"id": "post-4", "title": "Meal Prep Ideas Under $40/Week", "author": "BudgetCook", "published": "2025-11-02T09:15:00Z", "category": ["Life & Wellness"], "content": "(🌪️)budget_meals(∴)(🧩)pattern:\"mealprep+shopping_tips\"(📦)input:1510_bytes(🚀)output:486_bytes(⚡)ratio:3.10:1", "decompressedBody": "Sharing my weekly plan for affordable meals: bean chili, veggie fried rice, overnight oats, and roasted chicken wraps. Posting full shopping list and prep schedule inside.", "commentCount": 1, "scxCompressed": true}
-{"id": "post-5", "title": "Show Your Desk Setup (Comfort + Focus)", "author": "FocusMode", "published": "2025-11-01T11:40:00Z", "category": ["Tech & Gadgets"], "content": "(🌪️)desk_setup(∴)(🧩)pattern:\"productivity+ergonomics\"(📦)input:1730_bytes(🚀)output:550_bytes(⚡)ratio:3.14:1", "decompressedBody": "Let's compare desk setups that help focus without spending too much. Include keyboard, lighting, chair posture tips, and what helped reduce distractions.", "commentCount": 1, "scxCompressed": true}
-{"id": "post-6", "title": "Monthly Sketchbook Share Thread", "author": "Mika Draws", "published": "2025-10-31T13:10:00Z", "category": ["Creative Corner"], "content": "(🌪️)sketchbook_share(∴)(🧩)pattern:\"art_prompt+feedback\"(📦)input:1390_bytes(🚀)output:452_bytes(⚡)ratio:3.07:1", "decompressedBody": "Post one page from your sketchbook this month and tell us what you were practicing. Constructive feedback only—please keep critiques kind and specific.", "commentCount": 1, "scxCompressed": true}
-{"id": "post-7", "title": "Favorite Safe Walking Routes in Your Area", "author": "CityWalker", "published": "2025-10-30T08:50:00Z", "category": ["Local Community"], "content": "(🌪️)neighborhood_walks(∴)(🧩)pattern:\"local_events+safe_routes\"(📦)input:1470_bytes(🚀)output:480_bytes(⚡)ratio:3.06:1", "decompressedBody": "Drop your favorite walking route with distance, lighting quality, and best time to go. Helpful for people trying to be more active nearby.", "commentCount": 1, "scxCompressed": true}
-{"id": "post-8", "title": "Daily Motivation Check-In", "author": "HabitCoach", "published": "2025-10-29T07:20:00Z", "category": ["General Discussion"], "content": "(🌪️)motivation_checkin(∴)(🧩)pattern:\"support_thread+daily_goals\"(📦)input:1550_bytes(🚀)output:495_bytes(⚡)ratio:3.13:1", "decompressedBody": "Share one goal for today and one small win from yesterday. Keep it simple—progress over perfection. Community support thread is open all day.", "commentCount": 1, "scxCompressed": true}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-1" type="application/jsonl">
-{"author": "Lena", "published": "2025-11-05T12:10:00Z", "body": "I'm here for gardening and book chats. Excited to meet people!"}
-{"author": "Marcus", "published": "2025-11-05T13:25:00Z", "body": "Happy to be here—looking for support staying consistent with habits."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-2" type="application/jsonl">
-{"author": "Nia", "published": "2025-11-04T16:05:00Z", "body": "Thanks for the updates—search feels way faster now."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-3" type="application/jsonl">
-{"author": "PlantNerd", "published": "2025-11-03T18:40:00Z", "body": "Try basil, mint, and chives first. Use a light potting mix with perlite."}
-{"author": "Ari", "published": "2025-11-03T19:15:00Z", "body": "Rotate pots weekly so each plant gets enough light coverage."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-4" type="application/jsonl">
-{"author": "Rico", "published": "2025-11-02T10:20:00Z", "body": "Could you share your spice blend for the chili?"}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-5" type="application/jsonl">
-{"author": "Ivy", "published": "2025-11-01T12:01:00Z", "body": "A monitor arm + warm lamp made a huge difference for me."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-6" type="application/jsonl">
-{"author": "Julian", "published": "2025-10-31T14:03:00Z", "body": "Love this idea. I'll share my gesture drawing page tonight."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-7" type="application/jsonl">
-{"author": "Dae", "published": "2025-10-30T09:30:00Z", "body": "Riverside loop is great before 8am—quiet and well lit."}
-</script>
-
-<script class="commentJsonlDataset" data-post-id="post-8" type="application/jsonl">
-{"author": "Pia", "published": "2025-10-29T08:14:00Z", "body": "Yesterday win: 20-minute walk. Today goal: prep tomorrow's lunch."}
-</script>
-
 <script>
   /* CONFIG */
-  function parseJsonlDataset(jsonlText) {
-    return jsonlText
-      .split(/\n/)
-      .map(line => line.trim())
-      .filter(Boolean)
-      .map(line => JSON.parse(line));
-  }
-
-  const FORUM_DATASET_EL = document.getElementById('forumJsonlDataset');
-  const FORUM_DATASET_JSONL = FORUM_DATASET_EL?.textContent || '';
-  const DEMO_POSTS = parseJsonlDataset(FORUM_DATASET_JSONL).map(post => ({ ...post, comments: [] }));
-
-  function getCommentDatasetElements() {
-    return [...document.querySelectorAll('.commentJsonlDataset[data-post-id]')];
-  }
-
-  function parseCommentDatasets() {
-    const out = {};
-    getCommentDatasetElements().forEach(el => {
-      const postId = el.dataset.postId;
-      out[postId] = parseJsonlDataset(el.textContent || '');
-    });
-    return out;
-  }
-
-  let COMMENTS_BY_POST_ID = parseCommentDatasets();
-
-  function syncPostComments() {
-    DEMO_POSTS.forEach(post => {
-      const comments = COMMENTS_BY_POST_ID[post.id] || [];
-      post.comments = comments;
-      post.commentCount = comments.length;
-    });
-  }
-
-  function appendJsonlRecord(scriptEl, record) {
-    const line = JSON.stringify(record);
-    const trimmed = (scriptEl.textContent || '').trim();
-    scriptEl.textContent = trimmed ? `${trimmed}
-${line}` : line;
-  }
-
-  function ensureCommentDataset(postId) {
-    let el = document.querySelector(`.commentJsonlDataset[data-post-id="${postId}"]`);
-    if (!el) {
-      el = document.createElement('script');
-      el.type = 'application/jsonl';
-      el.className = 'commentJsonlDataset';
-      el.dataset.postId = postId;
-      el.textContent = '';
-      FORUM_DATASET_EL.insertAdjacentElement('afterend', el);
-    }
-    return el;
-  }
-
-  function appendPostRecord(post) {
-    appendJsonlRecord(FORUM_DATASET_EL, post);
-    DEMO_POSTS.push({ ...post, comments: [] });
-    ensureCommentDataset(post.id);
-  }
-
-  function appendCommentRecord(postId, comment) {
-    const ds = ensureCommentDataset(postId);
-    appendJsonlRecord(ds, comment);
-    if (!COMMENTS_BY_POST_ID[postId]) COMMENTS_BY_POST_ID[postId] = [];
-    COMMENTS_BY_POST_ID[postId].push(comment);
-    syncPostComments();
-  }
-
-  syncPostComments();
-
-  const CATEGORIES = [...new Set(DEMO_POSTS.flatMap(post => post.category || []))];
-
+  const CATEGORIES = [  
+    "ASX Guides & Documentation",
+    "SCX Compression",
+    "Atomic Components",
+    "Mx2LM & AI Integration",
+    "Liquid Encryption",
+    "ASX Runtime",
+    "Projects & Examples"
+  ];
+  
   const CATEGORY_EMOJIS = {
-    'General Discussion': '⭐',
-    'Announcements': '📢',
-    'Help & Support': '🛟',
-    'Hobbies & Interests': '🎯',
-    'Life & Wellness': '🌿',
-    'Tech & Gadgets': '💻',
-    'Creative Corner': '🎨',
-    'Local Community': '🏘️'
+    "ASX Guides & Documentation": "📚",
+    "SCX Compression": "🧠",
+    "Atomic Components": "⚛️",
+    "Mx2LM & AI Integration": "🤖",
+    "Liquid Encryption": "🔐",
+    "ASX Runtime": "⚡",
+    "Projects & Examples": "🚀"
   };
 
-  /* ASX BRAIN INTELLIGENCE SYSTEM */
-  const ASXBrain = {
-    think(question) {
-      return new Promise((resolve) => {
-        const output = document.getElementById('brainOutput');
-        output.innerHTML = '<div class="thinking">🤔 Searching Pocket Book dataset...</div>';
+  // SCX Compressed ASX Guide Data
+  const SCX_COMPRESSED_GUIDES = {
+    "asx_runtime": "(🌪️)asx_runtime(∴)(🧩)pattern:\"json_first\"(📦)input:1500_bytes(🚀)output:1073741824_bytes(⚡)ratio:715827:1",
+    "atomic_components": "(🌪️)atomic_components(∴)(🧩)pattern:\"declarative_ui\"(📦)input:1200_bytes(🚀)output:536870912_bytes(⚡)ratio:447392:1",
+    "scx_compression": "(🌪️)scx_compression(∴)(🧩)pattern:\"token_compression\"(📦)input:800_bytes(🚀)output:268435456_bytes(⚡)ratio:335544:1",
+    "mx2lm_integration": "(🌪️)mx2lm_integration(∴)(🧩)pattern:\"ai_runtime\"(📦)input:2000_bytes(🚀)output:2147483648_bytes(⚡)ratio:1073741:1"
+  };
 
-        setTimeout(() => {
-          const q = question.toLowerCase().trim();
-          const totalPosts = DEMO_POSTS.length;
-          const compressedCount = DEMO_POSTS.filter(post => post.scxCompressed).length;
-          const categoryCounts = CATEGORIES.map(cat => {
-            const count = DEMO_POSTS.filter(post => (post.category || []).includes(cat)).length;
-            return `${cat} (${count})`;
-          }).join(', ');
-
-          const matches = DEMO_POSTS.filter(post => {
-            const text = [
-              post.title,
-              post.author,
-              post.decompressedBody,
-              (post.category || []).join(' '),
-              ...(post.comments || []).map(c => `${c.author} ${c.body}`)
-            ].join(' ').toLowerCase();
-            return q && text.includes(q);
-          });
-
-          const latest = [...DEMO_POSTS].sort((a, b) => new Date(b.published) - new Date(a.published))[0];
-          let response;
-
-          if (q.includes('category') || q.includes('categories')) {
-            response = `Current categories: ${categoryCounts}.`;
-          } else if (q.includes('how many') && q.includes('post')) {
-            response = `There are ${totalPosts} posts in the embedded JSONL dataset.`;
-          } else if (q.includes('compressed') || q.includes('scx') || q.includes('storage')) {
-            response = `${compressedCount}/${totalPosts} posts are stored in SCX compressed form in the JSONL dataset and expanded for reading in the modal.`;
-          } else if (q.includes('latest') || q.includes('recent')) {
-            response = `Latest post: "${latest.title}" by ${latest.author} (${formatDate(latest.published)}).`;
-          } else if (matches.length > 0) {
-            const preview = matches.slice(0, 3).map(post => `• ${post.title} (${post.category?.[0] || 'Uncategorized'})`).join('<br>');
-            response = `I found ${matches.length} matching post(s):<br>${preview}`;
-          } else {
-            response = `Ask me about posts, categories, latest topics, or compressed storage. I currently index ${totalPosts} JSONL records from this page.`;
-          }
-
-          resolve({
-            type: 'response',
-            content: `<div class="brain-response">${response}</div>`
-          });
-        }, 500);
-      });
+  // Demo forum posts with SCX compressed content
+  const DEMO_POSTS = [
+    {
+      id: "post-1",
+      title: "ASX Runtime Structure & Setup",
+      author: "ASX Team",
+      published: "2025-11-05T10:30:00Z",
+      category: ["ASX Runtime"],
+      content: SCX_COMPRESSED_GUIDES.asx_runtime,
+      commentCount: 15,
+      scxCompressed: true
+    },
+    {
+      id: "post-2",
+      title: "Atomic Components Guide - Building UIs with ASX Blocks",
+      author: "UI Architect",
+      published: "2025-11-04T14:20:00Z",
+      category: ["Atomic Components"],
+      content: SCX_COMPRESSED_GUIDES.atomic_components,
+      commentCount: 8,
+      scxCompressed: true
+    },
+    {
+      id: "post-3",
+      title: "SCX Compression Deep Dive - From 20GB to 20KB",
+      author: "Compression Expert",
+      published: "2025-11-03T16:45:00Z",
+      category: ["SCX Compression"],
+      content: SCX_COMPRESSED_GUIDES.scx_compression,
+      commentCount: 23,
+      scxCompressed: true
+    },
+    {
+      id: "post-4",
+      title: "Mx2LM Integration - AI-Powered ASX Applications",
+      author: "AI Researcher",
+      published: "2025-11-02T09:15:00Z",
+      category: ["Mx2LM & AI Integration"],
+      content: SCX_COMPRESSED_GUIDES.mx2lm_integration,
+      commentCount: 12,
+      scxCompressed: true
+    },
+    {
+      id: "post-5",
+      title: "Liquid Encryption for Secure ASX Applications",
+      author: "Security Lead",
+      published: "2025-11-01T11:40:00Z",
+      category: ["Liquid Encryption"],
+      content: "Learn how to implement liquid encryption in your ASX applications for maximum security.",
+      commentCount: 7,
+      scxCompressed: false
+    },
+    {
+      id: "post-6",
+      title: "Complete ASX Documentation & Reference",
+      author: "Documentation Team",
+      published: "2025-10-31T13:10:00Z",
+      category: ["ASX Guides & Documentation"],
+      content: "Access the complete ASX documentation including runtime, components, and SCX reference.",
+      commentCount: 31,
+      scxCompressed: false
     }
-  };
+  ];
 
   /* INIT */
   document.addEventListener('DOMContentLoaded', function() {
@@ -577,19 +407,19 @@ ${line}` : line;
   function populateCategoryDropdowns(){
     const filter = document.getElementById('labelFilter');
     const modalSelect = document.getElementById('topicLabel');
-
-    filter.innerHTML = '<option value="">All Categories</option>';
-    modalSelect.innerHTML = '<option value="">Select a category</option>';
-
+    
+    filter.innerHTML = `<option value="">All Categories</option>`;
+    modalSelect.innerHTML = `<option value="">Select a category</option>`;
+    
     CATEGORIES.forEach(cat => {
-      const option1 = document.createElement('option');
-      option1.value = cat;
-      option1.textContent = cat;
+      const option1 = document.createElement('option'); 
+      option1.value = cat; 
+      option1.textContent = cat; 
       filter.appendChild(option1);
-
-      const option2 = document.createElement('option');
-      option2.value = cat;
-      option2.textContent = cat;
+      
+      const option2 = document.createElement('option'); 
+      option2.value = cat; 
+      option2.textContent = cat; 
       modalSelect.appendChild(option2);
     });
   }
@@ -600,26 +430,18 @@ ${line}` : line;
       document.getElementById('pbModal').style.display = 'flex';
       document.getElementById('topicTitle').focus();
     };
-
+    
     document.getElementById('closeModal').onclick = closeModal;
     document.getElementById('cancelBtn').onclick = closeModal;
-
+    
     document.getElementById('scxDemoBtn').onclick = () => {
       document.getElementById('scxModal').style.display = 'flex';
     };
-
+    
     document.getElementById('closeScxModal').onclick = () => {
       document.getElementById('scxModal').style.display = 'none';
     };
-
-    document.getElementById('closePostModal').onclick = closePostModal;
-
-    // ASX Brain interaction
-    document.getElementById('askBrainBtn').onclick = askBrain;
-    document.getElementById('brainInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') askBrain();
-    });
-
+    
     window.onclick = (e) => {
       if (e.target === document.getElementById('pbModal')) {
         closeModal();
@@ -627,44 +449,24 @@ ${line}` : line;
       if (e.target === document.getElementById('scxModal')) {
         document.getElementById('scxModal').style.display = 'none';
       }
-      if (e.target === document.getElementById('postModal')) {
-        closePostModal();
-      }
     };
-
+    
     // Form submission
     document.getElementById('createTopicForm').onsubmit = handleFormSubmit;
-
+    
     // Refresh button
     document.getElementById('refreshBtn').onclick = () => {
       showStatus('Refreshing forum...', 'success');
       loadPosts();
     };
-
+    
     // Category filter
     document.getElementById('labelFilter').onchange = (e) => {
       loadPosts(e.target.value);
     };
-
+    
     // Search functionality
     document.getElementById('searchBar').addEventListener('input', handleSearch);
-  }
-
-  /* ASX BRAIN FUNCTIONS */
-  function askBrain() {
-    const input = document.getElementById('brainInput');
-    const question = input.value.trim();
-
-    if (!question) {
-      showStatus('Please enter a question for ASX Brain', 'error');
-      return;
-    }
-
-    ASXBrain.think(question).then(response => {
-      document.getElementById('brainOutput').innerHTML = response.content;
-    });
-
-    input.value = '';
   }
 
   function closeModal() {
@@ -672,66 +474,46 @@ ${line}` : line;
     document.getElementById('createTopicForm').reset();
   }
 
-  function closePostModal() {
-    document.getElementById('postModal').style.display = 'none';
-    document.getElementById('postModalContent').innerHTML = '';
-  }
-
   function handleFormSubmit(e) {
     e.preventDefault();
-
+    
     const formData = new FormData(e.target);
-    const title = (formData.get('title') || '').toString().trim();
-    const author = (formData.get('author') || 'Anonymous').toString().trim() || 'Anonymous';
-    const body = (formData.get('body') || '').toString().trim();
-    const category = (formData.get('labels') || '').toString().trim();
+    const title = formData.get('title');
+    const author = formData.get('author') || 'Anonymous';
+    const body = formData.get('body');
+    const category = formData.get('labels');
     const compressWithSCX = document.getElementById('scxCompress').checked;
-
-    if (!title || !body || !category) {
-      showStatus('Please complete title, content, and category.', 'error');
-      return false;
-    }
-
-    const postId = `post-${Date.now()}`;
-    const postRecord = {
-      id: postId,
-      title,
-      author,
-      published: new Date().toISOString(),
-      category: [category],
-      content: compressWithSCX
-        ? `(🌪️)user_post(∴)(🧩)pattern:"${title.slice(0, 40).replace(/"/g, '')}"(📦)input:${body.length}_bytes(🚀)output:${Math.max(80, Math.floor(body.length * 0.4))}_bytes(⚡)ratio:${(body.length / Math.max(1, Math.floor(body.length * 0.4))).toFixed(2)}:1`
-        : body,
-      decompressedBody: body,
-      commentCount: 0,
-      scxCompressed: compressWithSCX
-    };
-
-    appendPostRecord(postRecord);
-
+    
+    // In a real app, you would send this to your backend
+    console.log('Form submitted:', { title, author, body, category, compressWithSCX });
+    
+    // Show success message
     showStatus(`Topic created successfully! ${compressWithSCX ? '(SCX Compressed)' : ''}`, 'success');
-
+    
+    // Close modal and refresh
     closeModal();
-    loadPosts(document.getElementById('labelFilter').value || null);
-
+    setTimeout(() => {
+      loadPosts();
+    }, 1000);
+    
     return false;
   }
 
   function loadPosts(label = null) {
     // In a real app, this would fetch from an API
     // For demo purposes, we're using static data
-
-    const filteredPosts = label
+    
+    const filteredPosts = label 
       ? DEMO_POSTS.filter(post => post.category.includes(label))
       : DEMO_POSTS;
-
+    
     renderPosts(filteredPosts);
   }
 
   /* RENDER POSTS */
   function renderPosts(posts) {
     const container = document.getElementById('forumSections');
-
+    
     if (posts.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
@@ -741,12 +523,12 @@ ${line}` : line;
       `;
       return;
     }
-
+    
     container.innerHTML = '';
-
+    
     const grouped = {};
     CATEGORIES.forEach(c => grouped[c] = []);
-    grouped.Uncategorized = [];
+    grouped['Uncategorized'] = [];
 
     posts.forEach(post => {
       const cats = post.category || [];
@@ -778,13 +560,13 @@ ${line}` : line;
           <tbody></tbody>
         </table>
       `;
-
+      
       const tbody = section.querySelector('tbody');
 
       grouped[cat].forEach(post => {
         const title = post.title || 'Untitled';
         const url = `#${post.id}`;
-
+        
         // Content display - handle SCX compressed content
         let contentDisplay = '';
         if (post.scxCompressed) {
@@ -797,13 +579,13 @@ ${line}` : line;
             <div id="decompressed-${post.id}" class="scx-decompressed hidden"></div>
           `;
         } else {
-          let snippetText = post.content || '';
+          let snippetText = post.content || "";
           if (snippetText.length > 150) {
-            snippetText = snippetText.slice(0, 150) + '...';
+            snippetText = snippetText.slice(0, 150) + "...";
           }
           contentDisplay = `<div class="topic-snippet">${snippetText}</div>`;
         }
-
+        
         const published = post.published || '';
         const author = post.author || 'Unknown';
         const commentCount = post.commentCount || '0';
@@ -837,13 +619,6 @@ ${line}` : line;
             </a>
           </td>
         `;
-
-        const titleLink = tr.querySelector('.topic-title');
-        titleLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          openPostModal(post.id);
-        });
-
         tbody.appendChild(tr);
       });
 
@@ -855,91 +630,16 @@ ${line}` : line;
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
-  }
-
-  function getDecompressedPostMarkup(post) {
-    const readableBody = post.decompressedBody || post.content;
-
-    if (post.scxCompressed) {
-      return `
-        <div class="scx-decompressed">
-          <h4 class="text-aqua">Decompressed Post Content</h4>
-          <p>This post is stored in SCX format and expanded here for normal reading.</p>
-          <div class="bg-darker pad-md rounded">
-            <strong>Compressed Source:</strong><br>${post.content}<br><br>
-            <strong>Decompressed Content:</strong><br>${readableBody}
-          </div>
-        </div>
-      `;
-    }
-
-    return `
-      <div class="scx-decompressed">
-        <h4 class="text-aqua">Post Content</h4>
-        <p>${readableBody}</p>
-      </div>
-    `;
-  }
-
-  function openPostModal(postId) {
-    const post = DEMO_POSTS.find(p => p.id === postId);
-    if (!post) return;
-
-    const comments = (post.comments || []).map(comment => `
-      <article class="comment-item">
-        <header>
-          <strong>${comment.author || 'Anonymous'}</strong>
-          <span>${formatDate(comment.published || post.published)}</span>
-        </header>
-        <p>${comment.body || ''}</p>
-      </article>
-    `).join('');
-
-    const modalContent = `
-      <h2 class="post-page-title">${post.title}</h2>
-      <div class="post-page-meta">${post.author || 'Unknown'} • ${formatDate(post.published)} • ${post.category?.[0] || 'Uncategorized'}</div>
-      ${getDecompressedPostMarkup(post)}
-      <div class="comments-list">
-        <h4 class="text-glow">Comments (${post.commentCount || 0})</h4>
-        ${comments || '<div class="text-muted">No comments yet.</div>'}
-      </div>
-      <form class="comment-form" id="commentForm">
-        <input class="field" id="commentAuthor" placeholder="Your name (optional)" />
-        <textarea class="field" id="commentBody" rows="3" placeholder="Write a comment..." required></textarea>
-        <button type="submit" class="pb-btn">Post Comment</button>
-      </form>
-    `;
-
-    document.getElementById('postModalContent').innerHTML = modalContent;
-    document.getElementById('postModal').style.display = 'flex';
-
-    document.getElementById('commentForm').onsubmit = (e) => {
-      e.preventDefault();
-      const commentAuthor = (document.getElementById('commentAuthor').value || 'Anonymous').trim() || 'Anonymous';
-      const commentBody = (document.getElementById('commentBody').value || '').trim();
-      if (!commentBody) return;
-
-      appendCommentRecord(post.id, {
-        id: `comment-${Date.now()}`,
-        author: commentAuthor,
-        published: new Date().toISOString(),
-        body: commentBody
-      });
-
-      showStatus('Comment posted to JSONL dataset.', 'success');
-      loadPosts(document.getElementById('labelFilter').value || null);
-      openPostModal(post.id);
-    };
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 
   /* SCX COMPRESSION/DECOMPRESSION */
   function decompressSCX(postId) {
     const decompressedEl = document.getElementById(`decompressed-${postId}`);
     const post = DEMO_POSTS.find(p => p.id === postId);
-
+    
     if (!post || !post.scxCompressed) return;
-
+    
     // In a real implementation, this would use the actual SCX decompression algorithm
     // For demo purposes, we're showing expanded content
     const decompressedContent = `
@@ -951,7 +651,7 @@ ${line}` : line;
       </div>
       <p class="text-muted pad-md">SCX compression achieves extreme ratios by replacing common patterns with tokens.</p>
     `;
-
+    
     decompressedEl.innerHTML = decompressedContent;
     decompressedEl.classList.toggle('hidden');
   }
@@ -959,7 +659,7 @@ ${line}` : line;
   function toggleScxDecompression() {
     const decompressedEl = document.getElementById('decompressedData');
     const contentEl = document.getElementById('decompressedContent');
-
+    
     if (decompressedEl.classList.contains('hidden')) {
       // Show decompressed content
       contentEl.innerHTML = `
@@ -970,14 +670,14 @@ ${line}` : line;
   "$effects": [ ... ],
   "$components": { ... }
 }</pre>
-
+        
         <strong>Atomic Components Example:</strong>
         <pre>&lt;asx-block id="my-component"&gt;
   &lt;div class="flex row gap-md"&gt;
     &lt;button scx="(?) condition (∴) action"&gt;Click&lt;/button&gt;
   &lt;/div&gt;
 &lt;/asx-block&gt;</pre>
-
+        
         <strong>SCX Compression Process:</strong>
         <pre>Original: 20GB JSON data
 Tokenized: SCX pattern matching
@@ -993,7 +693,7 @@ Ratio: 1,000,000:1</pre>
   /* SEARCH */
   function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
-
+    
     if (query === '') {
       // If search is empty, show all posts again
       document.querySelectorAll('.forum-section').forEach(section => {
@@ -1004,21 +704,21 @@ Ratio: 1,000,000:1</pre>
       });
       return;
     }
-
+    
     document.querySelectorAll('.forum-section').forEach(section => {
       let hasVisibleRows = false;
-
+      
       section.querySelectorAll('tbody tr').forEach(row => {
         const title = row.querySelector('.topic-title')?.textContent.toLowerCase() || '';
         const author = row.cells[1]?.textContent.toLowerCase() || '';
         const content = row.textContent.toLowerCase() || '';
-
+        
         const isMatch = title.includes(query) || author.includes(query) || content.includes(query);
         row.style.display = isMatch ? '' : 'none';
-
+        
         if (isMatch) hasVisibleRows = true;
       });
-
+      
       // Show/hide entire section based on whether it has visible rows
       section.style.display = hasVisibleRows ? '' : 'none';
     });
@@ -1029,7 +729,7 @@ Ratio: 1,000,000:1</pre>
     statusEl.textContent = message;
     statusEl.className = `status-message status-${type}`;
     statusEl.style.display = 'block';
-
+    
     setTimeout(() => {
       statusEl.style.display = 'none';
     }, 3000);
