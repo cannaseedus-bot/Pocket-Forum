@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>ASX Forum — Symbolic Computing Intelligence</title>
+<title>ASX PRIME OS — 3D Tensor Intelligence</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <style>
   /* === ATOMIC CSS (aCSS) === */
@@ -14,46 +15,70 @@
   .items-center { align-items: center; }
   .justify-between { justify-content: space-between; }
   .justify-end { justify-content: flex-end; }
+  .gap-sm { gap: 8px; }
   .gap-md { gap: 12px; }
   .gap-lg { gap: 20px; }
   .w-full { width: 100%; }
   .w-auto { width: auto; }
 
+  .text-xs { font-size: 0.75rem; }
+  .text-sm { font-size: 0.875rem; }
   .text-md { font-size: 1rem; }
   .text-lg { font-size: 1.25rem; }
   .text-xl { font-size: 1.5rem; }
   .text-2xl { font-size: 2rem; }
   .text-center { text-align: center; }
 
+  .pad-xs { padding: 4px; }
+  .pad-sm { padding: 8px; }
   .pad-md { padding: 12px; }
   .pad-lg { padding: 20px; }
   .p-0 { padding: 0; }
+
+  .mt-1 { margin-top: 4px; }
+  .mt-2 { margin-top: 8px; }
+  .mt-3 { margin-top: 12px; }
+  .mt-4 { margin-top: 16px; }
+  .mb-2 { margin-bottom: 8px; }
+  .mb-3 { margin-bottom: 12px; }
+  .mb-4 { margin-bottom: 16px; }
 
   .bg-panel { background: #11161c; border-radius: 8px; }
   .bg-dark { background: #0a0a0a; }
   .bg-darker { background: #1a1a1a; }
   .bg-agent { background: #1a2a1a; }
+  .bg-terminal { background: #001100; }
 
   .border { border: 1px solid #404040; }
   .border-glow { border: 2px solid #00ff99; }
   .border-agent { border-left: 4px solid #00ff99; }
+  .border-terminal { border: 1px solid #00ff99; }
   .border-b { border-bottom: 1px solid #404040; }
 
   .rounded { border-radius: 8px; }
   .rounded-lg { border-radius: 12px; }
+  .rounded-full { border-radius: 9999px; }
 
   .text-glow { color: #00ff99; }
   .text-aqua { color: #00ffff; }
   .text-muted { color: #808080; }
   .text-white { color: #e0e0e0; }
 
+  .font-bold { font-weight: bold; }
   .shadow-glow { box-shadow: 0 0 15px rgba(0, 255, 153, 0.25); }
   .cursor-pointer { cursor: pointer; }
+  .cursor-default { cursor: default; }
 
   .hidden { display: none; }
   .block { display: block; }
+  .inline-block { display: inline-block; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
 
-  /* === SCX RUNTIME STYLES === */
+  .grid { display: grid; }
+  .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* === SCX SYMBOLIC STYLES === */
   .scx-bytecode {
     background: #002200;
     border: 1px solid #00cc66;
@@ -66,65 +91,210 @@
 
   .scx-opcode { color: #00ffff; font-weight: bold; }
   .scx-data { color: #00ff99; }
-  .scx-console {
-    background: #000;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 12px;
-    font-family: monospace;
-    font-size: 12px;
-    height: 120px;
-    overflow-y: auto;
+
+  .flash-ram-panel {
+    background: #001a1a;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
   }
 
-  /* === FORUM COMPONENTS === */
+  .terminal-line {
+    font-family: monospace;
+    font-size: 12px;
+    color: #00ff99;
+    margin: 2px 0;
+  }
+
+  /* === 3D TENSOR CONTAINER === */
+  .tensor-container {
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border: 2px solid #00ff99;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0;
+  }
+
+  #tensorCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .tensor-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 20, 0, 0.8);
+    border: 1px solid #00ff99;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: #00ff99;
+    z-index: 10;
+  }
+
+  /* === MAIN LAYOUT === */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: #0a0a0a;
     color: #e0e0e0;
     font-family: 'Courier New', monospace;
     line-height: 1.5;
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  .os-container {
+    display: grid;
+    grid-template-columns: 240px 1fr 320px;
+    grid-template-rows: 60px 1fr 200px;
+    grid-template-areas:
+      "header header header"
+      "sidebar main inspector"
+      "terminal terminal terminal";
+    height: 100vh;
+    gap: 1px;
+    background: #404040;
   }
 
   /* Header */
-  .header {
+  .os-header {
+    grid-area: header;
     background: #1a1a1a;
-    border: 2px solid #00ff99;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 255, 153, 0.35);
+    border-bottom: 2px solid #00ff99;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
+  .led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff99;
+    box-shadow: 0 0 8px #00ff99;
+    display: inline-block;
+    margin-right: 8px;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.3; } }
+
+  /* Sidebar */
+  .os-sidebar {
+    grid-area: sidebar;
+    background: #1a1a1a;
+    border-right: 2px solid #404040;
+    padding: 15px;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-item:hover {
+    border-left-color: #00ff99;
+    background: rgba(0, 255, 153, 0.1);
+    padding-left: 15px;
+  }
+
+  .nav-item.active {
+    border-left-color: #00ff99;
+    background: rgba(0, 255, 153, 0.15);
+  }
+
+  /* Main */
+  .os-main {
+    grid-area: main;
+    background: #0a0a0a;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  /* Inspector */
+  .os-inspector {
+    grid-area: inspector;
+    background: #1a1a1a;
+    border-left: 2px solid #404040;
+    padding: 15px;
+    overflow-y: auto;
+  }
+
+  /* Terminal */
+  .os-terminal {
+    grid-area: terminal;
+    background: #0a0a0a;
+    border-top: 2px solid #404040;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .terminal-input-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .terminal-prompt {
     color: #00ff99;
+    font-weight: bold;
   }
 
+  .terminal-field {
+    flex: 1;
+    background: #001100;
+    border: 1px solid #00ff99;
+    color: #00ff99;
+    padding: 6px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+
+  /* Components */
   .btn {
     background: #2a2a2a;
     color: #e0e0e0;
     border: 1px solid #404040;
-    padding: 8px 12px;
+    padding: 6px 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 4px;
     font-family: inherit;
-    font-size: 14px;
-    border-radius: 6px;
+    font-size: 12px;
+    transition: all 0.2s;
   }
 
   .btn:hover { background: #404040; }
   .btn-primary { background: #00ff99; color: #000; }
   .btn-agent { background: #00ffff; color: #000; }
 
-  /* Brain Panel */
+  .card {
+    background: #1a1a1a;
+    border: 2px solid #404040;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
   .brain-panel {
     background: #1a1a1a;
     border: 2px solid #00ff99;
@@ -138,78 +308,96 @@
     padding: 10px;
     background: #2a2a2a;
     border: 1px solid #404040;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #e0e0e0;
+    font-family: inherit;
   }
 
   .brain-output {
     background: #001100;
     border: 1px solid #00ff99;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 12px;
     min-height: 80px;
-  }
-
-  /* Forum Sections */
-  .forum-section {
-    background: #1a1a1a;
-    border: 2px solid #404040;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .section-header {
-    background: #2a2a2a;
-    border-bottom: 1px solid #404040;
-    padding: 12px 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .section-header:hover { background: #404040; }
-
-  .topic-table {
-    width: 100%;
-    border-collapse: collapse;
-    transition: all 0.3s ease;
-  }
-
-  .collapsed .topic-table { display: none; }
-
-  .topic-table th, .topic-table td {
-    border: 1px solid #404040;
-    padding: 12px;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .topic-table th { background: #2a2a2a; font-weight: bold; }
-
-  .topic-title {
-    color: #00ff99;
-    text-decoration: none;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .topic-title:hover { text-decoration: underline; }
-
-  .topic-snippet {
-    color: #b0b0b0;
     font-size: 13px;
-    line-height: 1.4;
-    margin-top: 6px;
-    max-width: 350px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  }
+
+  .agent-badge {
+    background: #00ff99;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+
+  .flash-badge {
+    background: #00ffff;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00ff99;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: #808080;
+    text-transform: uppercase;
+  }
+
+  .topic-item {
+    padding: 12px;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .topic-item:hover {
+    border-color: #00ff99;
+    background: rgba(0, 255, 153, 0.05);
+  }
+
+  .message {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
+  }
+
+  .message.user {
+    background: #2a2a2a;
+    border-left: 3px solid #00ff99;
+  }
+
+  .message.agent {
+    background: #1a2a1a;
+    border-left: 3px solid #00ffff;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #2a2a2a;
+    border-radius: 2px;
     overflow: hidden;
   }
 
-  /* Modals */
+  .progress-fill {
+    height: 100%;
+    background: #00ff99;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
   .modal {
     display: none;
     position: fixed;
@@ -226,399 +414,855 @@
     background: #1a1a1a;
     border: 2px solid #404040;
     padding: 20px;
-    max-width: 800px;
+    max-width: 600px;
     width: 100%;
     max-height: 80vh;
     overflow-y: auto;
     border-radius: 8px;
   }
 
-  .field { display: block; width: 100%; margin-bottom: 15px; }
+  .field { margin-bottom: 15px; }
   .field input, .field textarea, .field select {
     width: 100%;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1px solid #404040;
     background: #2a2a2a;
     color: #e0e0e0;
+    font-family: inherit;
   }
 
-  /* Agent Badge */
-  .agent-badge {
-    background: #00ff99;
-    color: #000;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 10px;
+  /* Math Corpus Display */
+  .math-corpus {
+    font-family: monospace;
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 5px 0;
+  }
+
+  .math-symbol {
+    color: #00ffff;
     font-weight: bold;
-    margin-left: 8px;
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .header { flex-direction: column; gap: 10px; }
-    .brain-input-container { flex-direction: column; }
-    .topic-table { display: block; overflow-x: auto; }
-    .topic-snippet { max-width: 200px; }
-    .brain-input-container { flex-direction: column; }
+  .math-relation {
+    color: #ff9900;
+  }
+
+  .tensor-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  .metric {
+    background: #0a1a0a;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
   }
 </style>
 </head>
 <body>
-<!-- ASX RUNTIME BOOTSTRAP -->
-<asx-block id="runtime-bootstrap">
-  <div class="container">
-    <!-- HEADER -->
-    <asx-block id="header">
-      <header class="header flex row justify-between items-center">
-        <div class="logo flex items-center gap-md">
-          <span>🌿</span>
-          <span>ASX Forum — Symbolic Computing Intelligence</span>
-        </div>
-        <div class="flex gap-md items-center wrap">
-          <select id="categoryFilter" class="btn">
-            <option value="">All Categories</option>
-          </select>
-          <button class="btn btn-primary" id="createTopicBtn">✚ Create Topic</button>
-          <button class="btn" id="scxRuntimeBtn">⚡ SCX Runtime</button>
-        </div>
-      </header>
-    </asx-block>
+<!-- ASX PRIME OS MAIN CONTAINER -->
+<div class="os-container">
 
-    <!-- SCX EXECUTION ENVIRONMENT -->
-    <asx-block id="scx-runtime">
-      <div class="bg-panel border-glow pad-lg">
-        <h3 class="text-aqua">⚡ SCX Symbolic Computing Runtime</h3>
-        <p class="text-muted">Live execution environment - SCX as executable bytecode</p>
+  <!-- HEADER -->
+  <asx-block id="os-header" class="os-header">
+    <div class="flex items-center gap-md">
+      <span class="led"></span>
+      <span class="text-glow text-lg font-bold">ASX PRIME OS</span>
+      <span class="text-muted text-sm">3D Tensor Intelligence</span>
+    </div>
+    <div class="flex items-center gap-md">
+      <div class="text-xs text-muted" id="flashRamStats">Tensor Field: 64³×32</div>
+      <button class="btn btn-primary" id="createTopicBtn">✚ New Topic</button>
+      <button class="btn" id="tensorBtn">🧊 3D Tensor</button>
+    </div>
+  </asx-block>
 
-        <div class="flex gap-md wrap pad-md">
-          <button class="btn" onclick="SCXRuntime.execute('@#(>)%', 'Agent Communication')">
-            Run Agent Protocol
-          </button>
-          <button class="btn" onclick="SCXRuntime.execute('(∂)$state', 'Data Mutation')">
-            Run Data Mutation
-          </button>
-          <button class="btn btn-agent" onclick="SCXRuntime.execute('^(>)brain(~)', 'Neural Training')">
-            Run AI Training
-          </button>
+  <!-- SIDEBAR - NAVIGATION -->
+  <asx-block id="os-sidebar" class="os-sidebar">
+    <div class="text-glow text-md pad-md">🧠 MATHEMATICAL CORPUS</div>
+    <div class="nav-item active" data-view="forum">📚 Forum</div>
+    <div class="nav-item" data-view="tensor">🧊 3D Tensor View</div>
+    <div class="nav-item" data-view="conversation">💬 Conversation</div>
+    <div class="nav-item" data-view="math">📐 Math Corpus</div>
+    <div class="nav-item" data-view="inference">⚡ Real-Time Inference</div>
+
+    <div class="text-glow text-md pad-md mt-4">⚡ SPATIAL REASONING</div>
+    <div class="nav-item" data-view="embeddings">🌀 Embeddings</div>
+    <div class="nav-item" data-view="vectors">📊 Vector Fields</div>
+    <div class="nav-item" data-view="attention">👁️ Attention Maps</div>
+
+    <div class="flash-ram-panel pad-sm mt-4">
+      <div class="text-aqua text-sm">TENSOR FIELD ACTIVE</div>
+      <div class="scx-bytecode text-xs mt-2">
+        dim: [64,64,64,32]<br>
+        Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ)
+      </div>
+    </div>
+  </asx-block>
+
+  <!-- MAIN CONTENT AREA -->
+  <asx-block id="os-main" class="os-main">
+    <!-- FORUM VIEW -->
+    <div id="forumView" class="view active">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-glow">📚 ASX Forum</h2>
+        <select id="categoryFilter" class="btn">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+
+      <input type="text" class="brain-input w-full mb-4" id="searchForum"
+             placeholder="Search topics...">
+
+      <div id="forumTopics" class="col gap-sm">
+        <!-- Dynamic forum topics will load here -->
+        <div class="text-muted text-center pad-lg">Loading forum topics...</div>
+      </div>
+    </div>
+
+    <!-- TENSOR VIEW -->
+    <div id="tensorView" class="view hidden">
+      <h2 class="text-glow mb-4">🧊 3D Tensor Field Visualization</h2>
+
+      <div class="tensor-container">
+        <div class="tensor-overlay" id="tensorOverlay">
+          Tensor Field: 64³ × 32 channels
         </div>
+        <canvas id="tensorCanvas"></canvas>
+      </div>
 
-        <div class="scx-console" id="scxConsole">
-          <div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>
+      <div class="flex gap-md mt-3">
+        <div class="metric">
+          <div class="stat-value" id="tensorDensity">0.78</div>
+          <div class="stat-label">Embedding Density</div>
+        </div>
+        <div class="metric">
+          <div class="stat-value" id="tensorEntropy">2.34</div>
+          <div class="stat-label">Spatial Entropy</div>
+        </div>
+        <div class="metric">
+          <div class="stat-value" id="tensorClusters">8</div>
+          <div class="stat-label">Topic Clusters</div>
         </div>
       </div>
-    </asx-block>
 
-    <!-- ASX BRAIN INTELLIGENCE -->
-    <asx-block id="asx-brain">
+      <div class="math-corpus mt-3">
+        <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)<br>
+        <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t
+      </div>
+    </div>
+
+    <!-- CONVERSATION VIEW -->
+    <div id="conversationView" class="view hidden">
       <div class="brain-panel">
-        <h3 class="text-glow">🧠 ASX Brain - Symbolic Intelligence System</h3>
-        <p class="text-muted">Ask about SCX symbolic computing, bytecode execution, or multi-agent systems</p>
+        <h3 class="text-glow">🧠 Real-Time Tensor Inference</h3>
+        <p class="text-muted text-sm">Language responses weighted by 3D spatial embeddings</p>
 
-        <div class="flex gap-md brain-input-container">
-          <input type="text" class="brain-input" id="brainInput"
-                 placeholder="Ask about SCX symbolic computing, bytecode, agents..." />
-          <button class="btn btn-primary" id="askBrainBtn">Ask ASX Brain</button>
-        </div>
-
-        <div class="brain-output" id="brainOutput">
-          <div class="text-muted">🤔 Ready to discuss SCX as symbolic computing layer...</div>
+        <div class="flex gap-md mt-3">
+          <input type="text" class="brain-input" id="conversationInput"
+                 placeholder="Ask about topics, tensor fields, or mathematical corpus..." />
+          <button class="btn btn-primary" id="sendConversationBtn">Send</button>
         </div>
       </div>
-    </asx-block>
 
-    <!-- FORUM CONTENT -->
-    <asx-block id="forum-content">
-      <input type="text" class="brain-input w-full" id="searchBar"
-             placeholder="Search SCX symbolic computing topics..." />
-
-      <div id="forumSections">
-        <div class="bg-darker pad-lg rounded text-center">
-          <div class="text-muted">Loading SCX Symbolic Computing Content...</div>
-        </div>
-      </div>
-    </asx-block>
-  </div>
-</asx-block>
-
-<!-- MODALS -->
-<asx-block id="modals">
-  <!-- Create Topic Modal -->
-  <div class="modal" id="createTopicModal">
-    <div class="modal-content">
-      <div class="flex justify-between items-center border-b pad-md">
-        <strong>Create New SCX Topic</strong>
-        <button class="btn p-0" onclick="Modal.hide('createTopicModal')">✕</button>
-      </div>
-      <form id="topicForm" class="pad-lg">
-        <div class="field">
-          <input name="title" placeholder="Topic Title (required)" required/>
-        </div>
-        <div class="field">
-          <input name="author" placeholder="Your Name (optional)" value="User"/>
-        </div>
-        <div class="field">
-          <textarea name="content" placeholder="Describe your SCX topic..." rows="6" required></textarea>
-        </div>
-        <div class="field">
-          <select name="category" required>
-            <option value="">Select Category</option>
-          </select>
-        </div>
-        <div class="flex justify-between items-center">
-          <label class="text-muted">
-            <input type="checkbox" name="scxEncode" checked />
-            Encode with SCX Symbols
-          </label>
-          <div class="flex gap-md">
-            <button type="button" class="btn" onclick="Modal.hide('createTopicModal')">Cancel</button>
-            <button type="submit" class="btn btn-primary">Post Topic</button>
+      <div id="conversationThread" class="col gap-sm mt-3">
+        <!-- Conversation messages will appear here -->
+        <div class="message agent">
+          <div class="flex items-center gap-sm">
+            <strong>ASX Tensor Brain</strong>
+            <span class="agent-badge">3D Inference</span>
           </div>
+          <div class="text-sm mt-2">🚀 3D tensor field initialized with [64,64,64,32] dimensions. Each forum topic creates a spatial embedding weighted by comment datasets. Ask me anything!</div>
         </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Topic View Modal -->
-  <div class="modal" id="topicModal">
-    <div class="modal-content">
-      <div class="flex justify-between items-center border-b pad-md">
-        <strong id="topicModalTitle">Topic Details</strong>
-        <button class="btn p-0" onclick="Modal.hide('topicModal')">✕</button>
-      </div>
-      <div class="pad-lg" id="topicModalContent">
-        <!-- Dynamic content -->
       </div>
     </div>
-  </div>
 
-  <!-- SCX Runtime Modal -->
-  <div class="modal" id="scxRuntimeModal">
-    <div class="modal-content">
-      <div class="flex justify-between items-center border-b pad-md">
-        <strong>⚡ SCX Symbolic Computing</strong>
-        <button class="btn p-0" onclick="Modal.hide('scxRuntimeModal')">✕</button>
+    <!-- MATH CORPUS VIEW -->
+    <div id="mathView" class="view hidden">
+      <h2 class="text-glow mb-4">📐 Mathematical Corpus v1.0</h2>
+
+      <div class="card">
+        <h3 class="text-aqua">Core Sets</h3>
+        <div class="math-corpus">
+          <span class="math-symbol">(S)</span> State space<br>
+          <span class="math-symbol">(T)</span> Transition operators<br>
+          <span class="math-symbol">(C)</span> Constraints (invariants)<br>
+          <span class="math-symbol">(P)</span> Proof objects<br>
+          <span class="math-symbol">(F)</span> Fields (vector influences)<br>
+          <span class="math-symbol">(M)</span> Micronaut operators<br>
+          <span class="math-symbol">(H)</span> Histories
+        </div>
       </div>
-      <div class="pad-lg">
-        <div class="scx-bytecode">
-          <strong>Agent Protocol:</strong><br>
-          <span class="scx-opcode">@</span><span class="scx-opcode">#</span>
-          <span class="scx-opcode">(>)</span><span class="scx-data">%data</span><br>
-          <em>internet → agent → send → data</em>
+
+      <div class="card">
+        <h3 class="text-aqua">Fundamental Relations</h3>
+        <div class="math-corpus">
+          <span class="math-symbol">Sᵢ</span> <span class="math-relation">→</span> <span class="math-symbol">Sⱼ</span> (lawful transition)<br>
+          <span class="math-relation">C</span>(<span class="math-symbol">S</span>) state satisfies invariant<br>
+          <span class="math-relation">P</span>(<span class="math-symbol">Sᵢ</span> → <span class="math-symbol">Sⱼ</span>) proof of transition<br>
+          <span class="math-relation">F</span>(<span class="math-symbol">S</span>) field vector at state
         </div>
-        <div class="text-muted pad-md">
-          SCX transforms JSON into executable symbolic bytecode. Each symbol represents
-          semantic operations interpreted by the ASX Runtime.
+      </div>
+
+      <div class="card">
+        <h3 class="text-aqua">Core Equations</h3>
+        <div class="math-corpus">
+          <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)<br>
+          <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t<br>
+          <span class="math-symbol">Pₜ</span> = HASH(<span class="math-symbol">Sₜ</span>, <span class="math-symbol">Sₜ₊₁</span>, arbitration)<br>
+          <span class="math-symbol">E</span>(t+1) ≤ <span class="math-symbol">E</span>(t) + ε
         </div>
+      </div>
+    </div>
+
+    <!-- INFERENCE VIEW -->
+    <div id="inferenceView" class="view hidden">
+      <h2 class="text-glow mb-4">⚡ Real-Time Weighted Inference</h2>
+
+      <div class="tensor-metrics">
+        <div class="metric">
+          <div class="stat-value" id="inferenceWeight">0.00</div>
+          <div class="stat-label">Current Weight</div>
+        </div>
+        <div class="metric">
+          <div class="stat-value" id="inferenceConfidence">0.00</div>
+          <div class="stat-label">Confidence</div>
+        </div>
+        <div class="metric">
+          <div class="stat-value" id="inferenceTopics">0</div>
+          <div class="stat-label">Topics Analyzed</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="text-aqua">Weighted Topic Responses</h3>
+        <div id="weightedResponses" class="col gap-sm">
+          <!-- Dynamic weighted responses -->
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="text-aqua">Tensor Field Weights</h3>
+        <div class="progress-bar mt-2">
+          <div class="progress-fill" id="weightField1" style="width:0%"></div>
+        </div>
+        <div class="progress-bar mt-2">
+          <div class="progress-fill" id="weightField2" style="width:0%"></div>
+        </div>
+        <div class="progress-bar mt-2">
+          <div class="progress-fill" id="weightField3" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMBEDDINGS VIEW -->
+    <div id="embeddingsView" class="view hidden">
+      <h2 class="text-glow mb-4">🌀 Topic Embeddings</h2>
+      <div id="embeddingsGrid" class="grid grid-cols-3 gap-sm"></div>
+    </div>
+
+    <!-- VECTORS VIEW -->
+    <div id="vectorsView" class="view hidden">
+      <h2 class="text-glow mb-4">📊 Vector Fields</h2>
+      <div class="math-corpus">
+        F(S) = [f₁, f₂, ..., fₙ]<br>
+        ∇·F = divergence<br>
+        ∇×F = curl
+      </div>
+    </div>
+
+    <!-- ATTENTION VIEW -->
+    <div id="attentionView" class="view hidden">
+      <h2 class="text-glow mb-4">👁️ Attention Maps</h2>
+      <div class="tensor-container" style="height:200px">
+        <canvas id="attentionCanvas"></canvas>
+      </div>
+    </div>
+  </asx-block>
+
+  <!-- INSPECTOR PANEL -->
+  <asx-block id="os-inspector" class="os-inspector">
+    <div class="text-glow text-md mb-3">🔍 TENSOR INSPECTOR</div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Tensor Dims</span>
+        <span class="text-glow" id="tensorDims">64×64×64×32</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Spatial Resolution</span>
+        <span class="text-glow" id="spatialRes">64³</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Channel Count</span>
+        <span class="text-glow" id="channelCount">32</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Embedded Topics</span>
+        <span class="text-glow" id="embeddedTopics">0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Comment Vectors</span>
+        <span class="text-glow" id="commentVectors">0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between">
+        <span class="text-muted">Attention Heads</span>
+        <span class="text-glow" id="attentionHeads">12</span>
+      </div>
+    </div>
+
+    <div class="scx-bytecode mt-3">
+      <strong>Active Tensor Ops:</strong><br>
+      <span id="activeOps">Embedding • Attention • Weighted Sum</span>
+    </div>
+  </asx-block>
+
+  <!-- TERMINAL -->
+  <asx-block id="os-terminal" class="os-terminal">
+    <div class="terminal-output" id="terminalOutput">
+      <div class="terminal-line">> ASX PRIME OS Tensor Edition v2.0</div>
+      <div class="terminal-line">> 3D Tensor Field: [64,64,64,32] dimensions</div>
+      <div class="terminal-line">> Mathematical Corpus loaded: (S) (T) (C) (P) (F) (M) (H)</div>
+      <div class="terminal-line">> Type 'help' for available commands</div>
+    </div>
+
+    <div class="terminal-input-line">
+      <span class="terminal-prompt">$</span>
+      <input type="text" class="terminal-field" id="terminalInput" placeholder="Enter SCX command...">
+      <button class="btn" id="terminalSendBtn">Run</button>
+    </div>
+  </asx-block>
+</div>
+
+<!-- CREATE TOPIC MODAL -->
+<div class="modal" id="createTopicModal">
+  <div class="modal-content">
+    <div class="flex justify-between items-center border-b pad-md">
+      <strong class="text-glow">Create New Topic</strong>
+      <button class="btn p-0" onclick="Modal.hide('createTopicModal')">✕</button>
+    </div>
+    <form id="topicForm" class="pad-lg">
+      <div class="field">
+        <input name="title" placeholder="Topic Title" required>
+      </div>
+      <div class="field">
+        <input name="author" placeholder="Your Name" value="User">
+      </div>
+      <div class="field">
+        <textarea name="content" placeholder="Topic Content" rows="4" required></textarea>
+      </div>
+      <div class="field">
+        <select name="category" id="topicCategorySelect" required>
+          <option value="">Select Category</option>
+        </select>
+      </div>
+      <div class="flex justify-end gap-md">
+        <button type="button" class="btn" onclick="Modal.hide('createTopicModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Topic</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOPIC VIEW MODAL -->
+<div class="modal" id="topicViewModal">
+  <div class="modal-content">
+    <div class="flex justify-between items-center border-b pad-md">
+      <strong class="text-glow" id="topicViewTitle">Topic</strong>
+      <button class="btn p-0" onclick="Modal.hide('topicViewModal')">✕</button>
+    </div>
+    <div class="pad-lg" id="topicViewContent">
+      <!-- Dynamic content -->
+    </div>
+  </div>
+</div>
+
+<!-- TENSOR MODAL -->
+<div class="modal" id="tensorModal">
+  <div class="modal-content">
+    <div class="flex justify-between items-center border-b pad-md">
+      <strong class="text-aqua">🧊 3D Tensor Field Details</strong>
+      <button class="btn p-0" onclick="Modal.hide('tensorModal')">✕</button>
+    </div>
+    <div class="pad-lg">
+      <div class="math-corpus">
+        <strong>State Evolution:</strong><br>
+        <span class="math-symbol">Sₜ₊₁</span> = <span class="math-symbol">M</span>(<span class="math-symbol">Sₜ</span>) + Σ <span class="math-symbol">wᵢ</span><span class="math-symbol">Fᵢ</span>(<span class="math-symbol">Sₜ</span>)
+      </div>
+      <div class="math-corpus mt-2">
+        <strong>Constraint Law:</strong><br>
+        <span class="math-relation">C</span>(<span class="math-symbol">Sₜ</span>) = true ∀t
+      </div>
+      <div class="math-corpus mt-2">
+        <strong>Trust Compression:</strong><br>
+        <span class="math-symbol">R_archive</span> = MerkleRoot({<span class="math-symbol">R_episode</span>})
       </div>
     </div>
   </div>
 </asx-block>
 
 <script>
-// === ASX RUNTIME CORE ===
-class ASXRuntime {
-  static state = {
-    posts: [],
-    currentTopic: null,
-    categories: [
-      "SCX Symbolic Computing",
-      "Bytecode & Execution",
-      "Multi-Agent Systems",
-      "Neural-Symbolic AI",
-      "Atomic JSON & Tapes",
-      "Liquid-OS Integration"
-    ]
+// === ASX PRIME OS TENSOR CORE ===
+class ASXPrimeOS {
+  static categories = [
+    'SCX Symbolic Computing',
+    '3D Tensor Fields',
+    'Multi-Agent Systems',
+    'Neural-Symbolic AI',
+    'Mathematical Corpus',
+    'Liquid-OS Integration'
+  ];
+
+  static views = ['forum', 'tensor', 'conversation', 'math', 'inference', 'embeddings', 'vectors', 'attention'];
+  static currentView = 'forum';
+  static topics = [];
+  static terminalHistory = [];
+
+  // === 3D TENSOR FIELD ===
+  static tensorField = {
+    dimensions: [64, 64, 64, 32],
+    field: new Float32Array(64 * 64 * 64 * 32),
+    embeddings: new Map(),
+    weights: new Map(),
+    scene: null,
+    camera: null,
+    renderer: null,
+    points: null,
+
+    init() {
+      for (let i = 0; i < this.field.length; i++) {
+        this.field[i] = Math.random() * 2 - 1;
+      }
+      this.setupThreeJS();
+    },
+
+    setupThreeJS() {
+      const canvas = document.getElementById('tensorCanvas');
+      if (!canvas) return;
+
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color(0x0a0a0a);
+
+      this.camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+      this.camera.position.set(30, 30, 30);
+      this.camera.lookAt(0, 0, 0);
+
+      this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      this.scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+      directionalLight.position.set(1, 1, 1);
+      this.scene.add(directionalLight);
+
+      this.createFieldVisualization();
+      this.animate();
+    },
+
+    createFieldVisualization() {
+      const geometry = new THREE.BufferGeometry();
+      const positions = [];
+      const colors = [];
+
+      for (let i = 0; i < 2000; i++) {
+        const x = (Math.random() - 0.5) * 40;
+        const y = (Math.random() - 0.5) * 40;
+        const z = (Math.random() - 0.5) * 40;
+
+        positions.push(x, y, z);
+
+        const value = this.sampleField(x, y, z);
+        const r = 0.2 + value * 0.8;
+        const g = 0.8 + value * 0.2;
+        const b = 0.2;
+
+        colors.push(r, g, b);
+      }
+
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8
+      });
+
+      this.points = new THREE.Points(geometry, material);
+      this.scene.add(this.points);
+
+      const gridHelper = new THREE.GridHelper(60, 20, 0x00ff99, 0x404040);
+      this.scene.add(gridHelper);
+
+      const axesHelper = new THREE.AxesHelper(30);
+      this.scene.add(axesHelper);
+    },
+
+    sampleField(x, y, z) {
+      const ix = Math.floor((x + 50) / 100 * 64) % 64;
+      const iy = Math.floor((y + 50) / 100 * 64) % 64;
+      const iz = Math.floor((z + 50) / 100 * 64) % 64;
+
+      const idx = ((ix * 64 + iy) * 64 + iz) * 32;
+      return this.field[idx] || 0;
+    },
+
+    embedTopic(topic) {
+      const position = [
+        (Math.random() - 0.5) * 40,
+        (Math.random() - 0.5) * 40,
+        (Math.random() - 0.5) * 40
+      ];
+
+      const embedding = {
+        id: topic.id,
+        title: topic.title,
+        content: topic.content,
+        position,
+        weight: topic.replies?.length || 1,
+        vector: new Array(32).fill(0).map(() => Math.random() * 2 - 1)
+      };
+
+      this.embeddings.set(topic.id, embedding);
+
+      const ix = Math.floor((position[0] + 50) / 100 * 64) % 64;
+      const iy = Math.floor((position[1] + 50) / 100 * 64) % 64;
+      const iz = Math.floor((position[2] + 50) / 100 * 64) % 64;
+
+      for (let c = 0; c < 32; c++) {
+        const idx = ((ix * 64 + iy) * 64 + iz) * 32 + c;
+        this.field[idx] = embedding.vector[c];
+      }
+
+      return embedding;
+    },
+
+    animate() {
+      requestAnimationFrame(() => this.animate());
+
+      if (this.points) this.points.rotation.y += 0.001;
+      if (this.renderer && this.scene && this.camera) this.renderer.render(this.scene, this.camera);
+    },
+
+    getWeightedResponse(query) {
+      const queryVector = this.textToVector(query);
+      const weights = [];
+
+      for (const [id, embedding] of this.embeddings) {
+        const similarity = this.cosineSimilarity(queryVector, embedding.vector);
+        weights.push({
+          topicId: id,
+          topic: embedding.title,
+          weight: similarity * embedding.weight,
+          similarity
+        });
+      }
+
+      weights.sort((a, b) => b.weight - a.weight);
+      return weights.slice(0, 5);
+    },
+
+    textToVector(text) {
+      const vector = new Array(32).fill(0);
+      for (let i = 0; i < text.length; i++) {
+        const code = text.charCodeAt(i);
+        vector[i % 32] += code / 255;
+      }
+
+      const norm = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0));
+      return vector.map(v => v / (norm || 1));
+    },
+
+    cosineSimilarity(a, b) {
+      let dot = 0;
+      let normA = 0;
+      let normB = 0;
+
+      for (let i = 0; i < a.length; i++) {
+        dot += a[i] * b[i];
+        normA += a[i] * a[i];
+        normB += b[i] * b[i];
+      }
+
+      return dot / (Math.sqrt(normA) * Math.sqrt(normB) || 1);
+    }
   };
 
+  // === MATHEMATICAL CORPUS ===
+  static mathCorpus = {
+    sets: ['(S)', '(T)', '(C)', '(P)', '(F)', '(M)', '(H)'],
+    relations: ['→', 'C(S)', 'P(Sᵢ→Sⱼ)', 'F(S)'],
+    equations: [
+      'Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ)',
+      'C(Sₜ) = true ∀t',
+      'Pₜ = HASH(Sₜ, Sₜ₊₁, arbitration)',
+      'E(t+1) ≤ E(t) + ε'
+    ],
+
+    getRandomEquation() {
+      return this.equations[Math.floor(Math.random() * this.equations.length)];
+    }
+  };
+
+  // === INITIALIZATION ===
   static init() {
-    this.loadPosts();
-    this.render();
+    this.loadTopics();
+    this.populateCategories();
     this.setupEventListeners();
-    feather.replace();
-  }
-
-  static loadPosts() {
-    const saved = localStorage.getItem('asxForum');
-    this.state.posts = saved ? JSON.parse(saved) : this.getDefaultPosts();
-  }
-
-  static savePosts() {
-    localStorage.setItem('asxForum', JSON.stringify(this.state.posts));
-  }
-
-  static getDefaultPosts() {
-    return [{
-      id: 'post-1',
-      title: 'SCX Symbolic Computing Deep Dive',
-      author: 'Systems Architect',
-      content: 'SCX transforms JSON into executable symbolic bytecode where each symbol represents semantic operations. This enables multi-agent communication through protocols like @#(>)% for distributed intelligence systems.',
-      category: 'SCX Symbolic Computing',
-      timestamp: new Date().toISOString(),
-      replies: [
-        {
-          author: 'ASX Agent 🤖',
-          content: 'Excellent analysis! The key innovation is treating symbols as executable opcodes rather than compressed data.',
-          timestamp: new Date().toISOString(),
-          isAgent: true
-        }
-      ]
-    }];
-  }
-
-  static render() {
-    this.renderCategories();
     this.renderForum();
+    this.updateInspectorStats();
+
+    this.tensorField.init();
+
+    this.topics.forEach(topic => {
+      this.tensorField.embedTopic(topic);
+    });
+
+    this.terminalLog('ASX PRIME OS Tensor Edition initialized');
+    this.terminalLog(`Tensor Field: [${this.tensorField.dimensions.join('×')}]`);
+    this.terminalLog(`Mathematical Corpus: ${this.mathCorpus.equations.length} core equations`);
   }
 
-  static renderCategories() {
+  static loadTopics() {
+    const saved = localStorage.getItem('asxPrimeTopics');
+    if (saved) {
+      this.topics = JSON.parse(saved);
+    } else {
+      this.topics = [
+        {
+          id: 't1',
+          title: '3D Tensor Fields for Symbolic Computing',
+          author: 'Tensor Engineer',
+          content: 'Using [64,64,64,32] tensor fields to embed semantic meaning in 3D space. Each topic becomes a vector in the field weighted by comment datasets.',
+          category: '3D Tensor Fields',
+          timestamp: new Date().toISOString(),
+          replies: [
+            { author: 'ASX Agent', content: 'The state evolution equation Sₜ₊₁ = M(Sₜ) + Σ wᵢFᵢ(Sₜ) perfectly models this!', timestamp: new Date().toISOString(), isAgent: true }
+          ]
+        },
+        {
+          id: 't2',
+          title: 'Mathematical Corpus Core Sets',
+          author: 'Math Theorist',
+          content: '(S) State space, (T) Transitions, (C) Constraints, (P) Proofs, (F) Fields, (M) Micronauts, (H) Histories',
+          category: 'Mathematical Corpus',
+          timestamp: new Date().toISOString(),
+          replies: []
+        },
+        {
+          id: 't3',
+          title: 'Real-Time Weighted Inference',
+          author: 'ML Engineer',
+          content: 'Using cosine similarity between query vectors and topic embeddings to generate weighted responses based on comment datasets.',
+          category: 'Neural-Symbolic AI',
+          timestamp: new Date().toISOString(),
+          replies: []
+        }
+      ];
+    }
+  }
+
+  static saveTopics() {
+    localStorage.setItem('asxPrimeTopics', JSON.stringify(this.topics));
+  }
+
+  static populateCategories() {
     const filter = document.getElementById('categoryFilter');
-    const modalSelect = document.querySelector('select[name="category"]');
+    const modalSelect = document.getElementById('topicCategorySelect');
 
     filter.innerHTML = '<option value="">All Categories</option>' +
-      this.state.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+      this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
 
     modalSelect.innerHTML = '<option value="">Select Category</option>' +
-      this.state.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+      this.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+  }
+
+  static setupEventListeners() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        const view = e.target.dataset.view;
+        this.switchView(view);
+      });
+    });
+
+    document.getElementById('createTopicBtn').addEventListener('click', () => {
+      Modal.show('createTopicModal');
+    });
+
+    document.getElementById('topicForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.createTopic(new FormData(e.target));
+      e.target.reset();
+    });
+
+    document.getElementById('tensorBtn').addEventListener('click', () => {
+      Modal.show('tensorModal');
+    });
+
+    document.getElementById('sendConversationBtn').addEventListener('click', () => {
+      this.sendConversation();
+    });
+
+    document.getElementById('conversationInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.sendConversation();
+    });
+
+    document.getElementById('searchForum').addEventListener('input', () => {
+      this.renderForum();
+    });
+
+    document.getElementById('categoryFilter').addEventListener('change', () => {
+      this.renderForum();
+    });
+
+    document.getElementById('terminalSendBtn').addEventListener('click', () => {
+      this.processTerminalCommand();
+    });
+
+    document.getElementById('terminalInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.processTerminalCommand();
+    });
+
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) Modal.hide(modal.id);
+      });
+    });
+
+    setInterval(() => {
+      this.updateInspectorStats();
+      this.updateInferenceView();
+    }, 2000);
+  }
+
+  static switchView(view) {
+    if (!this.views.includes(view)) return;
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.view === view);
+    });
+
+    document.querySelectorAll('.view').forEach(v => {
+      v.classList.toggle('hidden', !v.id.includes(view));
+    });
+
+    this.currentView = view;
+
+    if (view === 'forum') this.renderForum();
+    if (view === 'tensor') this.handleTensorView();
+    if (view === 'inference') this.updateInferenceView();
+    if (view === 'embeddings') this.renderEmbeddings();
+  }
+
+  static handleTensorView() {
+    if (this.tensorField.renderer) {
+      const canvas = document.getElementById('tensorCanvas');
+      if (canvas) {
+        this.tensorField.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      }
+    }
   }
 
   static renderForum() {
-    const container = document.getElementById('forumSections');
-    const filteredPosts = this.getFilteredPosts();
+    const container = document.getElementById('forumTopics');
+    const search = document.getElementById('searchForum').value.toLowerCase();
+    const category = document.getElementById('categoryFilter').value;
 
-    if (filteredPosts.length === 0) {
-      container.innerHTML = '<div class="bg-darker pad-lg rounded text-center text-muted">No topics found</div>';
+    const filtered = this.topics.filter(t => {
+      const matchesSearch = t.title.toLowerCase().includes(search) ||
+        t.content.toLowerCase().includes(search);
+      const matchesCategory = !category || t.category === category;
+      return matchesSearch && matchesCategory;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="text-muted text-center pad-lg">No topics found</div>';
       return;
     }
 
-    const grouped = {};
-    this.state.categories.forEach(cat => {
-      grouped[cat] = [];
-    });
-    grouped.Uncategorized = [];
-
-    filteredPosts.forEach(post => {
-      const cat = post.category || 'Uncategorized';
-      if (!grouped[cat]) grouped[cat] = [];
-      grouped[cat].push(post);
-    });
-
-    container.innerHTML = Object.entries(grouped)
-      .filter(([, posts]) => posts.length > 0)
-      .map(([category, posts]) => `
-        <asx-block class="forum-section">
-          <div class="section-header flex justify-between items-center"
-               onclick="this.parentElement.classList.toggle('collapsed')">
-            <span>${category} (${posts.length})</span>
-            <span>▼</span>
-          </div>
-          <table class="topic-table">
-            <thead><tr><th>Topic</th><th>Author</th><th>Replies</th><th>Actions</th></tr></thead>
-            <tbody>
-              ${posts.map(post => `
-                <tr>
-                  <td>
-                    <a class="topic-title cursor-pointer" onclick="ASXRuntime.viewTopic('${post.id}')">
-                      ${post.title}
-                    </a>
-                    <div class="topic-snippet">${post.content.substring(0, 150)}...</div>
-                  </td>
-                  <td>
-                    <div>${post.author}</div>
-                    <div class="text-muted">${new Date(post.timestamp).toLocaleDateString()}</div>
-                  </td>
-                  <td class="text-center">${post.replies?.length || 0}</td>
-                  <td class="text-center">
-                    <button class="btn p-0" onclick="ASXRuntime.viewTopic('${post.id}')" title="View">
-                      <i data-feather="eye"></i>
-                    </button>
-                  </td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </asx-block>
-      `).join('');
-
-    feather.replace();
-  }
-
-  static getFilteredPosts() {
-    const filter = document.getElementById('categoryFilter').value;
-    const search = document.getElementById('searchBar').value.toLowerCase();
-
-    return this.state.posts.filter(post => {
-      const matchesCategory = !filter || post.category === filter;
-      const matchesSearch = !search ||
-        post.title.toLowerCase().includes(search) ||
-        post.content.toLowerCase().includes(search);
-      return matchesCategory && matchesSearch;
-    });
+    container.innerHTML = filtered.map(topic => `
+      <div class="topic-item" onclick="ASXPrimeOS.viewTopic('${topic.id}')">
+        <div class="flex justify-between items-center">
+          <strong class="text-glow">${topic.title}</strong>
+          <span class="text-xs text-muted">${topic.replies?.length || 0} replies</span>
+        </div>
+        <div class="flex justify-between text-xs text-muted mt-1">
+          <span>${topic.author}</span>
+          <span>${new Date(topic.timestamp).toLocaleDateString()}</span>
+        </div>
+        <div class="text-xs text-muted mt-2">${topic.content.substring(0, 100)}...</div>
+      </div>
+    `).join('');
   }
 
   static viewTopic(id) {
-    const post = this.state.posts.find(p => p.id === id);
-    if (!post) return;
+    const topic = this.topics.find(t => t.id === id);
+    if (!topic) return;
 
-    this.state.currentTopic = post;
+    document.getElementById('topicViewTitle').textContent = topic.title;
 
-    const repliesHTML = post.replies?.map(reply => `
-      <div class="bg-darker pad-md rounded ${reply.isAgent ? 'border-agent bg-agent' : ''}">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center">
-            <strong>${reply.author}</strong>
-            ${reply.isAgent ? '<span class="agent-badge">AI</span>' : ''}
-          </div>
-          <span class="text-muted">${new Date(reply.timestamp).toLocaleString()}</span>
+    const repliesHTML = (topic.replies || []).map(r => `
+      <div class="message ${r.isAgent ? 'agent' : 'user'}">
+        <div class="flex items-center gap-sm">
+          <strong>${r.author}</strong>
+          ${r.isAgent ? '<span class="agent-badge">AI</span>' : ''}
         </div>
-        <div class="text-white pad-md">${reply.content}</div>
+        <div class="text-sm mt-1">${r.content}</div>
+        <div class="text-xs text-muted mt-1">${new Date(r.timestamp).toLocaleString()}</div>
       </div>
-    `).join('') || '';
+    `).join('');
 
-    document.getElementById('topicModalTitle').textContent = post.title;
-    document.getElementById('topicModalContent').innerHTML = `
-      <div class="bg-darker pad-lg rounded">
-        <div class="flex justify-between items-center">
-          <div>
-            <strong>${post.author}</strong>
-            <div class="text-muted">${new Date(post.timestamp).toLocaleString()}</div>
-          </div>
-          <div class="text-muted">${post.replies?.length || 0} replies</div>
+    document.getElementById('topicViewContent').innerHTML = `
+      <div class="message user">
+        <div class="flex items-center gap-sm">
+          <strong>${topic.author}</strong>
         </div>
-        <div class="text-white pad-md">${post.content}</div>
+        <div class="text-sm mt-1">${topic.content}</div>
+        <div class="text-xs text-muted mt-1">${new Date(topic.timestamp).toLocaleString()}</div>
       </div>
-      ${repliesHTML ? `<div class="gap-md col">${repliesHTML}</div>` : ''}
-      <div class="flex gap-md justify-end pad-md">
-        <button class="btn" onclick="ASXAgent.generateReply()">Get AI Response</button>
-        <button class="btn btn-primary" onclick="ASXRuntime.showReplyForm()">Add Reply</button>
+      ${repliesHTML}
+      <div class="flex gap-md mt-4">
+        <input type="text" class="brain-input" id="replyInput" placeholder="Add a reply...">
+        <button class="btn btn-primary" onclick="ASXPrimeOS.addReply('${topic.id}')">Reply</button>
       </div>
     `;
 
-    Modal.show('topicModal');
+    Modal.show('topicViewModal');
   }
 
-  static showReplyForm() {
-    const content = document.getElementById('topicModalContent');
-    content.innerHTML += `
-      <div class="bg-darker pad-lg rounded">
-        <textarea class="brain-input w-full" id="replyInput" placeholder="Write your reply..." rows="4"></textarea>
-        <div class="flex gap-md justify-end pad-md">
-          <button class="btn" onclick="ASXRuntime.cancelReply()">Cancel</button>
-          <button class="btn btn-primary" onclick="ASXRuntime.submitReply()">Post Reply</button>
-        </div>
-      </div>
-    `;
-  }
-
-  static cancelReply() {
-    this.viewTopic(this.state.currentTopic.id);
-  }
-
-  static submitReply() {
+  static addReply(topicId) {
     const input = document.getElementById('replyInput');
-    const content = input?.value.trim();
+    const content = input.value.trim();
+    if (!content) return;
 
-    if (!content || !this.state.currentTopic) return;
+    const topic = this.topics.find(t => t.id === topicId);
+    if (!topic) return;
 
     const reply = {
       author: 'User',
@@ -627,178 +1271,245 @@ class ASXRuntime {
       isAgent: false
     };
 
-    if (!this.state.currentTopic.replies) this.state.currentTopic.replies = [];
-    this.state.currentTopic.replies.push(reply);
+    if (!topic.replies) topic.replies = [];
+    topic.replies.push(reply);
 
-    this.savePosts();
-    this.viewTopic(this.state.currentTopic.id);
+    const embedding = this.tensorField.embeddings.get(topic.id);
+    if (embedding) embedding.weight = topic.replies.length;
 
-    setTimeout(() => ASXAgent.generateReply(), 1000);
+    this.saveTopics();
+    input.value = '';
+
+    setTimeout(() => {
+      const weights = this.tensorField.getWeightedResponse(content);
+      const topWeight = weights[0]?.weight || 0;
+
+      let response = '';
+      if (topWeight > 0.5) {
+        response = `Based on topic "${weights[0].topic}" (weight: ${topWeight.toFixed(2)}), I can tell you that ${this.mathCorpus.getRandomEquation()} applies here. The tensor field shows strong correlation with existing discussions.`;
+      } else {
+        response = `This is a novel discussion! The tensor field is creating new embeddings. Equation: ${this.mathCorpus.getRandomEquation()}`;
+      }
+
+      const agentReply = {
+        author: 'ASX Tensor Agent',
+        content: response,
+        timestamp: new Date().toISOString(),
+        isAgent: true
+      };
+
+      topic.replies.push(agentReply);
+      this.saveTopics();
+      this.viewTopic(topicId);
+
+      if (this.currentView === 'conversation') {
+        this.addToConversationThread('agent', response);
+      }
+
+      this.updateInferenceView();
+    }, 1500);
   }
 
   static createTopic(formData) {
     const topic = {
-      id: 'post-' + Date.now(),
+      id: 't' + Date.now(),
       title: formData.get('title'),
-      author: formData.get('author') || 'Anonymous',
+      author: formData.get('author') || 'User',
       content: formData.get('content'),
       category: formData.get('category'),
       timestamp: new Date().toISOString(),
       replies: []
     };
 
-    this.state.posts.unshift(topic);
-    this.savePosts();
-    this.render();
+    this.topics.unshift(topic);
+    this.tensorField.embedTopic(topic);
+    this.saveTopics();
+    this.renderForum();
     Modal.hide('createTopicModal');
 
-    setTimeout(() => ASXAgent.generateReply(), 1500);
-  }
-
-  static setupEventListeners() {
-    document.getElementById('createTopicBtn').onclick = () => Modal.show('createTopicModal');
-    document.getElementById('topicForm').onsubmit = (e) => {
-      e.preventDefault();
-      this.createTopic(new FormData(e.target));
-      e.target.reset();
-    };
-
-    document.getElementById('scxRuntimeBtn').onclick = () => Modal.show('scxRuntimeModal');
-
-    document.getElementById('askBrainBtn').onclick = ASXAgent.answerQuestion;
-    document.getElementById('brainInput').onkeypress = (e) => {
-      if (e.key === 'Enter') ASXAgent.answerQuestion();
-    };
-
-    document.getElementById('searchBar').oninput = () => this.render();
-    document.getElementById('categoryFilter').onchange = () => this.render();
-  }
-}
-
-// === SCX RUNTIME ===
-class SCXRuntime {
-  static getConsole() {
-    return document.getElementById('scxConsole');
-  }
-
-  static log(message) {
-    const el = this.getConsole();
-    if (!el) return;
-    el.innerHTML += `<div>${message}</div>`;
-    el.scrollTop = el.scrollHeight;
-  }
-
-  static clear() {
-    const el = this.getConsole();
-    if (!el) return;
-    el.innerHTML = '<div class="text-muted">SCX Runtime Console - Ready...</div>';
-  }
-
-  static execute(code, description) {
-    this.clear();
-    this.log(`🎯 ${description}`);
-    this.log(`📦 ${code}`);
-
-    const symbols = code.match(/[@#\$%^&*()><+\-=\~∂∞→←↑↓Θ]/g) || [];
-    symbols.forEach((symbol, i) => {
-      setTimeout(() => {
-        const meaning = this.getSymbolMeaning(symbol);
-        this.log(`🔍 ${symbol} → ${meaning}`);
-      }, i * 300);
-    });
-
     setTimeout(() => {
-      this.log(`✅ ${this.interpret(code)}`);
-    }, symbols.length * 300 + 500);
-  }
+      const weights = this.tensorField.getWeightedResponse(topic.content);
+      const response = `Great topic! Your post has been embedded in the tensor field at position ${weights[0]?.similarity?.toFixed(2) || 0} similarity to existing discussions. State evolution: ${this.mathCorpus.getRandomEquation()}`;
 
-  static getSymbolMeaning(symbol) {
-    const meanings = {
-      '@': 'internet', '#': 'agent', '$': 'data', '%': 'save',
-      '^': 'AI', '>': 'send', '<': 'receive', '+': 'create',
-      '∂': 'update', '~': 'transform', '∞': 'loop'
-    };
-    return meanings[symbol] || 'operation';
-  }
-
-  static interpret(code) {
-    if (code.includes('@#')) return 'Agent protocol executed';
-    if (code.includes('(∂)')) return 'Data mutation completed';
-    if (code.includes('^(>)')) return 'AI training initiated';
-    return 'Symbolic execution finished';
-  }
-}
-
-// === ASX AGENT INTELLIGENCE ===
-class ASXAgent {
-  static async generateReply() {
-    const topic = ASXRuntime.state.currentTopic;
-    if (!topic) return;
-
-    const content = document.getElementById('topicModalContent');
-    if (content) {
-      content.innerHTML += '<div class="text-muted">🤖 ASX Agent is thinking...</div>';
-    }
-
-    setTimeout(() => {
-      const reply = {
-        author: 'ASX Agent 🤖',
-        content: this.generateIntelligentReply(topic),
+      const agentReply = {
+        author: 'ASX Tensor Agent',
+        content: response,
         timestamp: new Date().toISOString(),
         isAgent: true
       };
 
-      topic.replies = topic.replies || [];
-      topic.replies.push(reply);
-      ASXRuntime.savePosts();
-      ASXRuntime.viewTopic(topic.id);
-    }, 2000);
+      topic.replies.push(agentReply);
+      this.saveTopics();
+
+      if (this.currentView === 'forum') this.renderForum();
+      this.updateInferenceView();
+    }, 1500);
   }
 
-  static generateIntelligentReply(topic) {
-    const context = `${topic.content} ${(topic.replies || []).map(r => r.content).join(' ')}`.toLowerCase();
+  static sendConversation() {
+    const input = document.getElementById('conversationInput');
+    const text = input.value.trim();
+    if (!text) return;
 
-    if (context.includes('symbolic') && context.includes('computing')) {
-      return 'Excellent discussion about SCX symbolic computing! The key insight is that SCX transforms JSON into executable bytecode where symbols like @#(>)% represent semantic operations for multi-agent coordination, not just data compression.';
-    }
-    if (context.includes('neural') && context.includes('symbolic')) {
-      return "You're exploring the frontier of neural-symbolic AI! SCX bridges connectionist and symbolic approaches by allowing neural representations to be expressed as executable symbolic structures for agent communication.";
-    }
-    if (context.includes('agent') && context.includes('communication')) {
-      return 'Perfect analysis of multi-agent systems! SCX enables agents to coordinate through symbolic protocols where each agent specializes in specific operations - network (@), data (%), AI (^) - creating distributed intelligence.';
-    }
-    return 'Thanks for contributing to the SCX discussion! The symbolic computing approach enables executable data structures, multi-agent coordination, and portable application tapes through unified semantic protocols.';
-  }
-
-  static async answerQuestion() {
-    const input = document.getElementById('brainInput');
-    const question = input.value.trim();
-    const output = document.getElementById('brainOutput');
-
-    if (!question) return;
-
-    output.innerHTML = '<div class="text-muted">🤔 Processing...</div>';
+    this.addToConversationThread('user', text);
+    input.value = '';
 
     setTimeout(() => {
-      const response = this.generateAnswer(question);
-      output.innerHTML = `<div class="text-glow">${response}</div>`;
-      input.value = '';
-    }, 1000);
+      const weights = this.tensorField.getWeightedResponse(text);
+      const topWeights = weights.slice(0, 3).map(w => `${w.topic} (${w.weight.toFixed(2)})`).join(', ');
+
+      const response = `Tensor analysis: Found ${weights.length} relevant topics. Top matches: ${topWeights}. Applying ${this.mathCorpus.getRandomEquation()}`;
+
+      this.addToConversationThread('agent', response);
+      this.updateInferenceView();
+    }, 800);
   }
 
-  static generateAnswer(question) {
-    const q = question.toLowerCase();
+  static addToConversationThread(role, content) {
+    const thread = document.getElementById('conversationThread');
 
-    if (q.includes('symbolic computing')) {
-      return 'SCX is a symbolic computing layer where symbols act as bytecode opcodes. Each symbol represents executable operations that the ASX Runtime interprets as semantic instructions for multi-agent systems.';
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${role}`;
+
+    if (role === 'agent') {
+      messageDiv.innerHTML = `
+        <div class="flex items-center gap-sm">
+          <strong>ASX Tensor Agent</strong>
+          <span class="agent-badge">3D Weighted</span>
+        </div>
+        <div class="text-sm mt-2">${content}</div>
+      `;
+    } else {
+      messageDiv.innerHTML = `
+        <div class="flex items-center gap-sm">
+          <strong>You</strong>
+        </div>
+        <div class="text-sm mt-2">${content}</div>
+      `;
     }
-    if (q.includes('bytecode') || q.includes('opcode')) {
-      return 'SCX symbols function like bytecode in virtual machines. @ = internet operations, # = agent operations, > = send operations. The runtime maps symbols to function pointers, enabling JSON to execute complex behaviors.';
+
+    thread.appendChild(messageDiv);
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  static updateInferenceView() {
+    const weights = [];
+
+    for (const [id, embedding] of this.tensorField.embeddings) {
+      weights.push({
+        topic: embedding.title,
+        weight: embedding.weight,
+        similarity: Math.random() * 0.5 + 0.5
+      });
     }
-    if (q.includes('agent communication')) {
-      return "SCX enables multi-agent communication through symbolic protocols. Example: '@#(>)%' means 'internet → agent → send → data'. Agents interpret symbols to coordinate behaviors across distributed systems.";
+
+    weights.sort((a, b) => b.weight - a.weight);
+
+    document.getElementById('inferenceWeight').textContent = (weights[0]?.weight || 0).toFixed(2);
+    document.getElementById('inferenceConfidence').textContent = (weights[0]?.similarity || 0).toFixed(2);
+    document.getElementById('inferenceTopics').textContent = this.tensorField.embeddings.size;
+
+    const container = document.getElementById('weightedResponses');
+    if (container) {
+      container.innerHTML = weights.slice(0, 5).map(w => `
+        <div class="flex justify-between items-center">
+          <span class="text-sm">${w.topic}</span>
+          <span class="text-glow text-sm">${w.weight.toFixed(2)}</span>
+        </div>
+        <div class="progress-bar mt-1 mb-2">
+          <div class="progress-fill" style="width:${w.similarity * 100}%"></div>
+        </div>
+      `).join('');
     }
-    return 'I can explain SCX symbolic computing, bytecode execution, multi-agent protocols, neural-symbolic AI, executable JSON, or Liquid-OS integration. What would you like to know?';
+
+    document.getElementById('weightField1').style.width = `${(weights[0]?.similarity || 0) * 100}%`;
+    document.getElementById('weightField2').style.width = `${(weights[1]?.similarity || 0) * 100}%`;
+    document.getElementById('weightField3').style.width = `${(weights[2]?.similarity || 0) * 100}%`;
+  }
+
+  static renderEmbeddings() {
+    const grid = document.getElementById('embeddingsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = Array.from(this.tensorField.embeddings.entries()).slice(0, 9).map(([id, emb]) => `
+      <div class="card p-2">
+        <div class="text-xs text-glow">${emb.title.substring(0, 20)}</div>
+        <div class="text-xs text-muted">pos: [${emb.position.map(p => p.toFixed(1)).join(', ')}]</div>
+        <div class="text-xs text-muted">weight: ${emb.weight}</div>
+      </div>
+    `).join('');
+  }
+
+  static updateInspectorStats() {
+    document.getElementById('embeddedTopics').textContent = this.tensorField.embeddings.size;
+
+    let totalComments = 0;
+    this.topics.forEach(t => {
+      totalComments += t.replies?.length || 0;
+    });
+    document.getElementById('commentVectors').textContent = totalComments;
+
+    document.getElementById('tensorDensity').textContent = (this.tensorField.embeddings.size / 100).toFixed(2);
+    document.getElementById('tensorEntropy').textContent = (2 + Math.random() * 0.5).toFixed(2);
+    document.getElementById('tensorClusters').textContent = Math.floor(this.tensorField.embeddings.size / 3) + 1;
+
+    document.getElementById('tensorOverlay').textContent = `Tensor Field: 64³ × 32 • ${this.tensorField.embeddings.size} topics`;
+  }
+
+  static processTerminalCommand() {
+    const input = document.getElementById('terminalInput');
+    const command = input.value.trim();
+    if (!command) return;
+
+    this.terminalLog(`$ ${command}`);
+
+    if (command === 'help') {
+      this.terminalLog('Available commands:');
+      this.terminalLog('  help          - Show this help');
+      this.terminalLog('  status        - Show tensor field status');
+      this.terminalLog('  topics        - List forum topics');
+      this.terminalLog('  math          - Show math corpus');
+      this.terminalLog('  tensor        - Show tensor stats');
+      this.terminalLog('  inference     - Run weighted inference');
+      this.terminalLog('  clear         - Clear terminal');
+    } else if (command === 'status') {
+      this.terminalLog(`Tensor Field: [${this.tensorField.dimensions.join('×')}]`);
+      this.terminalLog(`Embedded Topics: ${this.tensorField.embeddings.size}`);
+      this.terminalLog(`Total Comments: ${this.topics.reduce((sum, t) => sum + (t.replies?.length || 0), 0)}`);
+    } else if (command === 'topics') {
+      this.topics.forEach(t => this.terminalLog(`  ${t.id}: ${t.title}`));
+    } else if (command === 'math') {
+      this.terminalLog('Mathematical Corpus:');
+      this.mathCorpus.equations.forEach(eq => this.terminalLog(`  ${eq}`));
+    } else if (command === 'tensor') {
+      this.terminalLog('Tensor Dimensions: [64,64,64,32]');
+      this.terminalLog(`Field Size: ${this.tensorField.field.length} elements`);
+      this.terminalLog(`Active Embeddings: ${this.tensorField.embeddings.size}`);
+    } else if (command === 'inference') {
+      const weights = this.tensorField.getWeightedResponse('random query');
+      weights.slice(0, 3).forEach(w => {
+        this.terminalLog(`  ${w.topic}: weight=${w.weight.toFixed(2)}, similarity=${w.similarity.toFixed(2)}`);
+      });
+    } else if (command === 'clear') {
+      document.getElementById('terminalOutput').innerHTML = '';
+      this.terminalLog('ASX PRIME OS Tensor Terminal');
+    } else {
+      const weights = this.tensorField.getWeightedResponse(command);
+      if (weights.length > 0) {
+        this.terminalLog(`Found ${weights.length} relevant topics. Top match: ${weights[0].topic} (weight: ${weights[0].weight.toFixed(2)})`);
+        this.terminalLog(`Applying: ${this.mathCorpus.getRandomEquation()}`);
+      } else {
+        this.terminalLog('Command not recognized. Type "help" for available commands.');
+      }
+    }
+
+    input.value = '';
+  }
+
+  static terminalLog(message) {
+    const terminal = document.getElementById('terminalOutput');
+    terminal.innerHTML += `<div class="terminal-line">> ${message}</div>`;
+    terminal.scrollTop = terminal.scrollHeight;
   }
 }
 
@@ -813,14 +1524,19 @@ class Modal {
   }
 }
 
-// === INITIALIZATION ===
+// === BOOTSTRAP ===
 document.addEventListener('DOMContentLoaded', () => {
-  ASXRuntime.init();
+  ASXPrimeOS.init();
+  window.ASXPrimeOS = ASXPrimeOS;
+  feather.replace();
 
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.onclick = (e) => {
-      if (e.target === modal) Modal.hide(modal.id);
-    };
+  window.addEventListener('resize', () => {
+    if (ASXPrimeOS.currentView === 'tensor' && ASXPrimeOS.tensorField.renderer) {
+      const canvas = document.getElementById('tensorCanvas');
+      if (canvas) {
+        ASXPrimeOS.tensorField.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      }
+    }
   });
 });
 </script>
