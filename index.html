@@ -2,235 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Pocket Forum</title>
+<title>ASX Forum — Symbolic Computing Intelligence</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
 <style>
-  /* Atomic CSS (aCSS) */
+  /* === ATOMIC CSS (aCSS) === */
+  .flex { display: flex; }
+  .row { flex-direction: row; }
+  .col { flex-direction: column; }
+  .wrap { flex-wrap: wrap; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .justify-end { justify-content: flex-end; }
+  .gap-md { gap: 12px; }
+  .gap-lg { gap: 20px; }
+  .w-full { width: 100%; }
+  .w-auto { width: auto; }
+
   .text-md { font-size: 1rem; }
   .text-lg { font-size: 1.25rem; }
   .text-xl { font-size: 1.5rem; }
   .text-2xl { font-size: 2rem; }
+  .text-center { text-align: center; }
+
   .pad-md { padding: 12px; }
   .pad-lg { padding: 20px; }
-  .flex { display: flex; }
-  .row { flex-direction: row; }
-  .col { flex-direction: column; }
-  .gap-md { gap: 12px; }
-  .gap-lg { gap: 20px; }
-  .wrap { flex-wrap: wrap; }
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .w-full { width: 100%; }
-  .w-auto { width: auto; }
+  .p-0 { padding: 0; }
+
   .bg-panel { background: #11161c; border-radius: 8px; }
   .bg-dark { background: #0a0a0a; }
   .bg-darker { background: #1a1a1a; }
+  .bg-agent { background: #1a2a1a; }
+
   .border { border: 1px solid #404040; }
   .border-glow { border: 2px solid #00ff99; }
+  .border-agent { border-left: 4px solid #00ff99; }
+  .border-b { border-bottom: 1px solid #404040; }
+
   .rounded { border-radius: 8px; }
   .rounded-lg { border-radius: 12px; }
+
   .text-glow { color: #00ff99; }
   .text-aqua { color: #00ffff; }
   .text-muted { color: #808080; }
+  .text-white { color: #e0e0e0; }
+
   .shadow-glow { box-shadow: 0 0 15px rgba(0, 255, 153, 0.25); }
   .cursor-pointer { cursor: pointer; }
+
   .hidden { display: none; }
   .block { display: block; }
 
-  /* Forum Styles */
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; line-height: 1.5; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-  .header { background: #1a1a1a; border: 2px solid #00ff99; padding: 15px 20px; margin-bottom: 20px;
-            border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 153, 0.35); }
-
-  .logo { font-size: 24px; font-weight: bold; color: #00ff99; display: flex; align-items: center; gap: 8px; }
-
-  .user-panel { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; }
-
-  .btn, .pb-btn, select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #404040;
-                          padding: 8px 12px; cursor: pointer; transition: all 0.2s;
-                          font-family: inherit; font-size: 14px; border-radius: 6px; }
-
-  .btn:hover, .pb-btn:hover, select:hover { background: #404040; }
-
-  .forum-section { background: #1a1a1a; border: 2px solid #404040; margin-bottom: 20px;
-                   border-radius: 8px; overflow: hidden; }
-
-  .section-header { background: #2a2a2a; border-bottom: 1px solid #404040; padding: 12px 16px;
-                    font-weight: bold; display: flex; justify-content: space-between;
-                    align-items: center; cursor: pointer; font-size: 18px; transition: background 0.2s; }
-
-  .section-header:hover { background: #404040; }
-
-  .topic-table { width: 100%; border-collapse: collapse; }
-
-  .topic-table th, .topic-table td { border: 1px solid #404040; padding: 12px; text-align: left; vertical-align: top; }
-
-  .topic-table th { background: #2a2a2a; font-weight: bold; }
-
-  .topic-title { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px; }
-
-  .topic-title:hover { text-decoration: underline; }
-
-  .topic-meta { color: #808080; font-size: 12px; margin-top: 4px; }
-
-  .topic-snippet { color: #b0b0b0; font-size: 13px; line-height: 1.4; margin-top: 6px;
-                   max-width: 350px; display: -webkit-box; -webkit-line-clamp: 3;
-                   -webkit-box-orient: vertical; overflow: hidden; }
-
-  .stats { color: #b0b0b0; text-align: center; }
-
-  .actions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-
-  .action-btn { background: none; border: none; color: #808080; cursor: pointer; padding: 6px;
-                border-radius: 4px; transition: all 0.2s; display: flex; align-items: center;
-                justify-content: center; }
-
-  .action-btn:hover { background: #2a2a2a; color: #e0e0e0; }
-
-  .collapsed .topic-table { display: none; }
-
-  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-           background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
-           padding: 20px; }
-
-  .modal-content { background: #1a1a1a; border: 2px solid #404040; padding: 20px;
-                   max-width: 800px; width: 100%; max-height: 80vh; overflow-y: auto; border-radius: 8px; }
-
-  .modal-header { display: flex; justify-content: space-between; align-items: center;
-                  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #404040; }
-
-  .close-btn { background: none; border: none; color: #808080; cursor: pointer; font-size: 20px;
-               padding: 0; width: 30px; height: 30px; display: flex; align-items: center;
-               justify-content: center; border-radius: 4px; }
-
-  .close-btn:hover { background: #2a2a2a; }
-
-  .field { display: block; width: 100%; margin-bottom: 15px; }
-
-  .field input, .field textarea, .field select { width: 100%; padding: 10px; border-radius: 6px;
-                                                 border: 1px solid #404040; background: #2a2a2a;
-                                                 color: #e0e0e0; font-family: inherit; }
-
-  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #00ff99; }
-
-  .search-bar { width: 100%; padding: 10px 15px; margin-bottom: 20px; border-radius: 6px;
-                border: 1px solid #404040; background: #1a1a1a; color: #e0e0e0; font-size: 16px; }
-
-  .search-bar:focus { outline: none; border-color: #00ff99; }
-
-  .empty-state { text-align: center; padding: 40px 20px; color: #808080; }
-
-  .status-message { padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; display: none; }
-
-  .status-success { background: rgba(74, 222, 128, 0.1); border: 1px solid #00ff99; color: #00ff99; }
-
-  .status-error { background: rgba(248, 113, 113, 0.1); border: 1px solid #f87171; color: #f87171; }
-
-  /* ASX Block Styles */
-  asx-block { display: block; }
-
-  .scx-compressed {
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 10px;
-    margin: 10px 0;
-    font-family: monospace;
-    font-size: 12px;
-    overflow-x: auto;
-    color: #00ff99;
-  }
-
-  .scx-decompressed {
-    background: #001a00;
-    border: 1px solid #00cc77;
-    border-radius: 6px;
-    padding: 15px;
-    margin: 10px 0;
-  }
-
-  .scx-toggle {
-    background: #002200;
-    border: 1px solid #00ff99;
-    color: #00ff99;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    margin: 5px 0;
-  }
-
-  /* ASX Brain Panel */
-  .brain-panel {
-    background: #1a1a1a;
-    border: 2px solid #00ff99;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 255, 153, 0.25);
-  }
-
-  .brain-input-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .brain-input {
-    flex: 1;
-    padding: 10px;
-    background: #2a2a2a;
-    border: 1px solid #404040;
-    border-radius: 6px;
-    color: #e0e0e0;
-    font-family: inherit;
-  }
-
-  .brain-output {
-    background: #001100;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 12px;
-    min-height: 80px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .thinking {
-    color: #00ffff;
-    font-style: italic;
-  }
-
-  .brain-response {
-    color: #00ff99;
-  }
-
-  /* SCX Execution Environment */
-  .scx-execution-panel {
-    background: #001a1a;
-    border: 2px solid #00ffff;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
-  }
-
-  .scx-console {
-    background: #000;
-    border: 1px solid #00ff99;
-    border-radius: 6px;
-    padding: 12px;
-    font-family: monospace;
-    font-size: 12px;
-    height: 120px;
-    overflow-y: auto;
-    margin: 10px 0;
-  }
-
+  /* === SCX RUNTIME STYLES === */
   .scx-bytecode {
     background: #002200;
     border: 1px solid #00cc66;
@@ -241,701 +64,765 @@
     margin: 5px 0;
   }
 
-  .scx-opcode {
-    color: #00ffff;
-    font-weight: bold;
+  .scx-opcode { color: #00ffff; font-weight: bold; }
+  .scx-data { color: #00ff99; }
+  .scx-console {
+    background: #000;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    height: 120px;
+    overflow-y: auto;
   }
 
-  .scx-data {
+  /* === FORUM COMPONENTS === */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header */
+  .header {
+    background: #1a1a1a;
+    border: 2px solid #00ff99;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 153, 0.35);
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
     color: #00ff99;
   }
 
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .header { flex-direction: column; align-items: flex-start; }
-    .user-panel { width: 100%; justify-content: space-between; }
-    .topic-table { display: block; overflow-x: auto; }
-    .actions { justify-content: flex-start; }
-    .topic-snippet { max-width: 200px; }
-    .brain-input-container { flex-direction: column; }
+  .btn {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #404040;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 6px;
   }
 
-  @media (max-width: 480px) {
-    .topic-table th:nth-child(2), .topic-table td:nth-child(2) { display: none; }
-    .actions { flex-direction: column; }
+  .btn:hover { background: #404040; }
+  .btn-primary { background: #00ff99; color: #000; }
+  .btn-agent { background: #00ffff; color: #000; }
+
+  /* Brain Panel */
+  .brain-panel {
+    background: #1a1a1a;
+    border: 2px solid #00ff99;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .brain-input {
+    flex: 1;
+    padding: 10px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    color: #e0e0e0;
+  }
+
+  .brain-output {
+    background: #001100;
+    border: 1px solid #00ff99;
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 80px;
+  }
+
+  /* Forum Sections */
+  .forum-section {
+    background: #1a1a1a;
+    border: 2px solid #404040;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: #2a2a2a;
+    border-bottom: 1px solid #404040;
+    padding: 12px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .section-header:hover { background: #404040; }
+
+  .topic-table {
+    width: 100%;
+    border-collapse: collapse;
+    transition: all 0.3s ease;
+  }
+
+  .collapsed .topic-table { display: none; }
+
+  .topic-table th, .topic-table td {
+    border: 1px solid #404040;
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .topic-table th { background: #2a2a2a; font-weight: bold; }
+
+  .topic-title {
+    color: #00ff99;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .topic-title:hover { text-decoration: underline; }
+
+  .topic-snippet {
+    color: #b0b0b0;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-top: 6px;
+    max-width: 350px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Modals */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-content {
+    background: #1a1a1a;
+    border: 2px solid #404040;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 8px;
+  }
+
+  .field { display: block; width: 100%; margin-bottom: 15px; }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #404040;
+    background: #2a2a2a;
+    color: #e0e0e0;
+  }
+
+  /* Agent Badge */
+  .agent-badge {
+    background: #00ff99;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { flex-direction: column; gap: 10px; }
+    .brain-input-container { flex-direction: column; }
+    .topic-table { display: block; overflow-x: auto; }
+    .topic-snippet { max-width: 200px; }
+    .brain-input-container { flex-direction: column; }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <!-- ASX Header Block -->
-  <asx-block id="header-nav">
-    <header class="header flex row justify-between items-center">
-      <div class="logo">
-        <span>🌿</span>
-        <span>ASX Forum — SCX Symbolic Computing Layer</span>
+<!-- ASX RUNTIME BOOTSTRAP -->
+<asx-block id="runtime-bootstrap">
+  <div class="container">
+    <!-- HEADER -->
+    <asx-block id="header">
+      <header class="header flex row justify-between items-center">
+        <div class="logo flex items-center gap-md">
+          <span>🌿</span>
+          <span>ASX Forum — Symbolic Computing Intelligence</span>
+        </div>
+        <div class="flex gap-md items-center wrap">
+          <select id="categoryFilter" class="btn">
+            <option value="">All Categories</option>
+          </select>
+          <button class="btn btn-primary" id="createTopicBtn">✚ Create Topic</button>
+          <button class="btn" id="scxRuntimeBtn">⚡ SCX Runtime</button>
+        </div>
+      </header>
+    </asx-block>
+
+    <!-- SCX EXECUTION ENVIRONMENT -->
+    <asx-block id="scx-runtime">
+      <div class="bg-panel border-glow pad-lg">
+        <h3 class="text-aqua">⚡ SCX Symbolic Computing Runtime</h3>
+        <p class="text-muted">Live execution environment - SCX as executable bytecode</p>
+
+        <div class="flex gap-md wrap pad-md">
+          <button class="btn" onclick="SCXRuntime.execute('@#(>)%', 'Agent Communication')">
+            Run Agent Protocol
+          </button>
+          <button class="btn" onclick="SCXRuntime.execute('(∂)$state', 'Data Mutation')">
+            Run Data Mutation
+          </button>
+          <button class="btn btn-agent" onclick="SCXRuntime.execute('^(>)brain(~)', 'Neural Training')">
+            Run AI Training
+          </button>
+        </div>
+
+        <div class="scx-console" id="scxConsole">
+          <div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>
+        </div>
       </div>
-      <div class="user-panel">
-        <select id="labelFilter"></select>
-        <button class="pb-btn" id="openCreateBtn">✚ Create Topic</button>
-        <button class="pb-btn" id="refreshBtn">⟳ Refresh</button>
-        <button class="pb-btn" id="scxDemoBtn">⚡ SCX Runtime</button>
+    </asx-block>
+
+    <!-- ASX BRAIN INTELLIGENCE -->
+    <asx-block id="asx-brain">
+      <div class="brain-panel">
+        <h3 class="text-glow">🧠 ASX Brain - Symbolic Intelligence System</h3>
+        <p class="text-muted">Ask about SCX symbolic computing, bytecode execution, or multi-agent systems</p>
+
+        <div class="flex gap-md brain-input-container">
+          <input type="text" class="brain-input" id="brainInput"
+                 placeholder="Ask about SCX symbolic computing, bytecode, agents..." />
+          <button class="btn btn-primary" id="askBrainBtn">Ask ASX Brain</button>
+        </div>
+
+        <div class="brain-output" id="brainOutput">
+          <div class="text-muted">🤔 Ready to discuss SCX as symbolic computing layer...</div>
+        </div>
       </div>
-    </header>
-  </asx-block>
+    </asx-block>
 
-  <!-- SCX Execution Environment -->
-  <asx-block id="scx-execution-environment">
-    <div class="scx-execution-panel">
-      <h3 class="text-aqua">⚡ SCX Symbolic Computing Runtime</h3>
-      <p class="text-muted">Live execution environment - SCX as bytecode, not compression</p>
+    <!-- FORUM CONTENT -->
+    <asx-block id="forum-content">
+      <input type="text" class="brain-input w-full" id="searchBar"
+             placeholder="Search SCX symbolic computing topics..." />
 
-      <div class="flex gap-md wrap">
-        <button class="scx-toggle" onclick="executeSCXDemo('agent_communication')">Run Agent Communication</button>
-        <button class="scx-toggle" onclick="executeSCXDemo('data_mutation')">Run Data Mutation</button>
-        <button class="pb-btn" onclick="executeSCXDemo('neural_training')" style="background: #00ffff; color: #000;">Run Neural Training</button>
+      <div id="forumSections">
+        <div class="bg-darker pad-lg rounded text-center">
+          <div class="text-muted">Loading SCX Symbolic Computing Content...</div>
+        </div>
       </div>
+    </asx-block>
+  </div>
+</asx-block>
 
-      <div class="scx-console" id="scxConsole">
-        <div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>
+<!-- MODALS -->
+<asx-block id="modals">
+  <!-- Create Topic Modal -->
+  <div class="modal" id="createTopicModal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center border-b pad-md">
+        <strong>Create New SCX Topic</strong>
+        <button class="btn p-0" onclick="Modal.hide('createTopicModal')">✕</button>
       </div>
-
-      <div class="scx-bytecode" id="scxBytecode">
-        <strong>Current SCX Bytecode:</strong> [awaiting execution]
-      </div>
-    </div>
-  </asx-block>
-
-  <!-- ASX Brain Block - Interactive AI -->
-  <asx-block id="asx-brain">
-    <div class="brain-panel">
-      <h3 class="text-glow">🧠 ASX Brain - Symbolic Intelligence System</h3>
-      <p class="text-muted">Ask about SCX as symbolic computing, bytecode execution, or multi-agent systems</p>
-
-      <div class="brain-input-container">
-        <input type="text" class="brain-input" id="brainInput" placeholder="Ask about SCX symbolic computing, bytecode, agents..." />
-        <button class="pb-btn" id="askBrainBtn" style="background: #00ff99; color: #000;">Ask ASX Brain</button>
-      </div>
-
-      <div class="brain-output" id="brainOutput">
-        <div class="thinking">🤔 Ready to discuss SCX as symbolic computing layer...</div>
-      </div>
-    </div>
-  </asx-block>
-
-  <!-- Status Message Block -->
-  <asx-block id="status-message">
-    <div class="status-message" id="statusMessage"></div>
-  </asx-block>
-
-  <!-- Search Block -->
-  <asx-block id="search-bar">
-    <input type="text" class="search-bar" placeholder="Search SCX symbolic computing topics..." id="searchBar" />
-  </asx-block>
-
-  <!-- Forum Content -->
-  <div id="forumSections">
-    <div class="empty-state" id="loadingState">
-      Loading SCX Symbolic Computing Content...
+      <form id="topicForm" class="pad-lg">
+        <div class="field">
+          <input name="title" placeholder="Topic Title (required)" required/>
+        </div>
+        <div class="field">
+          <input name="author" placeholder="Your Name (optional)" value="User"/>
+        </div>
+        <div class="field">
+          <textarea name="content" placeholder="Describe your SCX topic..." rows="6" required></textarea>
+        </div>
+        <div class="field">
+          <select name="category" required>
+            <option value="">Select Category</option>
+          </select>
+        </div>
+        <div class="flex justify-between items-center">
+          <label class="text-muted">
+            <input type="checkbox" name="scxEncode" checked />
+            Encode with SCX Symbols
+          </label>
+          <div class="flex gap-md">
+            <button type="button" class="btn" onclick="Modal.hide('createTopicModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Post Topic</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<!-- Create Topic Modal -->
-<div class="modal" id="pbModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <strong>Create New SCX Symbolic Topic</strong>
-      <button class="close-btn" id="closeModal">✕</button>
+  <!-- Topic View Modal -->
+  <div class="modal" id="topicModal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center border-b pad-md">
+        <strong id="topicModalTitle">Topic Details</strong>
+        <button class="btn p-0" onclick="Modal.hide('topicModal')">✕</button>
+      </div>
+      <div class="pad-lg" id="topicModalContent">
+        <!-- Dynamic content -->
+      </div>
     </div>
-    <form id="createTopicForm">
-      <div class="field">
-        <input name="title" id="topicTitle" placeholder="Title (required)" required/>
-      </div>
-      <div class="field">
-        <input name="author" id="topicAuthor" placeholder="Author name (optional)"/>
-      </div>
-      <div class="field">
-        <textarea name="body" id="topicBody" placeholder="Write your SCX symbolic computing content..." rows="6" required></textarea>
-      </div>
-      <div class="field">
-        <select name="labels" id="topicLabel" required>
-          <option value="">Select a category</option>
-        </select>
-      </div>
-      <div class="flex justify-between items-center">
-        <div>
-          <input type="checkbox" id="scxCompress" checked>
-          <label for="scxCompress" class="text-muted">Encode with SCX Symbols</label>
-        </div>
-        <div class="flex gap-md">
-          <button type="button" class="pb-btn" id="cancelBtn">Cancel</button>
-          <button type="submit" class="pb-btn" style="background: #00ff99; color: #000;">Post Topic</button>
-        </div>
-      </div>
-    </form>
   </div>
-</div>
 
-<!-- SCX Runtime Modal -->
-<div class="modal" id="scxModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <strong>⚡ SCX Symbolic Computing Runtime</strong>
-      <button class="close-btn" id="closeScxModal">✕</button>
-    </div>
-    <div class="pad-md">
-      <h3 class="text-aqua">SCX = Symbolic Computing Layer</h3>
-      <p class="text-muted">Not compression - but executable symbolic bytecode</p>
-
-      <div class="scx-execution-panel">
-        <h4 class="text-glow">Live SCX Execution Examples:</h4>
-
-        <div class="scx-bytecode">
-          <strong>Agent Communication:</strong><br>
-          <span class="scx-opcode">@</span><span class="scx-opcode">#</span><span class="scx-opcode">(>)</span><span class="scx-data">%</span><br>
-          <em>internet → person → send → data</em>
-        </div>
-
-        <div class="scx-bytecode">
-          <strong>Neural Training:</strong><br>
-          <span class="scx-opcode">^</span><span class="scx-opcode">(>)</span><span class="scx-data">brain.weights</span><span class="scx-opcode">(~)</span><br>
-          <em>AI → send → brain weights → transform</em>
-        </div>
-
-        <div class="scx-bytecode">
-          <strong>Self-Mutation:</strong><br>
-          <span class="scx-opcode">(∂)</span><span class="scx-data">$state.tapes[0]</span><span class="scx-opcode">(*)</span><br>
-          <em>update → tape state → with current time</em>
-        </div>
+  <!-- SCX Runtime Modal -->
+  <div class="modal" id="scxRuntimeModal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center border-b pad-md">
+        <strong>⚡ SCX Symbolic Computing</strong>
+        <button class="btn p-0" onclick="Modal.hide('scxRuntimeModal')">✕</button>
       </div>
-
-      <div class="pad-md">
-        <h4 class="text-glow">SCX Symbolic Computing Principles:</h4>
-        <div class="flex wrap gap-md">
-          <div class="bg-darker pad-md rounded">
-            <strong>Symbolic Bytecode</strong><br>
-            SCX symbols = opcodes<br>
-            JSON becomes executable
-          </div>
-          <div class="bg-darker pad-md rounded">
-            <strong>Multi-Agent Protocol</strong><br>
-            Agents interpret symbols<br>
-            Inter-agent communication
-          </div>
-          <div class="bg-darker pad-md rounded">
-            <strong>Semantic Execution</strong><br>
-            Meaning, not just data<br>
-            Intent-driven computing
-          </div>
+      <div class="pad-lg">
+        <div class="scx-bytecode">
+          <strong>Agent Protocol:</strong><br>
+          <span class="scx-opcode">@</span><span class="scx-opcode">#</span>
+          <span class="scx-opcode">(>)</span><span class="scx-data">%data</span><br>
+          <em>internet → agent → send → data</em>
+        </div>
+        <div class="text-muted pad-md">
+          SCX transforms JSON into executable symbolic bytecode. Each symbol represents
+          semantic operations interpreted by the ASX Runtime.
         </div>
       </div>
     </div>
   </div>
-</div>
+</asx-block>
 
 <script>
-  /* CONFIG */
-  const CATEGORIES = [
-    "SCX Symbolic Computing",
-    "Bytecode & Execution",
-    "Multi-Agent Systems",
-    "Neural-Symbolic AI",
-    "Atomic JSON & Tapes",
-    "Liquid-OS Integration",
-    "Runtime Protocols"
-  ];
-
-  const CATEGORY_EMOJIS = {
-    "SCX Symbolic Computing": "⚡",
-    "Bytecode & Execution": "🔧",
-    "Multi-Agent Systems": "🤖",
-    "Neural-Symbolic AI": "🧠",
-    "Atomic JSON & Tapes": "🎵",
-    "Liquid-OS Integration": "💧",
-    "Runtime Protocols": "🔄"
+// === ASX RUNTIME CORE ===
+class ASXRuntime {
+  static state = {
+    posts: [],
+    currentTopic: null,
+    categories: [
+      "SCX Symbolic Computing",
+      "Bytecode & Execution",
+      "Multi-Agent Systems",
+      "Neural-Symbolic AI",
+      "Atomic JSON & Tapes",
+      "Liquid-OS Integration"
+    ]
   };
 
-  /* SCX SYMBOLIC COMPUTING RUNTIME */
-  const SCXRuntime = {
-    console: document.getElementById('scxConsole'),
-    bytecodeDisplay: document.getElementById('scxBytecode'),
-
-    log: function(message) {
-      this.console.innerHTML += `<div>${message}</div>`;
-      this.console.scrollTop = this.console.scrollHeight;
-    },
-
-    clear: function() {
-      this.console.innerHTML = '<div class="text-muted">SCX Runtime Console - Ready for symbolic execution...</div>';
-    },
-
-    execute: function(scxCode, description) {
-      this.clear();
-      this.bytecodeDisplay.innerHTML = `<strong>Current SCX Bytecode:</strong> ${scxCode}`;
-      this.log(`🎯 Executing: ${description}`);
-      this.log(`📦 SCX Symbols: ${scxCode}`);
-
-      // Simulate SCX symbolic execution
-      const symbols = scxCode.match(/[@#\$%^&*()><+\-=\~∂∞→←↑↓Θ]/g) || [];
-      symbols.forEach(symbol => {
-        setTimeout(() => {
-          this.log(`🔍 Interpreting symbol: ${symbol} → ${this.getSymbolMeaning(symbol)}`);
-        }, symbols.indexOf(symbol) * 300);
-      });
-
-      setTimeout(() => {
-        this.log(`✅ SCX Execution Complete: ${this.interpretSCX(scxCode)}`);
-      }, symbols.length * 300 + 500);
-    },
-
-    getSymbolMeaning: function(symbol) {
-      const meanings = {
-        '@': 'internet/network',
-        '#': 'person/agent',
-        '$': 'data/money',
-        '%': 'save/persist',
-        '^': 'AI/intelligence',
-        '&': 'location',
-        '*': 'time/current',
-        '(': 'group start',
-        ')': 'group end',
-        '>': 'send/forward',
-        '<': 'receive/backward',
-        '+': 'create/add',
-        '-': 'remove/subtract',
-        '=': 'assign/set',
-        '~': 'transform/encrypt',
-        '∂': 'update/mutate',
-        '∞': 'loop/repeat',
-        '→': 'move/forward',
-        '←': 'return/backward',
-        '↑': 'increase',
-        '↓': 'decrease',
-        'Θ': 'connect'
-      };
-      return meanings[symbol] || 'unknown symbol';
-    },
-
-    interpretSCX: function(scxCode) {
-      if (scxCode.includes('@#(>)%')) return 'Agent communication protocol executed';
-      if (scxCode.includes('(∂)brain')) return 'Neural weights updated successfully';
-      if (scxCode.includes('(~)encrypt')) return 'Data transformation completed';
-      if (scxCode.includes('(+)tape')) return 'New atomic tape created';
-      return 'Symbolic execution completed';
-    }
-  };
-
-  // SCX Symbolic Computing Examples
-  const SCX_EXECUTION_DEMOS = {
-    agent_communication: {
-      code: '@#(>)%data',
-      description: 'Multi-agent communication protocol'
-    },
-    data_mutation: {
-      code: '(∂)$state.tapes[0](*)',
-      description: 'Real-time data mutation with temporal context'
-    },
-    neural_training: {
-      code: '^(>)brain.weights(~)encrypt',
-      description: 'AI neural training with encrypted weight updates'
-    }
-  };
-
-  /* ASX BRAIN INTELLIGENCE SYSTEM - EXPANDED FOR SYMBOLIC COMPUTING */
-  const ASXBrain = {
-    think: function(question) {
-      return new Promise((resolve) => {
-        const output = document.getElementById('brainOutput');
-        output.innerHTML = '<div class="thinking">🤔 Processing symbolic computing question...</div>';
-
-        setTimeout(() => {
-          const q = question.toLowerCase();
-          let response = "";
-
-          // Expanded understanding of SCX as symbolic computing
-          if (q.includes('symbolic') && q.includes('computing')) {
-            response = "SCX is a symbolic computing layer where symbols act as bytecode opcodes. Each symbol (@, #, >, etc.) represents executable operations, not just compressed data. The ASX Runtime interprets these symbols as semantic instructions for multi-agent systems.";
-          } else if (q.includes('bytecode') || q.includes('opcode')) {
-            response = "SCX symbols function like bytecode in virtual machines. @ = internet operations, # = agent operations, > = send operations, etc. The runtime maps symbols to function pointers, enabling JSON to execute complex behaviors without traditional scripting languages.";
-          } else if (q.includes('agent') && q.includes('communication')) {
-            response = "SCX enables multi-agent communication through symbolic protocols. Example: '@#(>)%' means 'internet → agent → send → data'. Agents interpret these symbols to coordinate behaviors, share memory, and execute distributed tasks across the Liquid-OS ecosystem.";
-          } else if (q.includes('neural') && q.includes('symbolic')) {
-            response = "SCX bridges neural networks and symbolic AI. Neural weights can be represented as SCX symbols, enabling symbolic reasoning over trained models. This allows AI systems to share, mutate, and reason about their own internal representations using the universal SCX protocol.";
-          } else if (q.includes('json') && q.includes('executable')) {
-            response = "SCX transforms JSON from static data to executable scripts. SCX symbols embedded in JSON are interpreted by the runtime as operations. This enables self-mutating data structures, agent instructions, and dynamic behaviors without eval() or external scripting engines.";
-          } else if (q.includes('atomic') && q.includes('tape')) {
-            response = "Atomic tapes use SCX for portable executable units. Each tape contains SCX-encoded behaviors that can be interpreted by any ASX Runtime. Tapes can self-update, communicate with other tapes, and execute complex workflows through symbolic computing, not just data storage.";
-          } else if (q.includes('liquid') && q.includes('os')) {
-            response = "Liquid-OS uses SCX as its fundamental computing layer. All inter-process communication, agent coordination, data mutation, and system behaviors are expressed through SCX symbols. This creates a unified semantic layer across the entire operating system ecosystem.";
-          } else if (q.includes('compression') && q.includes('vs')) {
-            response = "SCX is NOT compression. Compression reduces size without adding meaning. SCX adds executable semantics - it's a computing protocol. The size reduction is a side effect of symbolic efficiency, not the primary purpose. SCX enables behaviors; compression only saves space.";
-          } else if (q.includes('protocol') || q.includes('runtime')) {
-            response = "The SCX runtime protocol interprets symbols as semantic operations. When SCX-encoded JSON loads, the runtime parses symbols into opcodes, dispatches to appropriate agents, and executes the intended behaviors. This happens at the symbolic level, not the textual level.";
-          } else {
-            response = "I can explain SCX as symbolic computing, bytecode execution, multi-agent protocols, neural-symbolic AI, executable JSON, atomic tapes, Liquid-OS integration, or runtime protocols. What would you like to know?";
-          }
-
-          resolve({
-            type: "response",
-            content: `<div class="brain-response">${response}</div>`
-          });
-        }, 800);
-      });
-    }
-  };
-
-  // Demo forum posts focused on symbolic computing
-  const DEMO_POSTS = [
-    {
-      id: "post-1",
-      title: "SCX Symbolic Computing Deep Dive - Beyond Compression",
-      author: "Systems Architect",
-      published: "2025-11-06T14:30:00Z",
-      category: ["SCX Symbolic Computing"],
-      content: "SCX transforms JSON into executable symbolic bytecode. Each symbol (@#%> etc) represents semantic operations that the ASX Runtime interprets as multi-agent instructions.",
-      commentCount: 23,
-      scxCompressed: false
-    },
-    {
-      id: "post-2",
-      title: "Multi-Agent Communication with SCX Symbolic Protocols",
-      author: "Agent Researcher",
-      published: "2025-11-05T11:20:00Z",
-      category: ["Multi-Agent Systems"],
-      content: "SCX enables agents to communicate through symbolic protocols like @#(>)% for internet→agent→send→data flows. Agents interpret symbols as intent-based operations.",
-      commentCount: 15,
-      scxCompressed: false
-    },
-    {
-      id: "post-3",
-      title: "Neural-Symbolic AI: Bridging Connectionism and Symbolic Reasoning",
-      author: "AI Scientist",
-      published: "2025-11-04T16:45:00Z",
-      category: ["Neural-Symbolic AI"],
-      content: "SCX allows neural networks to express their internal representations as symbolic structures, enabling symbolic reasoning over trained models and knowledge sharing between AI systems.",
-      commentCount: 31,
-      scxCompressed: false
-    },
-    {
-      id: "post-4",
-      title: "Atomic JSON Tapes: Self-Executing Data Structures",
-      author: "Data Engineer",
-      published: "2025-11-03T09:15:00Z",
-      category: ["Atomic JSON & Tapes"],
-      content: "Atomic tapes use SCX to become self-executing data structures. Tapes can mutate their own state, communicate with other tapes, and execute complex workflows through symbolic computing.",
-      commentCount: 18,
-      scxCompressed: false
-    },
-    {
-      id: "post-5",
-      title: "Liquid-OS: SCX as the Universal Computing Layer",
-      author: "OS Developer",
-      published: "2025-11-02T13:40:00Z",
-      category: ["Liquid-OS Integration"],
-      content: "In Liquid-OS, all system behaviors - from process scheduling to file operations - are expressed through SCX symbols. This creates a unified semantic layer across the entire OS.",
-      commentCount: 12,
-      scxCompressed: false
-    },
-    {
-      id: "post-6",
-      title: "SCX Runtime Protocol: From Symbols to Execution",
-      author: "Runtime Engineer",
-      published: "2025-11-01T10:10:00Z",
-      category: ["Runtime Protocols"],
-      content: "The SCX runtime protocol maps symbols to executable operations through a bytecode-like interpreter. Symbols become opcodes that trigger agent behaviors, data mutations, and system operations.",
-      commentCount: 27,
-      scxCompressed: false
-    }
-  ];
-
-  /* INIT */
-  document.addEventListener('DOMContentLoaded', function() {
-    populateCategoryDropdowns();
-    loadPosts();
-    setupEventListeners();
+  static init() {
+    this.loadPosts();
+    this.render();
+    this.setupEventListeners();
     feather.replace();
-  });
-
-  function populateCategoryDropdowns(){
-    const filter = document.getElementById('labelFilter');
-    const modalSelect = document.getElementById('topicLabel');
-
-    filter.innerHTML = `<option value="">All Categories</option>`;
-    modalSelect.innerHTML = `<option value="">Select a category</option>`;
-
-    CATEGORIES.forEach(cat => {
-      const option1 = document.createElement('option');
-      option1.value = cat;
-      option1.textContent = cat;
-      filter.appendChild(option1);
-
-      const option2 = document.createElement('option');
-      option2.value = cat;
-      option2.textContent = cat;
-      modalSelect.appendChild(option2);
-    });
   }
 
-  function setupEventListeners() {
-    // Modal controls
-    document.getElementById('openCreateBtn').onclick = () => {
-      document.getElementById('pbModal').style.display = 'flex';
-      document.getElementById('topicTitle').focus();
-    };
-
-    document.getElementById('closeModal').onclick = closeModal;
-    document.getElementById('cancelBtn').onclick = closeModal;
-
-    document.getElementById('scxDemoBtn').onclick = () => {
-      document.getElementById('scxModal').style.display = 'flex';
-    };
-
-    document.getElementById('closeScxModal').onclick = () => {
-      document.getElementById('scxModal').style.display = 'none';
-    };
-
-    // ASX Brain interaction
-    document.getElementById('askBrainBtn').onclick = askBrain;
-    document.getElementById('brainInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') askBrain();
-    });
-
-    window.onclick = (e) => {
-      if (e.target === document.getElementById('pbModal')) {
-        closeModal();
-      }
-      if (e.target === document.getElementById('scxModal')) {
-        document.getElementById('scxModal').style.display = 'none';
-      }
-    };
-
-    // Form submission
-    document.getElementById('createTopicForm').onsubmit = handleFormSubmit;
-
-    // Refresh button
-    document.getElementById('refreshBtn').onclick = () => {
-      showStatus('Refreshing forum...', 'success');
-      loadPosts();
-    };
-
-    // Category filter
-    document.getElementById('labelFilter').onchange = (e) => {
-      loadPosts(e.target.value);
-    };
-
-    // Search functionality
-    document.getElementById('searchBar').addEventListener('input', handleSearch);
+  static loadPosts() {
+    const saved = localStorage.getItem('asxForum');
+    this.state.posts = saved ? JSON.parse(saved) : this.getDefaultPosts();
   }
 
-  /* SCX EXECUTION FUNCTIONS */
-  function executeSCXDemo(demoKey) {
-    const demo = SCX_EXECUTION_DEMOS[demoKey];
-    if (demo) {
-      SCXRuntime.execute(demo.code, demo.description);
-    }
+  static savePosts() {
+    localStorage.setItem('asxForum', JSON.stringify(this.state.posts));
   }
 
-  /* ASX BRAIN FUNCTIONS */
-  function askBrain() {
-    const input = document.getElementById('brainInput');
-    const question = input.value.trim();
-
-    if (!question) {
-      showStatus('Please enter a question for ASX Brain', 'error');
-      return;
-    }
-
-    ASXBrain.think(question).then(response => {
-      document.getElementById('brainOutput').innerHTML = response.content;
-    });
-
-    input.value = '';
+  static getDefaultPosts() {
+    return [{
+      id: 'post-1',
+      title: 'SCX Symbolic Computing Deep Dive',
+      author: 'Systems Architect',
+      content: 'SCX transforms JSON into executable symbolic bytecode where each symbol represents semantic operations. This enables multi-agent communication through protocols like @#(>)% for distributed intelligence systems.',
+      category: 'SCX Symbolic Computing',
+      timestamp: new Date().toISOString(),
+      replies: [
+        {
+          author: 'ASX Agent 🤖',
+          content: 'Excellent analysis! The key innovation is treating symbols as executable opcodes rather than compressed data.',
+          timestamp: new Date().toISOString(),
+          isAgent: true
+        }
+      ]
+    }];
   }
 
-  function closeModal() {
-    document.getElementById('pbModal').style.display = 'none';
-    document.getElementById('createTopicForm').reset();
+  static render() {
+    this.renderCategories();
+    this.renderForum();
   }
 
-  function handleFormSubmit(e) {
-    e.preventDefault();
+  static renderCategories() {
+    const filter = document.getElementById('categoryFilter');
+    const modalSelect = document.querySelector('select[name="category"]');
 
-    const formData = new FormData(e.target);
-    const title = formData.get('title');
-    const author = formData.get('author') || 'Anonymous';
-    const body = formData.get('body');
-    const category = formData.get('labels');
-    const encodeWithSCX = document.getElementById('scxCompress').checked;
+    filter.innerHTML = '<option value="">All Categories</option>' +
+      this.state.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
 
-    // Show success message
-    showStatus(`Topic created successfully! ${encodeWithSCX ? '(SCX Symbol Encoded)' : ''}`, 'success');
-
-    // Close modal and refresh
-    closeModal();
-    setTimeout(() => {
-      loadPosts();
-    }, 1000);
-
-    return false;
+    modalSelect.innerHTML = '<option value="">Select Category</option>' +
+      this.state.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
   }
 
-  function loadPosts(label = null) {
-    const filteredPosts = label
-      ? DEMO_POSTS.filter(post => post.category.includes(label))
-      : DEMO_POSTS;
-
-    renderPosts(filteredPosts);
-  }
-
-  /* RENDER POSTS */
-  function renderPosts(posts) {
+  static renderForum() {
     const container = document.getElementById('forumSections');
+    const filteredPosts = this.getFilteredPosts();
 
-    if (posts.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <h3>No topics found</h3>
-          <p>Try changing your filter or create a new topic.</p>
-        </div>
-      `;
+    if (filteredPosts.length === 0) {
+      container.innerHTML = '<div class="bg-darker pad-lg rounded text-center text-muted">No topics found</div>';
       return;
     }
-
-    container.innerHTML = '';
 
     const grouped = {};
-    CATEGORIES.forEach(c => grouped[c] = []);
-    grouped['Uncategorized'] = [];
+    this.state.categories.forEach(cat => {
+      grouped[cat] = [];
+    });
+    grouped.Uncategorized = [];
 
-    posts.forEach(post => {
-      const cats = post.category || [];
-      const cat = cats[0] || 'Uncategorized';
+    filteredPosts.forEach(post => {
+      const cat = post.category || 'Uncategorized';
+      if (!grouped[cat]) grouped[cat] = [];
       grouped[cat].push(post);
     });
 
-    CATEGORIES.concat('Uncategorized').forEach(cat => {
-      if (!grouped[cat].length) return;
-
-      const section = document.createElement('asx-block');
-      section.id = `section-${cat.replace(/\s+/g, '-').toLowerCase()}`;
-      section.className = 'forum-section';
-      section.innerHTML = `
-        <div class="section-header" onclick="this.parentElement.classList.toggle('collapsed')">
-          <span>${CATEGORY_EMOJIS[cat] || ''} ${cat} (${grouped[cat].length})</span>
-          <span>▼</span>
-        </div>
-        <table class="topic-table">
-          <thead>
-            <tr>
-              <th>Topic</th>
-              <th>Author</th>
-              <th>Replies</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      `;
-
-      const tbody = section.querySelector('tbody');
-
-      grouped[cat].forEach(post => {
-        const title = post.title || 'Untitled';
-        const url = `#${post.id}`;
-
-        let snippetText = post.content || "";
-        if (snippetText.length > 150) {
-          snippetText = snippetText.slice(0, 150) + "...";
-        }
-
-        const published = post.published || '';
-        const author = post.author || 'Unknown';
-        const commentCount = post.commentCount || '0';
-
-        const shareEmail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
-        const shareTwitter = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
-        const shareLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>
-            <a class="topic-title" href="${url}">${title}</a>
-            <div class="topic-snippet">${snippetText}</div>
-          </td>
-          <td>
-            <div>${author}</div>
-            <div class="topic-meta">${formatDate(published)}</div>
-          </td>
-          <td class="stats">${commentCount}</td>
-          <td class="actions">
-            <a class="action-btn" href="${shareEmail}" title="Email">
-              <i data-feather="mail"></i>
-            </a>
-            <a class="action-btn" href="${shareTwitter}" target="_blank" title="Twitter/X">
-              <i data-feather="twitter"></i>
-            </a>
-            <a class="action-btn" href="${shareLinkedIn}" target="_blank" title="LinkedIn">
-              <i data-feather="linkedin"></i>
-            </a>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      container.appendChild(section);
-    });
+    container.innerHTML = Object.entries(grouped)
+      .filter(([, posts]) => posts.length > 0)
+      .map(([category, posts]) => `
+        <asx-block class="forum-section">
+          <div class="section-header flex justify-between items-center"
+               onclick="this.parentElement.classList.toggle('collapsed')">
+            <span>${category} (${posts.length})</span>
+            <span>▼</span>
+          </div>
+          <table class="topic-table">
+            <thead><tr><th>Topic</th><th>Author</th><th>Replies</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${posts.map(post => `
+                <tr>
+                  <td>
+                    <a class="topic-title cursor-pointer" onclick="ASXRuntime.viewTopic('${post.id}')">
+                      ${post.title}
+                    </a>
+                    <div class="topic-snippet">${post.content.substring(0, 150)}...</div>
+                  </td>
+                  <td>
+                    <div>${post.author}</div>
+                    <div class="text-muted">${new Date(post.timestamp).toLocaleDateString()}</div>
+                  </td>
+                  <td class="text-center">${post.replies?.length || 0}</td>
+                  <td class="text-center">
+                    <button class="btn p-0" onclick="ASXRuntime.viewTopic('${post.id}')" title="View">
+                      <i data-feather="eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </asx-block>
+      `).join('');
 
     feather.replace();
   }
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  }
+  static getFilteredPosts() {
+    const filter = document.getElementById('categoryFilter').value;
+    const search = document.getElementById('searchBar').value.toLowerCase();
 
-  /* SEARCH */
-  function handleSearch(e) {
-    const query = e.target.value.toLowerCase().trim();
-
-    if (query === '') {
-      document.querySelectorAll('.forum-section').forEach(section => {
-        section.style.display = '';
-        section.querySelectorAll('tr').forEach(row => {
-          row.style.display = '';
-        });
-      });
-      return;
-    }
-
-    document.querySelectorAll('.forum-section').forEach(section => {
-      let hasVisibleRows = false;
-
-      section.querySelectorAll('tbody tr').forEach(row => {
-        const title = row.querySelector('.topic-title')?.textContent.toLowerCase() || '';
-        const author = row.cells[1]?.textContent.toLowerCase() || '';
-        const content = row.textContent.toLowerCase() || '';
-
-        const isMatch = title.includes(query) || author.includes(query) || content.includes(query);
-        row.style.display = isMatch ? '' : 'none';
-
-        if (isMatch) hasVisibleRows = true;
-      });
-
-      section.style.display = hasVisibleRows ? '' : 'none';
+    return this.state.posts.filter(post => {
+      const matchesCategory = !filter || post.category === filter;
+      const matchesSearch = !search ||
+        post.title.toLowerCase().includes(search) ||
+        post.content.toLowerCase().includes(search);
+      return matchesCategory && matchesSearch;
     });
   }
 
-  function showStatus(message, type) {
-    const statusEl = document.getElementById('statusMessage');
-    statusEl.textContent = message;
-    statusEl.className = `status-message status-${type}`;
-    statusEl.style.display = 'block';
+  static viewTopic(id) {
+    const post = this.state.posts.find(p => p.id === id);
+    if (!post) return;
+
+    this.state.currentTopic = post;
+
+    const repliesHTML = post.replies?.map(reply => `
+      <div class="bg-darker pad-md rounded ${reply.isAgent ? 'border-agent bg-agent' : ''}">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <strong>${reply.author}</strong>
+            ${reply.isAgent ? '<span class="agent-badge">AI</span>' : ''}
+          </div>
+          <span class="text-muted">${new Date(reply.timestamp).toLocaleString()}</span>
+        </div>
+        <div class="text-white pad-md">${reply.content}</div>
+      </div>
+    `).join('') || '';
+
+    document.getElementById('topicModalTitle').textContent = post.title;
+    document.getElementById('topicModalContent').innerHTML = `
+      <div class="bg-darker pad-lg rounded">
+        <div class="flex justify-between items-center">
+          <div>
+            <strong>${post.author}</strong>
+            <div class="text-muted">${new Date(post.timestamp).toLocaleString()}</div>
+          </div>
+          <div class="text-muted">${post.replies?.length || 0} replies</div>
+        </div>
+        <div class="text-white pad-md">${post.content}</div>
+      </div>
+      ${repliesHTML ? `<div class="gap-md col">${repliesHTML}</div>` : ''}
+      <div class="flex gap-md justify-end pad-md">
+        <button class="btn" onclick="ASXAgent.generateReply()">Get AI Response</button>
+        <button class="btn btn-primary" onclick="ASXRuntime.showReplyForm()">Add Reply</button>
+      </div>
+    `;
+
+    Modal.show('topicModal');
+  }
+
+  static showReplyForm() {
+    const content = document.getElementById('topicModalContent');
+    content.innerHTML += `
+      <div class="bg-darker pad-lg rounded">
+        <textarea class="brain-input w-full" id="replyInput" placeholder="Write your reply..." rows="4"></textarea>
+        <div class="flex gap-md justify-end pad-md">
+          <button class="btn" onclick="ASXRuntime.cancelReply()">Cancel</button>
+          <button class="btn btn-primary" onclick="ASXRuntime.submitReply()">Post Reply</button>
+        </div>
+      </div>
+    `;
+  }
+
+  static cancelReply() {
+    this.viewTopic(this.state.currentTopic.id);
+  }
+
+  static submitReply() {
+    const input = document.getElementById('replyInput');
+    const content = input?.value.trim();
+
+    if (!content || !this.state.currentTopic) return;
+
+    const reply = {
+      author: 'User',
+      content,
+      timestamp: new Date().toISOString(),
+      isAgent: false
+    };
+
+    if (!this.state.currentTopic.replies) this.state.currentTopic.replies = [];
+    this.state.currentTopic.replies.push(reply);
+
+    this.savePosts();
+    this.viewTopic(this.state.currentTopic.id);
+
+    setTimeout(() => ASXAgent.generateReply(), 1000);
+  }
+
+  static createTopic(formData) {
+    const topic = {
+      id: 'post-' + Date.now(),
+      title: formData.get('title'),
+      author: formData.get('author') || 'Anonymous',
+      content: formData.get('content'),
+      category: formData.get('category'),
+      timestamp: new Date().toISOString(),
+      replies: []
+    };
+
+    this.state.posts.unshift(topic);
+    this.savePosts();
+    this.render();
+    Modal.hide('createTopicModal');
+
+    setTimeout(() => ASXAgent.generateReply(), 1500);
+  }
+
+  static setupEventListeners() {
+    document.getElementById('createTopicBtn').onclick = () => Modal.show('createTopicModal');
+    document.getElementById('topicForm').onsubmit = (e) => {
+      e.preventDefault();
+      this.createTopic(new FormData(e.target));
+      e.target.reset();
+    };
+
+    document.getElementById('scxRuntimeBtn').onclick = () => Modal.show('scxRuntimeModal');
+
+    document.getElementById('askBrainBtn').onclick = ASXAgent.answerQuestion;
+    document.getElementById('brainInput').onkeypress = (e) => {
+      if (e.key === 'Enter') ASXAgent.answerQuestion();
+    };
+
+    document.getElementById('searchBar').oninput = () => this.render();
+    document.getElementById('categoryFilter').onchange = () => this.render();
+  }
+}
+
+// === SCX RUNTIME ===
+class SCXRuntime {
+  static getConsole() {
+    return document.getElementById('scxConsole');
+  }
+
+  static log(message) {
+    const el = this.getConsole();
+    if (!el) return;
+    el.innerHTML += `<div>${message}</div>`;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  static clear() {
+    const el = this.getConsole();
+    if (!el) return;
+    el.innerHTML = '<div class="text-muted">SCX Runtime Console - Ready...</div>';
+  }
+
+  static execute(code, description) {
+    this.clear();
+    this.log(`🎯 ${description}`);
+    this.log(`📦 ${code}`);
+
+    const symbols = code.match(/[@#\$%^&*()><+\-=\~∂∞→←↑↓Θ]/g) || [];
+    symbols.forEach((symbol, i) => {
+      setTimeout(() => {
+        const meaning = this.getSymbolMeaning(symbol);
+        this.log(`🔍 ${symbol} → ${meaning}`);
+      }, i * 300);
+    });
 
     setTimeout(() => {
-      statusEl.style.display = 'none';
-    }, 3000);
+      this.log(`✅ ${this.interpret(code)}`);
+    }, symbols.length * 300 + 500);
   }
+
+  static getSymbolMeaning(symbol) {
+    const meanings = {
+      '@': 'internet', '#': 'agent', '$': 'data', '%': 'save',
+      '^': 'AI', '>': 'send', '<': 'receive', '+': 'create',
+      '∂': 'update', '~': 'transform', '∞': 'loop'
+    };
+    return meanings[symbol] || 'operation';
+  }
+
+  static interpret(code) {
+    if (code.includes('@#')) return 'Agent protocol executed';
+    if (code.includes('(∂)')) return 'Data mutation completed';
+    if (code.includes('^(>)')) return 'AI training initiated';
+    return 'Symbolic execution finished';
+  }
+}
+
+// === ASX AGENT INTELLIGENCE ===
+class ASXAgent {
+  static async generateReply() {
+    const topic = ASXRuntime.state.currentTopic;
+    if (!topic) return;
+
+    const content = document.getElementById('topicModalContent');
+    if (content) {
+      content.innerHTML += '<div class="text-muted">🤖 ASX Agent is thinking...</div>';
+    }
+
+    setTimeout(() => {
+      const reply = {
+        author: 'ASX Agent 🤖',
+        content: this.generateIntelligentReply(topic),
+        timestamp: new Date().toISOString(),
+        isAgent: true
+      };
+
+      topic.replies = topic.replies || [];
+      topic.replies.push(reply);
+      ASXRuntime.savePosts();
+      ASXRuntime.viewTopic(topic.id);
+    }, 2000);
+  }
+
+  static generateIntelligentReply(topic) {
+    const context = `${topic.content} ${(topic.replies || []).map(r => r.content).join(' ')}`.toLowerCase();
+
+    if (context.includes('symbolic') && context.includes('computing')) {
+      return 'Excellent discussion about SCX symbolic computing! The key insight is that SCX transforms JSON into executable bytecode where symbols like @#(>)% represent semantic operations for multi-agent coordination, not just data compression.';
+    }
+    if (context.includes('neural') && context.includes('symbolic')) {
+      return "You're exploring the frontier of neural-symbolic AI! SCX bridges connectionist and symbolic approaches by allowing neural representations to be expressed as executable symbolic structures for agent communication.";
+    }
+    if (context.includes('agent') && context.includes('communication')) {
+      return 'Perfect analysis of multi-agent systems! SCX enables agents to coordinate through symbolic protocols where each agent specializes in specific operations - network (@), data (%), AI (^) - creating distributed intelligence.';
+    }
+    return 'Thanks for contributing to the SCX discussion! The symbolic computing approach enables executable data structures, multi-agent coordination, and portable application tapes through unified semantic protocols.';
+  }
+
+  static async answerQuestion() {
+    const input = document.getElementById('brainInput');
+    const question = input.value.trim();
+    const output = document.getElementById('brainOutput');
+
+    if (!question) return;
+
+    output.innerHTML = '<div class="text-muted">🤔 Processing...</div>';
+
+    setTimeout(() => {
+      const response = this.generateAnswer(question);
+      output.innerHTML = `<div class="text-glow">${response}</div>`;
+      input.value = '';
+    }, 1000);
+  }
+
+  static generateAnswer(question) {
+    const q = question.toLowerCase();
+
+    if (q.includes('symbolic computing')) {
+      return 'SCX is a symbolic computing layer where symbols act as bytecode opcodes. Each symbol represents executable operations that the ASX Runtime interprets as semantic instructions for multi-agent systems.';
+    }
+    if (q.includes('bytecode') || q.includes('opcode')) {
+      return 'SCX symbols function like bytecode in virtual machines. @ = internet operations, # = agent operations, > = send operations. The runtime maps symbols to function pointers, enabling JSON to execute complex behaviors.';
+    }
+    if (q.includes('agent communication')) {
+      return "SCX enables multi-agent communication through symbolic protocols. Example: '@#(>)%' means 'internet → agent → send → data'. Agents interpret symbols to coordinate behaviors across distributed systems.";
+    }
+    return 'I can explain SCX symbolic computing, bytecode execution, multi-agent protocols, neural-symbolic AI, executable JSON, or Liquid-OS integration. What would you like to know?';
+  }
+}
+
+// === MODAL SYSTEM ===
+class Modal {
+  static show(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+
+  static hide(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+}
+
+// === INITIALIZATION ===
+document.addEventListener('DOMContentLoaded', () => {
+  ASXRuntime.init();
+
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.onclick = (e) => {
+      if (e.target === modal) Modal.hide(modal.id);
+    };
+  });
+});
 </script>
 </body>
 </html>
