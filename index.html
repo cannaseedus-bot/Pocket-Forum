@@ -951,6 +951,18 @@ class ASXPrimeOS {
     Modal.show('topicViewModal');
   }
 
+  static buildPracticalReply(question, top) {
+    const q = question.toLowerCase();
+    const tensorHelp = 'A tensor is a multi-dimensional array used to organize numbers across axes (for example: vector=1D, matrix=2D, volume=3D). In this forum app, each topic is embedded as numeric features so related posts can be matched quickly.';
+    const deterministicHelp = 'Deterministic inference means the same input always returns the same output. Here we use fixed scoring + argmax collapse (with tie-break rules), so replay is stable across runs.';
+
+    if (q.includes('what is a tensor') || q === 'tensor' || q.includes('define tensor')) return tensorHelp;
+    if (q.includes('deterministic') || q.includes("k'uhul") || q.includes('no python')) return deterministicHelp;
+    if (q.includes('semantic n-gram')) return 'Semantic n-gram matching combines literal token windows with nearby semantic patterns, then ranks matches by weighted similarity so sparse wording still maps to relevant topics.';
+
+    return `Answer: I matched your question to "${top.topic || 'forum discussion'}" and generated a deterministic summary. Ask for "plain explanation" if you want less math or "deep math" if you want full equations.`;
+  }
+
   static addReply(topicId) {
     const input = document.getElementById('replyInput');
     const content = input.value.trim();
@@ -970,7 +982,15 @@ class ASXPrimeOS {
     input.value = '';
     setTimeout(() => {
       const top = this.tensor4D.getWeightedResponse(content, this.currentMode)[0] || { weight: 0, confidence: 0, binarySim: 0, textSim: 0 };
-      topic.replies.push({ author: 'ASX 4D Agent', content: `4D Tensor Analysis:\n• Matched topic: "${top.topic || 'new discussion'}"\n• Weight: ${(top.weight || 0).toFixed(2)}\n• Binary similarity: ${(top.binarySim || 0).toFixed(2)}\n• Text similarity: ${(top.textSim || 0).toFixed(2)}\n• Mode: ${this.currentMode}`, timestamp: new Date().toISOString(), isAgent: true });
+      const plainAnswer = this.buildPracticalReply(content, top);
+      topic.replies.push({ author: 'ASX 4D Agent', content: `${plainAnswer}
+
+Diagnostics:
+• Matched topic: "${top.topic || 'new discussion'}"
+• Weight: ${(top.weight || 0).toFixed(2)}
+• Binary similarity: ${(top.binarySim || 0).toFixed(2)}
+• Text similarity: ${(top.textSim || 0).toFixed(2)}
+• Mode: ${this.currentMode}`, timestamp: new Date().toISOString(), isAgent: true });
       this.saveTopics();
       this.viewTopic(topicId);
       this.updateInspectorStats();
