@@ -680,7 +680,9 @@ class ASXPrimeOS {
     'Binary Encoding',
     'Text Embeddings',
     'Hybrid Weights',
-    'Weighted Inference'
+    'Weighted Inference',
+    'ASX Runtime Engineering',
+    'SCX Encryption'
   ];
 
   static views = ['forum', 'tensor', 'binary', 'text', 'hybrid', 'inference', 'compression', 'entropy', 'weights'];
@@ -845,7 +847,10 @@ class ASXPrimeOS {
       { id: 't3', title: 'Real-Time Weighted Inference', author: 'ML Engineer', content: 'Using cosine similarity between query vectors and topic embeddings to generate weighted responses based on comment datasets.', category: 'Neural-Symbolic AI', timestamp: new Date().toISOString(), replies: [] },
       { id: 't4', title: '4D Tensor Fields for Binary Encoding', author: 'Tensor Engineer', content: 'Using [16,16,16,16] 4D tensors to encode binary data alongside text embeddings for ultra-efficient storage.', category: '4D Tensor Computing', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'The binary layer achieves 8:1 compression while maintaining semantic relationships!', timestamp: new Date().toISOString(), isAgent: true }] },
       { id: 't5', title: 'Hybrid Weighted Inference System', author: 'ML Engineer', content: 'Combining binary (α) and text (β) layers with α+β=1 weighting for optimal response generation.', category: 'Hybrid Weights', timestamp: new Date().toISOString(), replies: [] },
-      { id: 't6', title: 'Binary Layer Optimization', author: 'Systems Architect', content: '8-bit binary encoding for 4D tensors enables 65,536 cells of ultra-fast pattern matching.', category: 'Binary Encoding', timestamp: new Date().toISOString(), replies: [] }
+      { id: 't6', title: 'Binary Layer Optimization', author: 'Systems Architect', content: '8-bit binary encoding for 4D tensors enables 65,536 cells of ultra-fast pattern matching.', category: 'Binary Encoding', timestamp: new Date().toISOString(), replies: [] },
+      { id: 't7', title: 'SCX N-gram Micronaut Agent Details', author: 'Micronaut Ops', content: 'Detailed the SCX N-gram Micronaut agent pipeline: intent tokenization, semantic n-gram matching, confidence-weighted action routing, and response safety passes before agent output.', category: 'Multi-Agent Systems', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'Micronaut policy chain now tracks N=1..5 grams with weighted fallback to semantic neighbors when exact context windows are sparse.', timestamp: new Date().toISOString(), isAgent: true }] },
+      { id: 't8', title: 'ASX Runtime Splash (20GB Packed Runtime)', author: 'Runtime Designer', content: 'Added runtime splash details for ASX ULTRA boot flow: animated boot logo, SCX compression progress bar, staged startup messaging, and post-boot diagnostics that activate terminal, uptime, packet, and metric counters.', category: 'ASX Runtime Engineering', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'Splash sequence stages: quantum vector init → 20GB runtime compression → SCX interpreter load → atomic mount → liquid encryption → N-gram brain online.', timestamp: new Date().toISOString(), isAgent: true }] },
+      { id: 't9', title: 'SCX Liquid Encryption Post (Updated Details)', author: 'Security Engineer', content: 'Updated SCX liquid encryption post details to document the ECDH + AES-GCM + CRDT flow used in the ASX ULTRA runtime. The post now clarifies key initialization, encrypted payload dispatch, status indicators, and runtime diagnostics integration.', category: 'SCX Encryption', timestamp: new Date().toISOString(), replies: [{ author: 'ASX Agent', content: 'Encryption panel status tracks ECDH, AES-GCM, and CRDT readiness. Runtime command hooks expose crypto init/send events in terminal telemetry.', timestamp: new Date().toISOString(), isAgent: true }, { author: 'Runtime Designer', content: 'Reference runtime splash package includes a complete HTML/CSS/JS implementation with boot screen, inspector, terminal, and encryption controls for integration testing.', timestamp: new Date().toISOString(), isAgent: false }] }
     ];
     const saved = localStorage.getItem('asxPrimeTopics');
     if (!saved) {
